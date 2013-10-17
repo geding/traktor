@@ -1,0 +1,5 @@
+Siema. Zastanawiam siê, czy klepanie tego w c# ma sens - w zasadzie projekt jest czymœ na zasadzie gierki.
+Mo¿e w javie posz³oby to przyjemniej - wpfie na bank da radê to zrobiæ, ale mo¿e byæ trochê ¿mudne.
+Dajcie znaæ co myœlicie. Myœla³em te¿ na moment nad zmian¹ tematu - mo¿na by np zrobiæ coœ w stylu bombermana, ale to luŸna sugestia.
+
+Micha³ - za jav¹
