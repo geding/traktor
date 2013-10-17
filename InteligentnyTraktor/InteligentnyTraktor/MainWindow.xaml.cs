@@ -20,28 +20,61 @@ namespace InteligentnyTraktor
     /// </summary>
     public partial class MainWindow : Window
     {
+        UIElement[][] fieldItems;
+
         public MainWindow()
         {
             InitializeComponent();
-            InitializeFieldGrid();
+            InitializeFieldGrid(6);
         }
 
-        private void InitializeFieldGrid()
+        private void InitializeFieldGrid(int size)
         {
-            for (int i = 0; i < 6; i++)
+            DefineRowsAndColumns(gridField, size);           
+
+            fieldItems = new UIElement[size][];
+            for (int i = 0; i < size; i++)
             {
-                gridField.ColumnDefinitions.Add(
+                fieldItems[i] = new UIElement[size];
+            }
+
+            AddButtonsForEachField(gridField, 6);
+        }        
+
+        private void DefineRowsAndColumns(Grid grid, int size)
+        {
+            for (int i = 0; i < size; i++)
+            {
+                grid.ColumnDefinitions.Add(
                     new ColumnDefinition()
                     {
                         Width = new GridLength(1, GridUnitType.Star),
                     });
 
-                gridField.RowDefinitions.Add(
+                grid.RowDefinitions.Add(
                     new RowDefinition()
                     {
                         Height = new GridLength(1, GridUnitType.Star),
                     });
             }
+        }
+
+        private void AddButtonsForEachField(Grid grid, int size)
+        {
+            for (int i = 0; i < size * size; i++)
+            {
+                int r = i % size;
+                int c = i / size;
+
+                var ch = grid.Children;
+                ch.Add(new Button()
+                    {
+                        Content = r.ToString() + " " + c.ToString(),
+                    });
+                Grid.SetRow(ch[i], r);
+                Grid.SetColumn(ch[i], c);
+                this.fieldItems[r][c] = ch[i];
+            }                        
         }
     }
 }
