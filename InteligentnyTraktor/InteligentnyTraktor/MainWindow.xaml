@@ -4,6 +4,6 @@
         Title="MainWindow" Height="350" Width="525">
     <Grid>
         <Grid x:Name="gridField"  HorizontalAlignment="Left" Height="253" Margin="37,35,0,0" VerticalAlignment="Top" Width="305" ShowGridLines="True"/>
-
+        <Button Content="Button" HorizontalAlignment="Left" Margin="410,52,0,0" VerticalAlignment="Top" Width="75"/>
     </Grid>
 </Window>
