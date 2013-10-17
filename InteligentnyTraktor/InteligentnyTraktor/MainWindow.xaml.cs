@@ -25,7 +25,6 @@ namespace InteligentnyTraktor
             InitializeComponent();
             InitializeFieldGrid();
         }
-
         private void InitializeFieldGrid()
         {
             for (int i = 0; i < 6; i++)
