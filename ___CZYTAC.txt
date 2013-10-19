@@ -1,5 +1,11 @@
-Siema. Zastanawiam siê, czy klepanie tego w c# ma sens - w zasadzie projekt jest czymœ na zasadzie gierki.
-Mo¿e w javie posz³oby to przyjemniej - wpfie na bank da radê to zrobiæ, ale mo¿e byæ trochê ¿mudne.
-Dajcie znaæ co myœlicie. Myœla³em te¿ na moment nad zmian¹ tematu - mo¿na by np zrobiæ coœ w stylu bombermana, ale to luŸna sugestia.
+Siema. Zastanawiam siï¿½, czy klepanie tego w c# ma sens - w zasadzie projekt jest czymï¿½ na zasadzie gierki.
+Moï¿½e w javie poszï¿½oby to przyjemniej - wpfie na bank da radï¿½ to zrobiï¿½, ale moï¿½e byï¿½ trochï¿½ ï¿½mudne.
+Dajcie znaï¿½ co myï¿½licie. Myï¿½laï¿½em teï¿½ na moment nad zmianï¿½ tematu - moï¿½na by np zrobiï¿½ coï¿½ w stylu bombermana, ale to luï¿½na sugestia.
 
-Micha³ - za jav¹
+Michaï¿½ - za javï¿½
+
+Szymon - Nie lubie javy 
+
+Tak naprawdÄ™ obojÄ™tne mi w czym to napiszemy,
+jeÅ¼eli chodzi o robienie gierek to mam jako takie doÅ›wiadczenie w c++ i pythonie,
+ale rÃ³wnie dobrze moÅ¼emy to pisaÄ‡ na c# przy uÅ¼yciu jakiegoÅ› prostego engine 2d jeÅ¼eli WPF nie daje rady
