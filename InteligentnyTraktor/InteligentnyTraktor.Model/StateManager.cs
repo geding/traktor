@@ -14,6 +14,7 @@ namespace InteligentnyTraktor.Model
         public Timer FieldTimer { get; private set; }
 
         public event EventHandler TractorIsBusy;
+        //Queue<TractorTask> tasks;
 
         public StateManager(double fieldWidth, double fieldHeight, int rows, int columns)
         {
@@ -59,7 +60,7 @@ namespace InteligentnyTraktor.Model
 
         public System.Windows.Point TractorPosition
         {
-            get { return engine.TractorPosition; }
+            get { return engine.Tractor.Position; }
         }
 
         public System.Windows.Vector TractorVelocity

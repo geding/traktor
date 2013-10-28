@@ -1,4 +1,6 @@
-﻿using System;
+﻿//#define locked
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,8 +31,7 @@ namespace InteligentnyTraktor.Model
         Direction currentHorizontalDirection;
         Direction currentVerticalDirection;
 
-        public Point TractorPosition { get; private set; }
-        public Vector TractorVelocity { get; private set; }
+        public Tractor Tractor { get; private set; }
 
         public event EventHandler TractorReachedDestination;
         public event EventHandler TractorStopped;
@@ -47,27 +48,35 @@ namespace InteligentnyTraktor.Model
             timer = new Timer(timerInterval);
             timer.Start();
 
-            TractorPosition = new Point(fieldItemHeight / 2, fieldItemWidth / 2);
+            Tractor = new Tractor()
+            {
+                Position = new Point(fieldItemHeight / 2, fieldItemWidth / 2),
+                Velocity = new Vector(0, 0),
+                VMax = 2,
+                Acceleration = 1.3,
+            };           
         }
 
         public void StartMovingTractorTo(int row, int column)
         {
+
             this.destinationX = fieldItemHeight * (column + 0.5);
             this.destinationY = fieldItemWidth * (row + 0.5);
 
             this.currentHorizontalDirection = DetermineDirection(this.destinationX, 
-                                                                TractorPosition.X, 
+                                                                Tractor.Position.X, 
                                                                 Dimension.Horizontal);
 
             this.currentVerticalDirection = DetermineDirection(this.destinationY,
-                                                               TractorPosition.Y,
+                                                               Tractor.Position.Y,
                                                                Dimension.Vertical);
-
             timer.Elapsed += TractorMoves;
         }
 
         public void StopTractor()
         {
+            Tractor.Velocity = new Vector(0, 0);
+
             timer.Elapsed -= TractorMoves;
             this.currentHorizontalDirection = Direction.None;
             this.currentVerticalDirection = Direction.None;
@@ -81,19 +90,70 @@ namespace InteligentnyTraktor.Model
 
         private void TractorMoves(object sender, ElapsedEventArgs e)
         {
-            if (Math.Abs(this.destinationX - TractorPosition.X) > this.ds)
+
+#if (locked)
+            lock (Tractor)
             {
-                MoveTractor(currentHorizontalDirection);
+                if (Math.Abs(this.destinationX - Tractor.Position.X) > this.ds)
+                {
+                    if (Tractor.Velocity == new Vector(0, 0))
+                    {
+                        Tractor.Velocity = this.currentHorizontalDirection == Direction.Left
+                                           ? new Vector(-2, 0)
+                                           : new Vector(2, 0);
+                    }
+                    //MoveTractor(currentHorizontalDirection);
+                    Tractor.Move(ds);
+                    if (Tractor.Velocity.LengthSquared < Tractor.VMax)
+                    {
+                        Tractor.Accelerate();
+                    }
+                }
+                else if (Math.Abs(this.destinationY - Tractor.Position.Y) > this.ds)
+                {
+                    if (Math.Abs(Tractor.Velocity.X) == 2 || Tractor.Velocity.X == 0)
+                    {
+                        Tractor.Velocity = this.currentVerticalDirection == Direction.Up
+                                          ? new Vector(0, -2)
+                                          : new Vector(0, 2);
+                    }
+                    Tractor.Move(ds);
+                }
+                else
+                {
+                    StopTractor();
+                    OnTractorReached();
+                }
             }
-            else if (Math.Abs(this.destinationY - TractorPosition.Y) > this.ds)
+
+#else
+            if (Math.Abs(this.destinationX - Tractor.Position.X) > this.ds)
             {
-                MoveTractor(currentVerticalDirection);
+                if (Tractor.Velocity == new Vector(0, 0))
+                {
+                    Tractor.Velocity = new Vector(0.1, 0);
+                }
+                //MoveTractor(currentHorizontalDirection);
+                Tractor.Move(ds);
+                if (Tractor.Velocity.LengthSquared < Tractor.VMax)
+                {
+                    Tractor.Accelerate();
+                }
+            }
+            else if (Math.Abs(this.destinationY - Tractor.Position.Y) > this.ds)
+            {
+                if (Tractor.Velocity == new Vector(0, 2))
+                {
+                    Tractor.Velocity = new Vector(0, 0.1);
+                }
+                Tractor.Move(ds);
             }
             else
             {
                 StopTractor();
                 OnTractorReached();
             }
+#endif
         }
 
         private Direction DetermineDirection(double destination, double currentPosition, Dimension dim)
@@ -140,7 +200,7 @@ namespace InteligentnyTraktor.Model
                 case Direction.None:
                     break;
             }
-            TractorPosition = new Point(TractorPosition.X + dx, TractorPosition.Y + dy);
+            Tractor.Position = new Point(Tractor.Position.X + dx, Tractor.Position.Y + dy);
         }
 
         private void OnTractorReached()
