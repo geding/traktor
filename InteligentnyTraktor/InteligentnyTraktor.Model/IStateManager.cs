@@ -40,6 +40,15 @@ namespace InteligentnyTraktor.Model
         void IrrigateAt(int row, int column);
 
         /// <summary>
+        /// Stops tractor's movement or work
+        /// </summary>
+        void StopTractor();
+
+        //TODO
+        //void AddToOrdersList(TractorAction action);
+        //delegate TractorAction
+
+        /// <summary>
         /// Current position of tractor
         /// </summary>
         Point TractorPosition { get; }
@@ -55,5 +64,12 @@ namespace InteligentnyTraktor.Model
         /// i.e. it has just grown, harvesting has started/finished, sow has started etc
         /// </summary>
         event FieldChangedEventHandler FieldChanged;
+
+        /// <summary>
+        /// Tractor works only on one thing at once, if you ordered it something else
+        /// before it would finish this event is raised.
+        /// Use StopTractor() and give new orders, or use AddToOrdersList() instead 
+        /// </summary>
+        event EventHandler TractorIsBusy;
     }
 }

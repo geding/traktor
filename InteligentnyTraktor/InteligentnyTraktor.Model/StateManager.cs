@@ -10,23 +10,31 @@ namespace InteligentnyTraktor.Model
     public class StateManager : IStateManager
     {
         Engine engine;
+        bool isTractorBusy = false;
         public Timer FieldTimer { get; private set; }
 
-        public StateManager(int rows, int columns)
+        public event EventHandler TractorIsBusy;
+
+        public StateManager(double fieldWidth, double fieldHeight, int rows, int columns)
         {
-            engine = new Engine(400, 400, rows, columns);
+            engine = new Engine(fieldWidth, fieldHeight, rows, columns);
         }
 
         static void Main(string[] args)
         {
-            //MyTimer oTimer = new MyTimer();
-            //oTimer.StartTimer();
+            
         }
 
         public void MoveTractorTo(int row, int column)
         {
-            engine.MoveTractorTo(row, column);
-        }
+            if (isTractorBusy == false)
+            {
+                isTractorBusy = true;
+                engine.TractorReachedDestination += (s, e) => isTractorBusy = false;
+                engine.StartMovingTractorTo(row, column);
+            }
+            else OnTractorIsBusy();
+        }       
 
         public void HarvestAt(int row, int column)
         {
@@ -43,6 +51,12 @@ namespace InteligentnyTraktor.Model
             throw new NotImplementedException();
         }
 
+        public void StopTractor()
+        {
+            engine.TractorStopped += (s, e) => isTractorBusy = false;
+            engine.StopTractor();
+        }
+
         public System.Windows.Point TractorPosition
         {
             get { return engine.TractorPosition; }
@@ -54,33 +68,14 @@ namespace InteligentnyTraktor.Model
         }
 
         public event FieldChangedEventHandler FieldChanged;
-    }
- 
-    /*
-    class MyTimer
-    {
-        private int m_nStart = 0;
- 
-        public void StartTimer()
+
+        private void OnTractorIsBusy()
         {
-            m_nStart = Environment.TickCount;
-            Timer oTimer = new Timer();
-            oTimer.Elapsed += new ElapsedEventHandler(OnTimeEvent);
-            oTimer.Interval = 998;
-            oTimer.Enabled = true;
-            Console.WriteLine(
-                "Naciśnij dowolny przycisk, aby zakończyć program.");
-            Console.Read();
-            oTimer.Stop();
-        }
- 
- 
-        private void OnTimeEvent(object oSource,
-            ElapsedEventArgs oElapsedEventArgs)
-        {
-            Console.WriteLine("Upłyneło {0} milisekud",
-                Environment.TickCount - m_nStart);
-        }
-    }
-     */ 
+            EventHandler temp = TractorIsBusy;
+            if (temp != null)
+            {
+                temp(this, new EventArgs());
+            }
+        }        
+    } 
 }

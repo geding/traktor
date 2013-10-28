@@ -8,8 +8,13 @@ using System.Windows;
 
 namespace InteligentnyTraktor.Model
 {
+    public enum Direction { None, Left, Up, Right, Down };
+    public enum Dimension { Horizontal, Vertical };
+
     class Engine
     {
+        int timerInterval = 20;
+
         double fieldWidth;
         double fieldHeight;
 
@@ -19,15 +24,15 @@ namespace InteligentnyTraktor.Model
         double destinationX;
         double destinationY;
 
-        double dx = 2;
-        double dy = 2;
+        double ds = 2;
 
-        bool isXReached;
-        bool isYReached;
+        Direction currentHorizontalDirection;
+        Direction currentVerticalDirection;
 
         public Point TractorPosition { get; private set; }
         public Vector TractorVelocity { get; private set; }
 
+        public event EventHandler TractorReachedDestination;
         public event EventHandler TractorStopped;
 
         Timer timer;
@@ -39,90 +44,115 @@ namespace InteligentnyTraktor.Model
             this.fieldItemWidth = fieldWidth / rows;
             this.fieldItemHeight = fieldHeight / columns;
 
-            timer = new Timer(20);
+            timer = new Timer(timerInterval);
             timer.Start();
 
             TractorPosition = new Point(fieldItemHeight / 2, fieldItemWidth / 2);
         }
 
-        public void MoveTractorTo(int row, int column)
+        public void StartMovingTractorTo(int row, int column)
         {
-            isXReached = false;
-            isYReached = false;
-
             this.destinationX = fieldItemHeight * (column + 0.5);
-            this.destinationY = fieldItemWidth * (row + 0.5);            
+            this.destinationY = fieldItemWidth * (row + 0.5);
 
-            timer.Elapsed += MoveTractor;
+            this.currentHorizontalDirection = DetermineDirection(this.destinationX, 
+                                                                TractorPosition.X, 
+                                                                Dimension.Horizontal);
+
+            this.currentVerticalDirection = DetermineDirection(this.destinationY,
+                                                               TractorPosition.Y,
+                                                               Dimension.Vertical);
+
+            timer.Elapsed += TractorMoves;
         }
 
-        private void MoveTractor(object sender, ElapsedEventArgs e)
+        public void StopTractor()
         {
-            if (destinationX < TractorPosition.X)
+            timer.Elapsed -= TractorMoves;
+            this.currentHorizontalDirection = Direction.None;
+            this.currentVerticalDirection = Direction.None;
+
+            EventHandler invoker = TractorStopped;
+            if (invoker != null)
             {
-                MoveTractorLeft();
+                invoker(this, new EventArgs());
+            }
+        }
+
+        private void TractorMoves(object sender, ElapsedEventArgs e)
+        {
+            if (Math.Abs(this.destinationX - TractorPosition.X) > this.ds)
+            {
+                MoveTractor(currentHorizontalDirection);
+            }
+            else if (Math.Abs(this.destinationY - TractorPosition.Y) > this.ds)
+            {
+                MoveTractor(currentVerticalDirection);
             }
             else
             {
-                MoveTractorRight(); 
+                StopTractor();
+                OnTractorReached();
             }
-            if (isXReached)
+        }
+
+        private Direction DetermineDirection(double destination, double currentPosition, Dimension dim)
+        {
+            if (destination < currentPosition)
             {
-                if (destinationY < TractorPosition.Y)
+                switch (dim)
                 {
-                    MoveTractorDown();
+                    case Dimension.Horizontal: return Direction.Left;
+                    case Dimension.Vertical: return Direction.Up;
+                    default: return Direction.None;
                 }
-                else
+            }
+            else if (destination > currentPosition)
+            {
+                switch (dim)
                 {
-                    MoveTractorUp();
-                }
+                    case Dimension.Horizontal: return Direction.Right;
+                    case Dimension.Vertical: return Direction.Down;
+                    default: return Direction.None;
+                }              
             }
-
-            if (isXReached && isYReached)
+            else
             {
-                timer.Elapsed -= MoveTractor;
-                EventHandler temp = TractorStopped;
-                if (temp != null)
-                {
-                    temp(this, new EventArgs());
-                }
-            }           
-        }        
-
-        private void MoveTractorRight()
-        {
-            if (Math.Abs(this.destinationX - TractorPosition.X) > dx)
-            {
-                TractorPosition = new Point(TractorPosition.X + dx, TractorPosition.Y);
+                return Direction.None;
             }
-            else isXReached = true;
         }
 
-        private void MoveTractorLeft()
+        private void MoveTractor(Direction direction)
         {
-            if (Math.Abs(this.destinationX - TractorPosition.X) > dx)
+            double dx = 0;
+            double dy = 0;
+
+            switch (direction)
             {
-                TractorPosition = new Point(TractorPosition.X - dx, TractorPosition.Y);
+                case Direction.Left: dx = -(this.ds);
+                    break;
+                case Direction.Up: dy = -(this.ds);
+                    break;
+                case Direction.Right: dx = this.ds;
+                    break;
+                case Direction.Down: dy = this.ds;
+                    break;
+                case Direction.None:
+                    break;
             }
-            else isXReached = true;
+            TractorPosition = new Point(TractorPosition.X + dx, TractorPosition.Y + dy);
         }
 
-        private void MoveTractorUp()
+        private void OnTractorReached()
         {
-            if (Math.Abs(this.destinationY - TractorPosition.Y) > dy)
-            {
-                TractorPosition = new Point(TractorPosition.X, TractorPosition.Y + dy);
-            }
-            else isYReached = true;
-        }
+            this.currentHorizontalDirection = Direction.None;
+            this.currentVerticalDirection = Direction.None;
 
-        private void MoveTractorDown()
-        {
-            if (Math.Abs(this.destinationY - TractorPosition.Y) > dy)
+            EventHandler invoker = TractorReachedDestination;
+            if (invoker != null)
             {
-                TractorPosition = new Point(TractorPosition.X, TractorPosition.Y - dy);
+                invoker(this, new EventArgs());
             }
-            else isYReached = true;
-        }
+        }              
     }
 }

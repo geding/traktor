@@ -37,7 +37,7 @@ namespace InteligentnyTraktor.Test
             InitializeTractor();
             InitializeFieldEvents();
 
-            stateManager = new StateManager(size, size);
+            stateManager = new StateManager(fieldCanvas.Width, fieldCanvas.Height, size, size);
             timer.Start();
             timer.Elapsed += timer_Elapsed;
         }
@@ -62,9 +62,6 @@ namespace InteligentnyTraktor.Test
             };
 
             fieldCanvas.Children.Add(tractor);
-            //gridField.Children.Add(tractor);
-            //Grid.SetRow(tractor, 0);
-            //Grid.SetColumn(tractor, 0);
         }
 
         private void InitializeFieldEvents()
@@ -77,12 +74,7 @@ namespace InteligentnyTraktor.Test
         }
 
         private void MoveTractorHere(object s, MouseButtonEventArgs e)
-        {
-            Point currentPosition = e.GetPosition(fieldCanvas);
-            tractor.SetValue(Canvas.LeftProperty, currentPosition.X);
-            tractor.SetValue(Canvas.TopProperty, currentPosition.Y);            
-
-            /*
+        {            
             var el = s as UIElement;
             if (el == null)
 	        {
@@ -92,9 +84,7 @@ namespace InteligentnyTraktor.Test
             int r = Grid.GetRow(el);
             int c = Grid.GetColumn(el);
 
-            Grid.SetRow(tractor, r);
-            Grid.SetColumn(tractor, c);
-             */ 
+            stateManager.MoveTractorTo(r, c);            
         }
 
         private void InitializeFieldGrid(int size)
@@ -167,6 +157,11 @@ namespace InteligentnyTraktor.Test
                 textBoxEnterRow.Text = "";
                 textBoxEnterColumn.Text = "";
             }           
+        }
+
+        private void buttonStop_Click(object sender, RoutedEventArgs e)
+        {
+            stateManager.StopTractor();
         }
     }
 }
