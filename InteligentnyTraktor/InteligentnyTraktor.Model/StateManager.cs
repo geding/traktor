@@ -63,9 +63,9 @@ namespace InteligentnyTraktor.Model
             get { return engine.Tractor.Position; }
         }
 
-        public System.Windows.Vector TractorVelocity
+        public System.Windows.Vector TractorDirection
         {
-            get { throw new NotImplementedException(); }
+            get { return engine.Tractor.Direction; }
         }
 
         public event FieldChangedEventHandler FieldChanged;

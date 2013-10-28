@@ -57,7 +57,7 @@ namespace InteligentnyTraktor.Model
         /// Current tractor velocity. You can use that to set angle of tractor's move 
         /// or different sprites depending on it's speed etc
         /// </summary>
-        Vector TractorVelocity { get; }
+        Vector TractorDirection { get; }
 
         /// <summary>
         /// Raised when an action occurs inside of the single piece of field, 

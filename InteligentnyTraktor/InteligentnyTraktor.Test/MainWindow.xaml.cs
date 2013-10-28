@@ -48,6 +48,14 @@ namespace InteligentnyTraktor.Test
             {
                 tractor.SetValue(Canvas.LeftProperty, stateManager.TractorPosition.X - tractor.Width / 2);
                 tractor.SetValue(Canvas.TopProperty, stateManager.TractorPosition.Y - tractor.Height / 2);
+
+                var angle = Math.Atan2(stateManager.TractorDirection.Y, stateManager.TractorDirection.X) * (180.0 / Math.PI);
+                RotateTransform rotate = new RotateTransform(
+                           angle,
+                           tractor.Width / 2,
+                           tractor.Height / 2
+                           );
+                tractor.RenderTransform = rotate;
             }));
             
         }

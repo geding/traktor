@@ -21,6 +21,7 @@ namespace InteligentnyTraktor.Model
         public double VMax { get; set; }
         public Point Position { get; set; }
         public Vector Velocity { get; set; }
+        public Vector Direction { get; set; }
         public double Acceleration { get; set; }
 
         public void Move(double ds)

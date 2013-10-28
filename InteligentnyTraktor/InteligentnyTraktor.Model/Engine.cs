@@ -90,8 +90,10 @@ namespace InteligentnyTraktor.Model
 
         private void TractorMoves(object sender, ElapsedEventArgs e)
         {
-
+            Tractor.Direction = Tractor.Velocity;
+            
 #if (locked)
+            #region locked
             lock (Tractor)
             {
                 if (Math.Abs(this.destinationX - Tractor.Position.X) > this.ds)
@@ -125,15 +127,17 @@ namespace InteligentnyTraktor.Model
                     OnTractorReached();
                 }
             }
-
+            #endregion
 #else
+
             if (Math.Abs(this.destinationX - Tractor.Position.X) > this.ds)
             {
                 if (Tractor.Velocity == new Vector(0, 0))
                 {
-                    Tractor.Velocity = new Vector(0.1, 0);
+                    Tractor.Velocity = this.currentHorizontalDirection == Direction.Left
+                                       ? new Vector(-2, 0)
+                                       : new Vector(2, 0);
                 }
-                //MoveTractor(currentHorizontalDirection);
                 Tractor.Move(ds);
                 if (Tractor.Velocity.LengthSquared < Tractor.VMax)
                 {
@@ -142,9 +146,11 @@ namespace InteligentnyTraktor.Model
             }
             else if (Math.Abs(this.destinationY - Tractor.Position.Y) > this.ds)
             {
-                if (Tractor.Velocity == new Vector(0, 2))
+                if (Math.Abs(Tractor.Velocity.X) == 2 || Tractor.Velocity.X == 0)
                 {
-                    Tractor.Velocity = new Vector(0, 0.1);
+                    Tractor.Velocity = this.currentVerticalDirection == Direction.Up
+                                      ? new Vector(0, -2)
+                                      : new Vector(0, 2);
                 }
                 Tractor.Move(ds);
             }
