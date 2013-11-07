@@ -38,6 +38,10 @@ namespace InteligentnyTraktor.Test
             InitializeFieldEvents();
 
             stateManager = new StateManager(fieldCanvas.Width, fieldCanvas.Height, size, size);
+            stateManager.TractorIsBusy += (s, e) => labelCommunication.Content = "traktor jest zajęty";
+
+            labelCommunication.Content = fieldItems.Length + " " + fieldItems[0].Length;
+
             timer.Start();
             timer.Elapsed += timer_Elapsed;
         }
@@ -82,7 +86,9 @@ namespace InteligentnyTraktor.Test
         }
 
         private void MoveTractorHere(object s, MouseButtonEventArgs e)
-        {            
+        {
+            labelCommunication.Content = "";
+
             var el = s as UIElement;
             if (el == null)
 	        {
@@ -146,6 +152,26 @@ namespace InteligentnyTraktor.Test
 
         private void buttonMoveTractor_Click(object sender, RoutedEventArgs e)
         {
+            int r;
+            int c;
+
+            bool firstParse = int.TryParse(textBoxEnterRow.Text, out r);
+            bool secondParse = int.TryParse(textBoxEnterColumn.Text, out c);
+            bool result = firstParse && secondParse;
+
+            textBoxEnterRow.Text = "";
+            textBoxEnterColumn.Text = "";
+
+            if (result)
+            {
+                if ((r > fieldItems.Length - 1) || (c > fieldItems[0].Length - 1))
+                {
+                    return;
+                }
+                stateManager.MoveTractorTo(r, c);
+            }
+
+            /*
             try
             {
                 int r = int.Parse(textBoxEnterRow.Text);
@@ -164,11 +190,13 @@ namespace InteligentnyTraktor.Test
             {
                 textBoxEnterRow.Text = "";
                 textBoxEnterColumn.Text = "";
-            }           
+            }
+             */ 
         }
 
         private void buttonStop_Click(object sender, RoutedEventArgs e)
         {
+            labelCommunication.Content = "";
             stateManager.StopTractor();
         }
     }

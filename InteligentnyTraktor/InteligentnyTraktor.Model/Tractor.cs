@@ -36,7 +36,20 @@ namespace InteligentnyTraktor.Model
 
         public void Accelerate()
         {
-            Velocity = Velocity * Acceleration;
+            if (Velocity.X == 0)
+            {
+                Velocity = new Vector(Velocity.X, Velocity.Y + Acceleration);
+            }
+            else if (Velocity.Y == 0)
+            {
+                Velocity = new Vector(Velocity.X + Acceleration, Velocity.Y);
+            }
+            else
+            {
+                var ratio = Velocity.X / Velocity.Y;
+                var y = Acceleration / Math.Sqrt((ratio + 1));
+                var x = Math.Sqrt(Acceleration * Acceleration - y * y);
+            }
         }
 
 #if(old)

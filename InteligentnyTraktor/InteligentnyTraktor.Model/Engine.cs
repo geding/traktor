@@ -53,7 +53,7 @@ namespace InteligentnyTraktor.Model
                 Position = new Point(fieldItemHeight / 2, fieldItemWidth / 2),
                 Velocity = new Vector(0, 0),
                 VMax = 2,
-                Acceleration = 1.3,
+                Acceleration = 0.02,
             };           
         }
 
@@ -139,10 +139,6 @@ namespace InteligentnyTraktor.Model
                                        : new Vector(2, 0);
                 }
                 Tractor.Move(ds);
-                if (Tractor.Velocity.LengthSquared < Tractor.VMax)
-                {
-                    Tractor.Accelerate();
-                }
             }
             else if (Math.Abs(this.destinationY - Tractor.Position.Y) > this.ds)
             {

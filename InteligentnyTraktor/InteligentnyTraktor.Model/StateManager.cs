@@ -16,9 +16,13 @@ namespace InteligentnyTraktor.Model
         public event EventHandler TractorIsBusy;
         //Queue<TractorTask> tasks;
 
+        private double timerInterval = 1000;
+
         public StateManager(double fieldWidth, double fieldHeight, int rows, int columns)
         {
             engine = new Engine(fieldWidth, fieldHeight, rows, columns);
+            FieldTimer = new Timer(timerInterval);
+            FieldTimer.Start();
         }
 
         static void Main(string[] args)
