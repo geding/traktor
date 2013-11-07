@@ -1,7 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteligentnyTraktor", "InteligentnyTraktor\InteligentnyTraktor.csproj", "{D88284F8-B488-4637-896B-0C8DE3DA6511}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteligentnyTraktor.Test", "InteligentnyTraktor.Test\InteligentnyTraktor.Test.csproj", "{D88284F8-B488-4637-896B-0C8DE3DA6511}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteligentnyTraktor.Model", "InteligentnyTraktor.Model\InteligentnyTraktor.Model.csproj", "{EBAA4178-8791-40F8-975E-7D8838633A5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteligentnyTraktor.LanguageProcessing", "InteligentnyTraktor.LanguageProcessing\InteligentnyTraktor.LanguageProcessing.csproj", "{025E37F1-1A6C-4B90-9C2C-8AE6C4DEE22B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +17,14 @@ Global
 		{D88284F8-B488-4637-896B-0C8DE3DA6511}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D88284F8-B488-4637-896B-0C8DE3DA6511}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D88284F8-B488-4637-896B-0C8DE3DA6511}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBAA4178-8791-40F8-975E-7D8838633A5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBAA4178-8791-40F8-975E-7D8838633A5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBAA4178-8791-40F8-975E-7D8838633A5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBAA4178-8791-40F8-975E-7D8838633A5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{025E37F1-1A6C-4B90-9C2C-8AE6C4DEE22B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{025E37F1-1A6C-4B90-9C2C-8AE6C4DEE22B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{025E37F1-1A6C-4B90-9C2C-8AE6C4DEE22B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{025E37F1-1A6C-4B90-9C2C-8AE6C4DEE22B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
