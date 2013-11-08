@@ -33,17 +33,30 @@ namespace InteligentnyTraktor.Test
             int size = 4;
 
             InitializeComponent();
-            InitializeFieldGrid(size);
-            InitializeTractor();
-            InitializeFieldEvents();
 
             stateManager = new StateManager(fieldCanvas.Width, fieldCanvas.Height, size, size);
             stateManager.TractorIsBusy += (s, e) => labelCommunication.Content = "traktor jest zajęty";
+
+            InitializeFieldGrid(size);
+            InitializeTractor();
+            InitializeFieldEvents();           
 
             labelCommunication.Content = fieldItems.Length + " " + fieldItems[0].Length;
 
             timer.Start();
             timer.Elapsed += timer_Elapsed;
+
+            
+            stateManager.FieldChanged += (s, e) => 
+                {
+                    this.Dispatcher.Invoke((Action)(() =>
+                    {
+                        (fieldItems[e.row][e.column] as Label).Content =
+                            e.row.ToString() + " " + e.column.ToString() + "\n"
+                            + ((StateManager)stateManager).fieldItems[e.row][e.column].Type
+                            + "\n" + ((StateManager)stateManager).fieldItems[e.row][e.column].State;
+                    }));
+                };              
         }
 
         void timer_Elapsed(object sender, ElapsedEventArgs e)
@@ -142,7 +155,9 @@ namespace InteligentnyTraktor.Test
                 var ch = grid.Children;
                 ch.Add(new Label()
                     {
-                        Content = r.ToString() + " " + c.ToString(),
+                        Content = r.ToString() + " " + c.ToString() + "\n"
+                        + ((StateManager)stateManager).fieldItems[r][c].Type
+                        + "\n" + ((StateManager)stateManager).fieldItems[r][c].State,
                     });
                 Grid.SetRow(ch[i], r);
                 Grid.SetColumn(ch[i], c);
@@ -198,6 +213,28 @@ namespace InteligentnyTraktor.Test
         {
             labelCommunication.Content = "";
             stateManager.StopTractor();
+        }
+
+        private void buttonSow_Click(object sender, RoutedEventArgs e)
+        {
+            int r;
+            int c;
+
+            bool firstParse = int.TryParse(textBoxEnterRow.Text, out r);
+            bool secondParse = int.TryParse(textBoxEnterColumn.Text, out c);
+            bool result = firstParse && secondParse;
+
+            textBoxEnterRow.Text = "";
+            textBoxEnterColumn.Text = "";
+
+            if (result)
+            {
+                if ((r > fieldItems.Length - 1) || (c > fieldItems[0].Length - 1))
+                {
+                    return;
+                }
+                stateManager.SowAt(r, c);
+            }
         }
     }
 }

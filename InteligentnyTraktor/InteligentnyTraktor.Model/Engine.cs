@@ -215,6 +215,11 @@ namespace InteligentnyTraktor.Model
             {
                 invoker(this, new EventArgs());
             }
-        }              
+        }
+
+        internal void ResetTractorReachedEvent()
+        {
+            TractorReachedDestination = null;
+        }
     }
 }
