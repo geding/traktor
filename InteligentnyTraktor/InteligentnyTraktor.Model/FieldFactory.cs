@@ -6,20 +6,23 @@ using System.Threading.Tasks;
 
 namespace InteligentnyTraktor.Model
 {
-    static class FieldFactory
+    public partial class Field
     {
-        static public Field CreateField(FieldItemType type)
+        static public class FieldFactory
         {
-            switch (type)
+            static public Field Create(FieldItemType type)
             {
-                case FieldItemType.Wheat:
-                    return new Field(type, 200);
-                case FieldItemType.Rye:
-                    return new Field(type, 300);
-                case FieldItemType.Corn:
-                    return new Field(type, 400);
-                default:
-                    return null;
+                switch (type)
+                {
+                    case FieldItemType.Wheat:
+                        return new Field(type, 200);
+                    case FieldItemType.Rye:
+                        return new Field(type, 300);
+                    case FieldItemType.Corn:
+                        return new Field(type, 400);
+                    default:
+                        return null;
+                }
             }
         }
     }

@@ -23,10 +23,13 @@ namespace InteligentnyTraktor.Test
     public partial class MainWindow : Window
     {
         IStateManager stateManager;
-        Timer timer = new Timer(100);
+        Timer timer = new Timer(20);
 
         UIElement[][] fieldItems;
         Rectangle tractor;
+
+        double vx = 0;
+        double vy = 0;
 
         public MainWindow()
         {
@@ -45,7 +48,7 @@ namespace InteligentnyTraktor.Test
 
             timer.Start();
             timer.Elapsed += timer_Elapsed;
-
+            timer.Elapsed += UpdateTractorProperties;
             
             stateManager.FieldChanged += (s, e) => 
                 {
@@ -57,6 +60,25 @@ namespace InteligentnyTraktor.Test
                             + "\n" + ((StateManager)stateManager).fieldItems[e.row][e.column].State;
                     }));
                 };              
+        }
+
+        private void UpdateTractorProperties(object sender, ElapsedEventArgs e)
+        {
+            this.Dispatcher.Invoke((Action)(() =>
+            {
+                var t = (this.stateManager as StateManager).Tractor;
+                labelDirection.Content = "direct. " + t.Direction.X.ToString("0.##") + " " + t.Direction.Y.ToString("0.##");
+                labelPosition.Content = "pos. " + t.Position.X.ToString("0.##") + " " + t.Position.Y.ToString("0.##");
+
+                if (t.Velocity.X != 0 || t.Velocity.Y != 0)
+                {
+                    vx = t.Velocity.X;
+                    vy = t.Velocity.Y;
+                }
+
+                labelVelocity.Content = "vel. " + vx.ToString("0.##") + " " + vy.ToString("0.##");
+                //labelVelocity.Content =  "vel. " + t.Velocity.X.ToString("0.##") + " " + t.Velocity.Y.ToString("0.##");
+            }));
         }
 
         void timer_Elapsed(object sender, ElapsedEventArgs e)

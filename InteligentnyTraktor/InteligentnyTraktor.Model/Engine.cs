@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,9 +17,10 @@ namespace InteligentnyTraktor.Model
     class Engine
     {
         int timerInterval = 20;
+        private object _lock = new object();
 
-        double fieldWidth;
-        double fieldHeight;
+        double width;
+        double height;
 
         double fieldItemWidth;
         double fieldItemHeight;
@@ -38,23 +40,75 @@ namespace InteligentnyTraktor.Model
 
         Timer timer;
 
-        public Engine(double fieldWidth, double fieldHeight, int rows, int columns)
+        public Engine(double width, double height)//, int rows, int columns)
         {
-            this.fieldWidth = fieldWidth;
-            this.fieldHeight = fieldHeight;
-            this.fieldItemWidth = fieldWidth / rows;
-            this.fieldItemHeight = fieldHeight / columns;
+            this.width = width;
+            this.height = height;
+            //this.fieldWidth = fieldWidth;
+            //this.fieldHeight = fieldHeight;
+            //this.fieldItemWidth = fieldWidth / rows;
+            //this.fieldItemHeight = fieldHeight / columns;
 
             timer = new Timer(timerInterval);
+            timer.AutoReset = true;
             timer.Start();
 
             Tractor = new Tractor()
             {
-                Position = new Point(fieldItemHeight / 2, fieldItemWidth / 2),
+                //Position = new Point(fieldItemHeight / 2, fieldItemWidth / 2),
+                Position = new Point(50, 50),
                 Velocity = new Vector(0, 0),
                 VMax = 2,
                 Acceleration = 0.02,
             };           
+        }
+
+
+        //TODO:
+        //ma sie poruszac z odpowiednia predkoscia do konkretnego miejsca
+        //skalowanie wektora to x = (X / sqrt(X^2 + Y^2)) * długość wektora
+        public void StartMovingTractor(double destX, double destY, double maxVelocity)
+        {
+            this.destinationX = destX;
+            this.destinationY = destY;
+
+            Tractor.Direction = new Vector(
+                this.destinationX - Tractor.Position.X,
+                this.destinationY - Tractor.Position.Y
+                );
+
+            Tractor.Velocity = new Vector(
+                (Tractor.Direction.X / Tractor.Direction.Length) * Tractor.VMax,
+                (Tractor.Direction.Y / Tractor.Direction.Length) * Tractor.VMax
+                );
+
+            timer.Elapsed += TractorMoves1;
+        }
+
+        private void TractorMoves1(object sender, ElapsedEventArgs e)
+        {
+            lock (_lock)
+            {
+                var time = e.SignalTime;
+                var ms = e.SignalTime.Millisecond;
+                var t = e.SignalTime.ToOADate();
+                //do debugowania napisać tutaj kod wpisywania logów (kolejnych czasów i nazwy wątku) do pliku
+                using (StreamWriter sw = new StreamWriter(@"C:\Users\ja\Documents\GitHub\traktor\InteligentnyTraktor\InteligentnyTraktor.Test\log.txt", true))
+                {
+                    sw.WriteLine("czas: {0} {1} + wątek {2} {3}", time, ms, Task.CurrentId, TaskScheduler.Current.Id);
+                }
+
+                if (Math.Abs(this.destinationX - Tractor.Position.X) > this.ds
+                || Math.Abs(this.destinationY - Tractor.Position.Y) > this.ds)
+                {
+                    Tractor.Move(ds);
+                }
+                else
+                {
+                    StopTractor();
+                    OnTractorReached();
+                }
+            }            
         }
 
         public void StartMovingTractorTo(int row, int column)
@@ -75,9 +129,11 @@ namespace InteligentnyTraktor.Model
 
         public void StopTractor()
         {
+            //ResetTractorReachedEvent();
             Tractor.Velocity = new Vector(0, 0);
 
-            timer.Elapsed -= TractorMoves;
+            //timer.Elapsed -= TractorMoves;
+            timer.Elapsed -= TractorMoves1;
             this.currentHorizontalDirection = Direction.None;
             this.currentVerticalDirection = Direction.None;
 

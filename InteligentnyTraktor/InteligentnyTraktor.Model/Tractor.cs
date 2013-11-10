@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace InteligentnyTraktor.Model
 {
-    class Tractor
+    public class Tractor
     {
 
 #if(old)
@@ -31,7 +31,12 @@ namespace InteligentnyTraktor.Model
             var dy = (Velocity.Y * ds) / Velocity.LengthSquared;
             Position = new Point(Position.X + dx, Position.Y + dy);
              */
-            Position = new Point(Position.X + Velocity.X, Position.Y + Velocity.Y);
+            lock (this)
+            {
+                Position = new Point(Position.X + Velocity.X, Position.Y + Velocity.Y);
+                //Position = new Point(Position.X + Velocity.X * ds, Position.Y + Velocity.Y * ds);
+            }
+            //Position = new Point(Position.X + Velocity.X, Position.Y + Velocity.Y);
         }
 
         public void Accelerate()

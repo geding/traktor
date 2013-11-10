@@ -9,20 +9,21 @@ namespace InteligentnyTraktor.Model
 {
     public class StateManager : IStateManager
     {
-        Engine engine;
+        //Engine engine;
+        TractorManager tractorManager;
         bool isTractorBusy = false;
         public Timer FieldTimer { get; private set; }
         public Field[][] fieldItems;
 
         public event EventHandler TractorIsBusy;
         public event FieldChangedEventHandler FieldChanged;
-        //Queue<TractorTask> tasks;
 
-        private double timerInterval = 1000;
+        private double timerInterval = 10;
 
         public StateManager(double fieldWidth, double fieldHeight, int rows, int columns)
         {
-            engine = new Engine(fieldWidth, fieldHeight, rows, columns);
+            //engine = new Engine(fieldWidth, fieldHeight, rows, columns);
+            tractorManager = new TractorManager(fieldWidth, fieldHeight, rows, columns);
             FieldTimer = new Timer(timerInterval);
             FieldTimer.Start();
             fieldItems = new Field[rows][];
@@ -42,13 +43,13 @@ namespace InteligentnyTraktor.Model
                 {
                     if (i % 3 == 0 && i % 2 == 0)
                     {
-                        fieldItems[i][j] = FieldFactory.CreateField(FieldItemType.Wheat);
+                        fieldItems[i][j] = Field.FieldFactory.Create(FieldItemType.Wheat);
                     }
                     else
                     {
                         fieldItems[i][j] = i % 2 == 0 && j % 3 == 0
-                                           ? FieldFactory.CreateField(FieldItemType.Rye)
-                                           : FieldFactory.CreateField(FieldItemType.Corn);
+                                           ? Field.FieldFactory.Create(FieldItemType.Rye)
+                                           : Field.FieldFactory.Create(FieldItemType.Corn);
                     }
                 }
             }
@@ -91,6 +92,8 @@ namespace InteligentnyTraktor.Model
 
         public void MoveTractorTo(int row, int column)
         {
+            tractorManager.MoveTractorTo(row, column);
+            /*
             engine.ResetTractorReachedEvent();
             if (isTractorBusy == false)
             {
@@ -99,44 +102,58 @@ namespace InteligentnyTraktor.Model
                 engine.StartMovingTractorTo(row, column);
             }
             else OnTractorIsBusy();
+             */ 
         }       
 
         public void HarvestAt(int row, int column)
         {
-            fieldItems[row][column].Harvest();
+            //fieldItems[row][column].Harvest();
+            tractorManager.Harvest(fieldItems[row][column], row, column);
         }
 
         public void FertilizeAt(int row, int column)
         {
-            fieldItems[row][column].Fertilize();
+            //fieldItems[row][column].Fertilize();
+            tractorManager.Fertilize(fieldItems[row][column], row, column);
         }
 
         public void IrrigateAt(int row, int column)
         {
-            fieldItems[row][column].Irrigate();
+            //fieldItems[row][column].Irrigate();
+            tractorManager.Irrigate(fieldItems[row][column], row, column);
         }
 
         public void SowAt(int row, int column)
         {
-            MoveTractorTo(row, column);
-            engine.TractorReachedDestination += (s, e) => fieldItems[row][column].Sow();
+            //MoveTractorTo(row, column);
+            //engine.TractorReachedDestination += (s, e) => fieldItems[row][column].Sow();
+            tractorManager.Sow(fieldItems[row][column], row, column);
         }
 
         public void StopTractor()
         {
+            tractorManager.StopTractor();
+            isTractorBusy = false;
+            /*
             engine.TractorStopped += (s, e) => isTractorBusy = false;
             engine.StopTractor();
+             */ 
         }
 
         public System.Windows.Point TractorPosition
         {
-            get { return engine.Tractor.Position; }
+            get { return tractorManager.Position; }
         }
 
         public System.Windows.Vector TractorDirection
         {
-            get { return engine.Tractor.Direction; }
-        }        
+            get { return tractorManager.Direction; }
+        }
+
+        public Tractor Tractor
+        {
+            get { return tractorManager.Tractor; }
+        }
 
         private void OnTractorIsBusy()
         {

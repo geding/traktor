@@ -7,7 +7,7 @@ using System.Timers;
 
 namespace InteligentnyTraktor.Model
 {
-    public class Field
+    public partial class Field
     {
         private int counter = 0;
         private int growTime = 2;
@@ -20,7 +20,7 @@ namespace InteligentnyTraktor.Model
         public delegate void FieldItemChanged(object s, FieldItemEventArgs ea);
         public event FieldItemChanged Changed;
 
-        internal Field(FieldItemType type, int growTime)
+        private Field(FieldItemType type, int growTime)
         {
             this.State = FieldItemState.Bare;
             this.Type = type;
