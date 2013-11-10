@@ -9,7 +9,7 @@ namespace InteligentnyTraktor.Model
     class TractorManager
     {
         Engine world;
-        LinkedList<IPerformable> tasks;
+        Queue<IPerformable> tasks;
         public bool isPerforming = false;
 
         double fieldWidth;
@@ -18,8 +18,8 @@ namespace InteligentnyTraktor.Model
         double fieldItemWidth;
         double fieldItemHeight;
 
-        double lastDestX;
-        double lastDestY;
+        double lastMoveDestX;
+        double lastMoveDestY;
 
         public System.Windows.Point Position
         {
@@ -45,7 +45,7 @@ namespace InteligentnyTraktor.Model
 
             world = new Engine(fieldWidth, fieldHeight);
 
-            tasks = new LinkedList<IPerformable>();
+            tasks = new Queue<IPerformable>();
         }
 
         public void StopTractor()
@@ -82,32 +82,17 @@ namespace InteligentnyTraktor.Model
             {
                 if (tasks.Count == 0)
                 {
-                    if (destX != lastDestX)
+                    if (destX != lastMoveDestX)
                     {
-                        AddNewMove(destX, lastDestY);
+                        AddNewMove(destX, lastMoveDestY);
                     }                   
                     AddNewMove(destX, destY);
                 }
                 else
                 {
-                    TractorMove lastMove = null;
-                    LinkedListNode<IPerformable> lastAdded = tasks.Last;
-
-
-                    while (lastAdded != null && lastMove == null)
+                    if (destX != this.lastMoveDestX)
                     {
-                        lastMove = lastAdded.Value as TractorMove;
-                        lastAdded = lastAdded.Next;
-                    }
-
-                    if (lastMove == null)
-                    {
-                        throw new Exception();
-                    }
-
-                    if (destX != lastMove.DestX)
-                    {
-                        AddNewMove(destX, lastMove.DestY);
+                        AddNewMove(destX, this.lastMoveDestY);
                     }
                     //AddNewMove(destX, lastMove.DestY);
                     AddNewMove(destX, destY);
@@ -145,44 +130,22 @@ namespace InteligentnyTraktor.Model
         private void AddNewTask(Action action)
         {
             var task = new TractorTask(action, TopTaskPerformed);
-            //tasks.Enqueue(task);
-            tasks.AddLast(task);
-
-            /*
-            if (tasks.Count == 1)
-            {
-                PerformTopTask();
-            }
-             */ 
+            tasks.Enqueue(task); 
         }
 
         private void AddNewMove(double destX, double destY)
         {
-            var move = new TractorMove(world, destX, destY, world.Tractor.VMax, TopTaskPerformed);
-            //tasks.Enqueue(move);
-            tasks.AddLast(move);
+            this.lastMoveDestX = destX;
+            this.lastMoveDestY = destY;
 
-            //if (tasks.Count == 1)
-            //{
-            //    PerformTopTask();
-            //}
+            var move = new TractorMove(world, destX, destY, world.Tractor.VMax, TopTaskPerformed);
+            tasks.Enqueue(move);
         }
 
         private void PerformTopTask()
         {
             isPerforming = true;
-            //tasks.Dequeue().Perform();
-            var topTask = tasks.First.Value;
-            tasks.RemoveFirst();
-
-            TractorMove t;
-            if ((t = topTask as TractorMove) != null)
-            {
-                lastDestX = t.DestX;
-                lastDestY = t.DestY;
-            }
-
-            topTask.Perform();
+            tasks.Dequeue().Perform();
         }
 
         private void TopTaskPerformed(object sender, EventArgs e)
