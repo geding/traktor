@@ -9,14 +9,8 @@ namespace InteligentnyTraktor.Model
 {
     public class Tractor
     {
-
-#if(old)
-        //string Imie = "Traktor Tymoteusz"; //zeby bylo zabawnie :P
-        //int Przebieg = 0; //km
-        //int Waga = 2500; //kg
-        //int Pojemnosc = 3000; //l
-        //int Paliwo = 200; //l
-#endif
+        //możliwe rzeczy na przyszłość
+        //int Fuel;
 
         public double VMax { get; set; }
         public Point Position { get; set; }
@@ -26,17 +20,7 @@ namespace InteligentnyTraktor.Model
 
         public void Move(double ds)
         {
-            /*
-            var dx = (Velocity.X * ds) / Velocity.LengthSquared;
-            var dy = (Velocity.Y * ds) / Velocity.LengthSquared;
-            Position = new Point(Position.X + dx, Position.Y + dy);
-             */
-            lock (this)
-            {
-                Position = new Point(Position.X + Velocity.X, Position.Y + Velocity.Y);
-                //Position = new Point(Position.X + Velocity.X * ds, Position.Y + Velocity.Y * ds);
-            }
-            //Position = new Point(Position.X + Velocity.X, Position.Y + Velocity.Y);
+            Position = new Point(Position.X + Velocity.X, Position.Y + Velocity.Y);
         }
 
         public void Accelerate()

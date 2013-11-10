@@ -33,7 +33,6 @@ namespace InteligentnyTraktor.Model
 
         private void OnDone(object sender, EventArgs e)
         {
-            //world.ResetTractorReachedEvent();
             world.TractorReachedDestination -= OnDone;
             Done(this, EventArgs.Empty);
         }       

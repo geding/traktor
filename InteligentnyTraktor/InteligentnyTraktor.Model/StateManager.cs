@@ -9,7 +9,6 @@ namespace InteligentnyTraktor.Model
 {
     public class StateManager : IStateManager
     {
-        //Engine engine;
         TractorManager tractorManager;
         bool isTractorBusy = false;
         public Timer FieldTimer { get; private set; }
@@ -22,7 +21,6 @@ namespace InteligentnyTraktor.Model
 
         public StateManager(double fieldWidth, double fieldHeight, int rows, int columns)
         {
-            //engine = new Engine(fieldWidth, fieldHeight, rows, columns);
             tractorManager = new TractorManager(fieldWidth, fieldHeight, rows, columns);
             FieldTimer = new Timer(timerInterval);
             FieldTimer.Start();
@@ -107,26 +105,21 @@ namespace InteligentnyTraktor.Model
 
         public void HarvestAt(int row, int column)
         {
-            //fieldItems[row][column].Harvest();
             tractorManager.Harvest(fieldItems[row][column], row, column);
         }
 
         public void FertilizeAt(int row, int column)
         {
-            //fieldItems[row][column].Fertilize();
             tractorManager.Fertilize(fieldItems[row][column], row, column);
         }
 
         public void IrrigateAt(int row, int column)
         {
-            //fieldItems[row][column].Irrigate();
             tractorManager.Irrigate(fieldItems[row][column], row, column);
         }
 
         public void SowAt(int row, int column)
         {
-            //MoveTractorTo(row, column);
-            //engine.TractorReachedDestination += (s, e) => fieldItems[row][column].Sow();
             tractorManager.Sow(fieldItems[row][column], row, column);
         }
 

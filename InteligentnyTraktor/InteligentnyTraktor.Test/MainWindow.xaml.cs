@@ -207,28 +207,6 @@ namespace InteligentnyTraktor.Test
                 }
                 stateManager.MoveTractorTo(r, c);
             }
-
-            /*
-            try
-            {
-                int r = int.Parse(textBoxEnterRow.Text);
-                int c = int.Parse(textBoxEnterColumn.Text);
-
-                if (r > fieldItems.Length || c > fieldItems[0].Length )
-                {
-                    return;
-                }
-
-                stateManager.MoveTractorTo(r, c);
-                //MoveTractorHere(fieldItems[r][c], null);
-            }
-            catch (FormatException) { }
-            finally 
-            {
-                textBoxEnterRow.Text = "";
-                textBoxEnterColumn.Text = "";
-            }
-             */ 
         }
 
         private void buttonStop_Click(object sender, RoutedEventArgs e)

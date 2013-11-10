@@ -18,7 +18,7 @@ namespace InteligentnyTraktor.Model
         double fieldItemWidth;
         double fieldItemHeight;
 
-        double lastDestX = 0;
+        double lastDestX;
         double lastDestY;
 
         public System.Windows.Point Position
@@ -44,7 +44,6 @@ namespace InteligentnyTraktor.Model
             this.fieldItemHeight = fieldHeight / columns;
 
             world = new Engine(fieldWidth, fieldHeight);
-            //world.TractorReachedDestination += TopTaskPerformed;
 
             tasks = new LinkedList<IPerformable>();
         }
@@ -101,23 +100,6 @@ namespace InteligentnyTraktor.Model
                         lastAdded = lastAdded.Next;
                     }
 
-
-                    //do
-                    //{
-                    //    lastMove = lastAdded.Value as TractorMove;
-                    //    lastAdded = lastAdded.Next;
-                    //    /*
-                    //    if ((move = lastAdded.Value as TractorMove) == null)
-                    //    {
-                    //        lastAdded = lastAdded.Next;
-                    //    }
-                    //    else
-                    //    {
-                    //        break;
-                    //    }
-                    //     */ 
-                    //} while (lastAdded != tasks.First && lastAdded != null && lastMove == null);
-
                     if (lastMove == null)
                     {
                         throw new Exception();
@@ -138,12 +120,6 @@ namespace InteligentnyTraktor.Model
         {
             MoveTractorTo(row, column);
             AddNewTask((Action)(fieldItem.Harvest));
-            //TODO:
-            //po ostatnim tasku ma byc fieldItems[row][column].Harvest();
-            //czy za pomocą tasków tractora (wtedy delegat Action) czy inaczej. np dodatkowe zdarzenie?
-            //jak dodatkowe zdarzenie, to taski traktora mozna zamienic na listę Pointów
-            //jako kolejnych punktow, do ktorych sie porusza lub czegos w stylu MovementInfo
-            //gdzie bylyby Point, maxVelocity, Acceleration itd)
         }
 
         public void Fertilize(Field fieldItem, int row, int column)

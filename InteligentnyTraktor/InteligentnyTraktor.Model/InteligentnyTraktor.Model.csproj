@@ -54,12 +54,9 @@
     <Compile Include="IStateManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tractor.cs" />
-    <Compile Include="TractorDisplacement.cs" />
     <Compile Include="TractorManager.cs" />
     <Compile Include="TractorMove.cs" />
-    <Compile Include="TractorMover.cs" />
     <Compile Include="TractorTask.cs" />
-    <Compile Include="TractorTaskFactory.cs" />
     <Compile Include="TractorTaskType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
