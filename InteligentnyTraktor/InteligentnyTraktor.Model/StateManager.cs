@@ -41,13 +41,13 @@ namespace InteligentnyTraktor.Model
                 {
                     if (i % 3 == 0 && i % 2 == 0)
                     {
-                        fieldItems[i][j] = Field.FieldFactory.Create(FieldItemType.Wheat);
+                        fieldItems[i][j] = Field.Create(FieldItemType.Wheat);
                     }
                     else
                     {
                         fieldItems[i][j] = i % 2 == 0 && j % 3 == 0
-                                           ? Field.FieldFactory.Create(FieldItemType.Rye)
-                                           : Field.FieldFactory.Create(FieldItemType.Corn);
+                                           ? Field.Create(FieldItemType.Rye)
+                                           : Field.Create(FieldItemType.Corn);
                     }
                 }
             }

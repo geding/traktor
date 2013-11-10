@@ -46,7 +46,6 @@
     <Compile Include="Engine.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="FieldChangedEventHandler.cs" />
-    <Compile Include="FieldFactory.cs" />
     <Compile Include="FieldItemState.cs" />
     <Compile Include="FieldItemType.cs" />
     <Compile Include="IPerformable.cs" />
