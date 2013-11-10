@@ -18,7 +18,7 @@ namespace InteligentnyTraktor.Model
         public event EventHandler TractorIsBusy;
         public event FieldChangedEventHandler FieldChanged;
 
-        private double timerInterval = 10;
+        private double timerInterval = 1000;
 
         public StateManager(double fieldWidth, double fieldHeight, int rows, int columns)
         {

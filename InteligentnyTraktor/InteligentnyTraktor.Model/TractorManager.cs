@@ -83,7 +83,10 @@ namespace InteligentnyTraktor.Model
             {
                 if (tasks.Count == 0)
                 {
-                    AddNewMove(destX, lastDestY);
+                    if (destX != lastDestX)
+                    {
+                        AddNewMove(destX, lastDestY);
+                    }                   
                     AddNewMove(destX, destY);
                 }
                 else
@@ -120,7 +123,11 @@ namespace InteligentnyTraktor.Model
                         throw new Exception();
                     }
 
-                    AddNewMove(destX, lastMove.DestY);
+                    if (destX != lastMove.DestX)
+                    {
+                        AddNewMove(destX, lastMove.DestY);
+                    }
+                    //AddNewMove(destX, lastMove.DestY);
                     AddNewMove(destX, destY);
                 }
                 
@@ -165,10 +172,12 @@ namespace InteligentnyTraktor.Model
             //tasks.Enqueue(task);
             tasks.AddLast(task);
 
+            /*
             if (tasks.Count == 1)
             {
                 PerformTopTask();
             }
+             */ 
         }
 
         private void AddNewMove(double destX, double destY)

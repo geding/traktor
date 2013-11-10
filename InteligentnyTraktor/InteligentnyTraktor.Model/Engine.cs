@@ -78,8 +78,8 @@ namespace InteligentnyTraktor.Model
                 );
 
             Tractor.Velocity = new Vector(
-                (Tractor.Direction.X / Tractor.Direction.Length) * Tractor.VMax,
-                (Tractor.Direction.Y / Tractor.Direction.Length) * Tractor.VMax
+                (Tractor.Direction.X == 0 ? 0 : (Tractor.Direction.X / Tractor.Direction.Length) * Tractor.VMax),
+                (Tractor.Direction.Y == 0 ? 0 : (Tractor.Direction.Y / Tractor.Direction.Length) * Tractor.VMax)
                 );
 
             timer.Elapsed += TractorMoves1;
@@ -98,8 +98,8 @@ namespace InteligentnyTraktor.Model
                     sw.WriteLine("czas: {0} {1} + wątek {2} {3}", time, ms, Task.CurrentId, TaskScheduler.Current.Id);
                 }
 
-                if (Math.Abs(this.destinationX - Tractor.Position.X) > this.ds
-                || Math.Abs(this.destinationY - Tractor.Position.Y) > this.ds)
+                if (Math.Abs(this.destinationX - Tractor.Position.X) > this.ds / 2
+                || Math.Abs(this.destinationY - Tractor.Position.Y) > this.ds / 2)
                 {
                     Tractor.Move(ds);
                 }
