@@ -236,5 +236,49 @@ namespace InteligentnyTraktor.Test
                 stateManager.SowAt(r, c);
             }
         }
+
+        private void buttonFertilize_Click(object sender, RoutedEventArgs e)
+        {
+            int r;
+            int c;
+
+            bool firstParse = int.TryParse(textBoxEnterRow.Text, out r);
+            bool secondParse = int.TryParse(textBoxEnterColumn.Text, out c);
+            bool result = firstParse && secondParse;
+
+            textBoxEnterRow.Text = "";
+            textBoxEnterColumn.Text = "";
+
+            if (result)
+            {
+                if ((r > fieldItems.Length - 1) || (c > fieldItems[0].Length - 1))
+                {
+                    return;
+                }
+                stateManager.FertilizeAt(r, c);
+            }
+        }
+
+        private void buttonHarvest_Click(object sender, RoutedEventArgs e)
+        {
+            int r;
+            int c;
+
+            bool firstParse = int.TryParse(textBoxEnterRow.Text, out r);
+            bool secondParse = int.TryParse(textBoxEnterColumn.Text, out c);
+            bool result = firstParse && secondParse;
+
+            textBoxEnterRow.Text = "";
+            textBoxEnterColumn.Text = "";
+
+            if (result)
+            {
+                if ((r > fieldItems.Length - 1) || (c > fieldItems[0].Length - 1))
+                {
+                    return;
+                }
+                stateManager.HarvestAt(r, c);
+            }
+        }
     }
 }

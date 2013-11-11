@@ -42,7 +42,7 @@ namespace InteligentnyTraktor.Model
 
             Tractor = new Tractor()
             {
-                Position = new Point(50, 50),
+                Position = new Point(75, 75),
                 Velocity = new Vector(0, 0),
                 VMax = 2,
                 Acceleration = 0.02,

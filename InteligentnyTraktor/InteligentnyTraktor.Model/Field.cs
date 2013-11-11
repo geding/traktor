@@ -9,10 +9,14 @@ namespace InteligentnyTraktor.Model
 {
     public partial class Field
     {
-        private int counter = 0;
-        private int growTime = 2;
+        private double counter = 0;
+        private double growTime = 2;
+        private double fertilityRate = 1;
         private bool isIrrigated = false;
         private bool isSowed = false;
+
+        private object _lock = new object();
+        Dictionary<FieldItemState, Action> onUpdateActions;
 
         public FieldItemState State { get; private set; }
         public FieldItemType Type { get; private set; }
@@ -25,6 +29,19 @@ namespace InteligentnyTraktor.Model
             this.State = FieldItemState.Bare;
             this.Type = type;
             this.growTime = growTime;
+
+            onUpdateActions = new Dictionary<FieldItemState, Action>()
+            {
+                { FieldItemState.Bare, (Action)None },
+                { FieldItemState.Plowed, (Action)None },
+                { FieldItemState.Sowed, (Action)Grow },
+                { FieldItemState.EarlyGrowing, (Action)Grow },
+                { FieldItemState.MidGrowing, (Action)Grow },
+                { FieldItemState.LateGrowing, (Action)Grow },
+                { FieldItemState.Mature, (Action)Grow },
+                { FieldItemState.Rotten, (Action)None },
+                { FieldItemState.Harvested, (Action)Rot }
+            };
         }
 
         static public Field Create(FieldItemType type)
@@ -32,11 +49,11 @@ namespace InteligentnyTraktor.Model
             switch (type)
             {
                 case FieldItemType.Wheat:
-                    return new Field(type, 200);
+                    return new Field(type, 4);
                 case FieldItemType.Rye:
-                    return new Field(type, 300);
+                    return new Field(type, 6);
                 case FieldItemType.Corn:
-                    return new Field(type, 400);
+                    return new Field(type, 8);
                 default:
                     return null;
             }
@@ -44,24 +61,34 @@ namespace InteligentnyTraktor.Model
 
         public void Update(object sender, ElapsedEventArgs e)
         {
-            counter++;
+            lock (_lock)
+            {
+                try
+                {
+                    onUpdateActions[this.State].Invoke();
+                }
+                catch (KeyNotFoundException)
+                {
+                    throw;
+                }
+            }
+           
+            
+            /*
             switch (this.State)
             {
-                case FieldItemState.Sowed: UpdateWhenSowed();
-                    break;
+                case FieldItemState.Sowed:
                 case FieldItemState.EarlyGrowing:
-                    break;
                 case FieldItemState.MidGrowing:
-                    break;
-                case FieldItemState.LateGrowing:
-                    break;
-                case FieldItemState.Mature:
+                case FieldItemState.LateGrowing: 
+                case FieldItemState.Mature: Grow();
                     break;
                 case FieldItemState.Harvested:
                     break;
                 default:
                     break;
-            }                         
+            }
+             */ 
         }
 
         public void OnChanged()
@@ -72,40 +99,90 @@ namespace InteligentnyTraktor.Model
 
         public void Sow()
         {
-            if (isSowed)
+            lock (_lock)
             {
-                return;
-            }
-            else
-            {
-                isSowed = true;
-                this.State = FieldItemState.Sowed;
-            }
+                if (isSowed)
+                {
+                    return;
+                }
+                else
+                {
+                    isSowed = true;
+                    this.State = FieldItemState.Sowed;
+                    OnChanged();
+                }
+            }            
         }
 
         public void Irrigate()
         {
-            throw new NotImplementedException();
+            lock (_lock)
+            {
+                if (isIrrigated)
+                {
+                    return;
+                }
+                else
+                {
+                    isIrrigated = true;
+                }
+            }
         }
 
         public void Fertilize()
         {
-            throw new NotImplementedException();
+            fertilityRate += 0.1;
         }
 
         public void Harvest()
         {
-            throw new NotImplementedException();
+            lock (_lock)
+            {
+                if (this.State != FieldItemState.Mature)
+                {
+                    return;
+                }
+                else
+                {
+                    fertilityRate = 0.5;
+                    isSowed = false;
+                    this.State = FieldItemState.Harvested;
+                    OnChanged();
+                }
+            }
         }
 
-        private void UpdateWhenSowed()
+        private void IncreaseCounter()
         {
-            counter++;
-            if (this.counter == this.growTime)
+            counter += 1 * fertilityRate; 
+        }
+
+        private void Grow()
+        {
+            lock (_lock)
             {
-                this.State = FieldItemState.EarlyGrowing;
+                IncreaseCounter();
+                if (this.counter >= this.growTime)
+                {
+                    this.State++;
+                    OnChanged();
+                }               
+            }            
+        }
+
+        public void None() {}
+
+        private void Rot()
+        {
+            lock (_lock)
+            {
+                IncreaseCounter();
+                if (this.counter >= this.growTime)
+                {
+                    this.State = FieldItemState.Rotten;
+                    OnChanged();
+                }
             }
-            OnChanged();
         }
     }
 }

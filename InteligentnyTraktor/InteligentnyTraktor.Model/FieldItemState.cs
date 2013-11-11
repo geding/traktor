@@ -14,8 +14,8 @@ namespace InteligentnyTraktor.Model
         EarlyGrowing,
         MidGrowing,
         LateGrowing,
-        Mature,
-        Harvested,  //zebrany plon
+        Mature,        
         Rotten, //zgniłe
+        Harvested,  //zebrany plon
     }
 }
