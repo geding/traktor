@@ -13,7 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using InteligentnyTraktor.Model;
+using InteligentnyTraktor.LanguageProcessing;
 using System.Timers;
+using InteligentnyTraktor;
 
 namespace InteligentnyTraktor.Test
 {
@@ -24,6 +26,11 @@ namespace InteligentnyTraktor.Test
     {
         IStateManager stateManager;
         Timer timer = new Timer(20);
+
+        LPDictionary LPDict = new LPDictionary();
+
+
+        
 
         UIElement[][] fieldItems;
         Rectangle tractor;
@@ -186,8 +193,9 @@ namespace InteligentnyTraktor.Test
                 this.fieldItems[r][c] = ch[i];
             }                        
         }
-
-        private void buttonMoveTractor_Click(object sender, RoutedEventArgs e)
+        private int _r;
+        private int _c;
+        private bool is_good()
         {
             int r;
             int c;
@@ -199,14 +207,25 @@ namespace InteligentnyTraktor.Test
             textBoxEnterRow.Text = "";
             textBoxEnterColumn.Text = "";
 
-            if (result)
+            if (!result)
             {
-                if ((r > fieldItems.Length - 1) || (c > fieldItems[0].Length - 1))
-                {
-                    return;
-                }
-                stateManager.MoveTractorTo(r, c);
+                return false;
             }
+
+            else if ((r > fieldItems.Length - 1) || (c > fieldItems[0].Length - 1))
+            {
+                return false;
+            }
+            this._r = r;
+            this._c = c;
+            return true;
+        }
+        private void buttonMoveTractor_Click(object sender, RoutedEventArgs e)
+        {
+          
+            if(is_good())
+                stateManager.MoveTractorTo(_r, _c);
+            return;
         }
 
         private void buttonStop_Click(object sender, RoutedEventArgs e)
@@ -217,68 +236,39 @@ namespace InteligentnyTraktor.Test
 
         private void buttonSow_Click(object sender, RoutedEventArgs e)
         {
-            int r;
-            int c;
-
-            bool firstParse = int.TryParse(textBoxEnterRow.Text, out r);
-            bool secondParse = int.TryParse(textBoxEnterColumn.Text, out c);
-            bool result = firstParse && secondParse;
-
-            textBoxEnterRow.Text = "";
-            textBoxEnterColumn.Text = "";
-
-            if (result)
-            {
-                if ((r > fieldItems.Length - 1) || (c > fieldItems[0].Length - 1))
-                {
-                    return;
-                }
-                stateManager.SowAt(r, c);
-            }
+            if (is_good())
+                stateManager.SowAt(_r, _c);
+            return;
+                
+            
         }
 
         private void buttonFertilize_Click(object sender, RoutedEventArgs e)
         {
-            int r;
-            int c;
-
-            bool firstParse = int.TryParse(textBoxEnterRow.Text, out r);
-            bool secondParse = int.TryParse(textBoxEnterColumn.Text, out c);
-            bool result = firstParse && secondParse;
-
-            textBoxEnterRow.Text = "";
-            textBoxEnterColumn.Text = "";
-
-            if (result)
-            {
-                if ((r > fieldItems.Length - 1) || (c > fieldItems[0].Length - 1))
-                {
-                    return;
-                }
-                stateManager.FertilizeAt(r, c);
-            }
+           if (is_good())
+               stateManager.FertilizeAt(_r, _c);
+            return;
+               
+            
         }
 
         private void buttonHarvest_Click(object sender, RoutedEventArgs e)
         {
-            int r;
-            int c;
+            if (is_good())
+                stateManager.HarvestAt(_r, _c);
+            return;
+          
+        }
 
-            bool firstParse = int.TryParse(textBoxEnterRow.Text, out r);
-            bool secondParse = int.TryParse(textBoxEnterColumn.Text, out c);
-            bool result = firstParse && secondParse;
+        private void ButtonDo_Click(object sender, RoutedEventArgs e)
+        {
+            string commend =textBoxEnterCommend.Text;
+            bool cando = LPDict.Dict.ContainsKey(commend);
+           
+            if(cando)
+                 textBoxEnterCommend.Text="ok";
 
-            textBoxEnterRow.Text = "";
-            textBoxEnterColumn.Text = "";
-
-            if (result)
-            {
-                if ((r > fieldItems.Length - 1) || (c > fieldItems[0].Length - 1))
-                {
-                    return;
-                }
-                stateManager.HarvestAt(r, c);
-            }
+          
         }
     }
 }

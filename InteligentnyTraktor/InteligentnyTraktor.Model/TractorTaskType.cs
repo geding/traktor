@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace InteligentnyTraktor.Model
 {
-    enum TractorTaskType
+    public enum TractorTaskType
     {
         Move,
         Harvest,
