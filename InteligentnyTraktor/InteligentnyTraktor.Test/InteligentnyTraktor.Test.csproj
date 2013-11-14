@@ -109,6 +109,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InteligentnyTraktor.LanguageProcessing\InteligentnyTraktor.LanguageProcessing.csproj">
+      <Project>{025e37f1-1a6c-4b90-9c2c-8ae6c4dee22b}</Project>
+      <Name>InteligentnyTraktor.LanguageProcessing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InteligentnyTraktor.Model\InteligentnyTraktor.Model.csproj">
       <Project>{ebaa4178-8791-40f8-975e-7d8838633a5e}</Project>
       <Name>InteligentnyTraktor.Model</Name>

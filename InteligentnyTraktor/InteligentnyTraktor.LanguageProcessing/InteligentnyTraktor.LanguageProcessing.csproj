@@ -47,10 +47,6 @@
       <Project>{ebaa4178-8791-40f8-975e-7d8838633a5e}</Project>
       <Name>InteligentnyTraktor.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InteligentnyTraktor.Test\InteligentnyTraktor.Test.csproj">
-      <Project>{d88284f8-b488-4637-896b-0c8de3da6511}</Project>
-      <Name>InteligentnyTraktor.Test</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
