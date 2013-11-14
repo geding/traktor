@@ -27,6 +27,9 @@ namespace InteligentnyTraktor.Test
         IStateManager stateManager;
         Timer timer = new Timer(20);
 
+        LPDictionary LPDict = new LPDictionary();
+
+
         
 
         UIElement[][] fieldItems;
@@ -260,8 +263,10 @@ namespace InteligentnyTraktor.Test
         private void ButtonDo_Click(object sender, RoutedEventArgs e)
         {
             string commend =textBoxEnterCommend.Text;
-
+            bool cando = LPDict.Dict.ContainsKey(commend);
            
+            if(cando)
+                 textBoxEnterCommend.Text="ok";
 
           
         }

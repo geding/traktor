@@ -7,11 +7,11 @@ using InteligentnyTraktor.Model;
 
 namespace InteligentnyTraktor.LanguageProcessing
 {
-    class LPDictionary
+    public class LPDictionary
     {
         public Dictionary<String, Enum> Dict;
 
-        LPDictionary()
+        public LPDictionary()
         {
             Dict = new Dictionary<String, Enum>();
 
