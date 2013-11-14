@@ -36,16 +36,18 @@ namespace InteligentnyTraktor.Model
             get { return world.Tractor; }
         }
 
-        public TractorManager(double fieldWidth, double fieldHeight, int rows, int columns)
+        public TractorManager(double fieldWidth, double fieldHeight, int rows, int columns, double startingTractorX = 0, double startingTractorY = 0)
         {
             this.fieldWidth = fieldWidth;
             this.fieldHeight = fieldHeight;
             this.fieldItemWidth = fieldWidth / rows;
             this.fieldItemHeight = fieldHeight / columns;
 
-            world = new Engine(fieldWidth, fieldHeight);
+            world = new Engine(fieldWidth, fieldHeight, -fieldItemWidth / 2, fieldItemHeight / 2);
 
             tasks = new Queue<IPerformable>();
+
+            MoveTractorTo(0, 0);
         }
 
         public void StopTractor()

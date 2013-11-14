@@ -31,7 +31,7 @@ namespace InteligentnyTraktor.Model
 
         Timer timer;
 
-        public Engine(double width, double height)
+        public Engine(double width, double height, double startingTractorX = 0, double startingTractorY = 0)
         {
             this.width = width;
             this.height = height;
@@ -42,7 +42,7 @@ namespace InteligentnyTraktor.Model
 
             Tractor = new Tractor()
             {
-                Position = new Point(75, 75),
+                Position = new Point(startingTractorX, startingTractorY),
                 Velocity = new Vector(0, 0),
                 VMax = 2,
                 Acceleration = 0.02,
