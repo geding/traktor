@@ -22,9 +22,10 @@ namespace InteligentnyTraktor.LanguageProcessing
 
             Dict = new Dictionary<String, Enum>();
 
-            Dict.Add("Idz", TractorTaskType.Move);
-            Dict.Add("Idź", TractorTaskType.Move);
-            Dict.Add("Ruszaj", TractorTaskType.Move);
+            Dict.Add("idz", TractorTaskType.Move);
+            Dict.Add("idź", TractorTaskType.Move);
+            Dict.Add("ruszaj", TractorTaskType.Move);
+            Dict.Add("nawieź", TractorTaskType.Fertilize);
 
         }
         private bool isGoodCordinates(int r, int c)
@@ -47,7 +48,7 @@ namespace InteligentnyTraktor.LanguageProcessing
             List<Enum> commendsTypes = new List<Enum>();
             foreach (string com in commends)
             {
-
+                
                 isNumber = Regex.Match(com, @"\d+").Value;
                 if ((isNumber != "") && (whichNumber != 2))
                 {
@@ -59,7 +60,8 @@ namespace InteligentnyTraktor.LanguageProcessing
                 }
                 else if (com != "") 
                 {
-                    var v = Dict.FirstOrDefault(x => x.Key.Contains(com)).Value;
+                    string comLower = com.ToLower();
+                    var v = Dict.FirstOrDefault(x => x.Key.Contains(comLower)).Value;
                   
                     commendsTypes.Add(v);
                 }
@@ -67,6 +69,10 @@ namespace InteligentnyTraktor.LanguageProcessing
             if (whichNumber == 2 && isGoodCordinates(r, c) && commendsTypes.Contains(TractorTaskType.Move))
             {
                 _stateManager.MoveTractorTo(r, c);
+            }
+            if (whichNumber == 2 && isGoodCordinates(r, c) && commendsTypes.Contains(TractorTaskType.Fertilize))
+            {
+                _stateManager.FertilizeAt(r, c);
             }
         }
     }
