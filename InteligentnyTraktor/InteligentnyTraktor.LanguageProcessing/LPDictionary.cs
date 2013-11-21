@@ -58,7 +58,7 @@ namespace InteligentnyTraktor.LanguageProcessing
                         c = Int32.Parse(isNumber);
                     whichNumber++;
                 }
-                else if (com != "") 
+                else if (com != "" && com.Length>=3) 
                 {
                     string comLower = com.ToLower();
                     var v = Dict.FirstOrDefault(x => x.Key.Contains(comLower)).Value;
