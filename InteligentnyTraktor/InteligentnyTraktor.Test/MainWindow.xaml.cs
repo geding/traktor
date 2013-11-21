@@ -16,6 +16,7 @@ using InteligentnyTraktor.Model;
 using InteligentnyTraktor.LanguageProcessing;
 using System.Timers;
 using InteligentnyTraktor;
+using System.Text.RegularExpressions;
 
 namespace InteligentnyTraktor.Test
 {
@@ -220,6 +221,16 @@ namespace InteligentnyTraktor.Test
             this._c = c;
             return true;
         }
+         private bool isGoodCordinates(int r, int c)
+        {
+            if ((r > fieldItems.Length - 1) || (c > fieldItems[0].Length - 1))
+            {
+                return false;
+            }
+            this._r = r;
+            this._c = c;
+            return true;
+        }
         private void buttonMoveTractor_Click(object sender, RoutedEventArgs e)
         {
           
@@ -263,10 +274,38 @@ namespace InteligentnyTraktor.Test
         private void ButtonDo_Click(object sender, RoutedEventArgs e)
         {
             string commend =textBoxEnterCommend.Text;
-            bool cando = LPDict.Dict.ContainsKey(commend);
+            string[] commends = commend.Split(new Char[] { ' ', ',', '.', ':', '\t' });
+
+            
            
-            if(cando)
-                 textBoxEnterCommend.Text="ok";
+            string isNumber;
+            int r=0, c=0, whichNumber;
+             whichNumber=0;
+            foreach (string com in commends)
+            {
+
+                isNumber = Regex.Match(com, @"\d+").Value;
+                if(  (isNumber != "") && (whichNumber!=2))
+                {
+                    if(whichNumber==0)
+                       r = Int32.Parse(isNumber);
+                    else if(whichNumber==1)
+                       c = Int32.Parse(isNumber);
+                    whichNumber++;
+                }
+
+            }
+            if (whichNumber == 2 && isGoodCordinates(r, c))
+            {
+                stateManager.MoveTractorTo(_r, _c);
+            }
+            bool cando = LPDict.Dict.ContainsKey(commend);
+
+            if (cando)
+            {
+                textBoxEnterCommend.Text = "ok";
+            }
+                 
 
           
         }
