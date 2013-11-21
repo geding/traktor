@@ -28,7 +28,7 @@ namespace InteligentnyTraktor.Test
         IStateManager stateManager;
         Timer timer = new Timer(20);
 
-        LPDictionary LPDict = new LPDictionary();
+        LPDictionary LPDict ;
 
 
         
@@ -39,13 +39,15 @@ namespace InteligentnyTraktor.Test
         double vx = 0;
         double vy = 0;
 
+        int _size = 4; 
         public MainWindow()
         {
-            int size = 4;
+            int size = _size;
 
             InitializeComponent();
 
             stateManager = new StateManager(fieldCanvas.Width, fieldCanvas.Height, size, size);
+            LPDict = new LPDictionary(stateManager, _size);
             stateManager.TractorIsBusy += (s, e) => labelCommunication.Content = "traktor jest zajęty";
 
             InitializeFieldGrid(size);
@@ -221,16 +223,7 @@ namespace InteligentnyTraktor.Test
             this._c = c;
             return true;
         }
-         private bool isGoodCordinates(int r, int c)
-        {
-            if ((r > fieldItems.Length - 1) || (c > fieldItems[0].Length - 1))
-            {
-                return false;
-            }
-            this._r = r;
-            this._c = c;
-            return true;
-        }
+        
         private void buttonMoveTractor_Click(object sender, RoutedEventArgs e)
         {
           
@@ -273,40 +266,8 @@ namespace InteligentnyTraktor.Test
 
         private void ButtonDo_Click(object sender, RoutedEventArgs e)
         {
-            string commend =textBoxEnterCommend.Text;
-            string[] commends = commend.Split(new Char[] { ' ', ',', '.', ':', '\t' });
-
-            
-           
-            string isNumber;
-            int r=0, c=0, whichNumber;
-             whichNumber=0;
-            foreach (string com in commends)
-            {
-
-                isNumber = Regex.Match(com, @"\d+").Value;
-                if(  (isNumber != "") && (whichNumber!=2))
-                {
-                    if(whichNumber==0)
-                       r = Int32.Parse(isNumber);
-                    else if(whichNumber==1)
-                       c = Int32.Parse(isNumber);
-                    whichNumber++;
-                }
-
-            }
-            if (whichNumber == 2 && isGoodCordinates(r, c))
-            {
-                stateManager.MoveTractorTo(_r, _c);
-            }
-            bool cando = LPDict.Dict.ContainsKey(commend);
-
-            if (cando)
-            {
-                textBoxEnterCommend.Text = "ok";
-            }
-                 
-
+            string commend =textBoxEnterCommend.Text;      
+            LPDict.CheckActionTypeAndRunIt(commend);
           
         }
     }
