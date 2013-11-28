@@ -14,6 +14,7 @@ namespace InteligentnyTraktor.Model
         private double fertilityRate = 1;
         private bool isIrrigated = false;
         private bool isSowed = false;
+        private bool isPlowed = false;
 
         private object _lock = new object();
         Dictionary<FieldItemState, Action> onUpdateActions;
@@ -105,7 +106,7 @@ namespace InteligentnyTraktor.Model
                 {
                     return;
                 }
-                else
+                if (isPlowed)
                 {
                     isSowed = true;
                     this.State = FieldItemState.Sowed;
@@ -145,8 +146,26 @@ namespace InteligentnyTraktor.Model
                 else
                 {
                     fertilityRate = 0.5;
+                    isPlowed = false;
                     isSowed = false;
                     this.State = FieldItemState.Harvested;
+                    OnChanged();
+                }
+            }
+        }
+
+        public void Plow()
+        {
+            lock (_lock)
+            {
+                if (isPlowed)
+                {
+                    return;
+                }
+                else
+                {
+                    isPlowed = true;
+                    this.State = FieldItemState.Plowed;
                     OnChanged();
                 }
             }
@@ -179,6 +198,8 @@ namespace InteligentnyTraktor.Model
                 IncreaseCounter();
                 if (this.counter >= this.growTime)
                 {
+                    isSowed = false;
+                    isPlowed = false;
                     this.State = FieldItemState.Rotten;
                     OnChanged();
                 }

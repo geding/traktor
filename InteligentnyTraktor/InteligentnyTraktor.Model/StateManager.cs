@@ -118,6 +118,11 @@ namespace InteligentnyTraktor.Model
             tractorManager.Irrigate(fieldItems[row][column], row, column);
         }
 
+        public void PlowAt(int row, int column)
+        {
+            tractorManager.Plow(fieldItems[row][column], row, column);
+        }
+
         public void SowAt(int row, int column)
         {
             tractorManager.Sow(fieldItems[row][column], row, column);

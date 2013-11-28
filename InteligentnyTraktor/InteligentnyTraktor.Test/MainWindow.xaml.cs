@@ -16,6 +16,7 @@ using InteligentnyTraktor.Model;
 using InteligentnyTraktor.LanguageProcessing;
 using System.Timers;
 using InteligentnyTraktor;
+using System.Text.RegularExpressions;
 
 namespace InteligentnyTraktor.Test
 {
@@ -27,24 +28,23 @@ namespace InteligentnyTraktor.Test
         IStateManager stateManager;
         Timer timer = new Timer(20);
 
-        LPDictionary LPDict = new LPDictionary();
-
-
-        
+        LPDictionary LPDict ;
 
         UIElement[][] fieldItems;
-        Rectangle tractor;
+        Image tractor;
 
         double vx = 0;
         double vy = 0;
 
+        int _size = 4; 
         public MainWindow()
         {
-            int size = 4;
+            int size = _size;
 
             InitializeComponent();
 
             stateManager = new StateManager(fieldCanvas.Width, fieldCanvas.Height, size, size);
+            LPDict = new LPDictionary(stateManager, _size);
             stateManager.TractorIsBusy += (s, e) => labelCommunication.Content = "traktor jest zajęty";
 
             InitializeFieldGrid(size);
@@ -65,8 +65,45 @@ namespace InteligentnyTraktor.Test
                             e.row.ToString() + " " + e.column.ToString() + "\n"
                             + ((StateManager)stateManager).fieldItems[e.row][e.column].Type
                             + "\n" + ((StateManager)stateManager).fieldItems[e.row][e.column].State;
+                        ChangeFieldImage(fieldItems[e.row][e.column] as Label, ((StateManager)stateManager).fieldItems[e.row][e.column].State);
                     }));
                 };              
+        }
+
+        private void ChangeFieldImage(Label l, FieldItemState state)
+        {
+            string uri = "pack://application:,,,/InteligentnyTraktor;component/";
+            switch (state)
+            {
+                case FieldItemState.Bare:
+                    uri += "Bare.png"; break;
+                case FieldItemState.Plowed:
+                    uri += "Plowed.png"; break;
+                case FieldItemState.Sowed:
+                    uri += "Sowed.png"; break;
+                case FieldItemState.EarlyGrowing:
+                    uri += "EarlyGrowing.png"; break;
+                case FieldItemState.MidGrowing:
+                    uri += "MidGrowing.png"; break;
+                case FieldItemState.LateGrowing:
+                    uri += "LateGrowing.png"; break;
+                case FieldItemState.Mature:
+                    uri += "Mature.png"; break;
+                case FieldItemState.Rotten:
+                    uri += "Rotten.png"; break;
+                case FieldItemState.Harvested:
+                    uri += "Harvested.png"; break;
+            }
+
+            BitmapImage bi = new BitmapImage();
+            bi.BeginInit();
+            bi.UriSource = new Uri(uri, UriKind.Absolute);
+            bi.EndInit();
+
+            l.Background = new ImageBrush()
+            {
+                ImageSource = bi,
+            };
         }
 
         private void UpdateTractorProperties(object sender, ElapsedEventArgs e)
@@ -108,12 +145,19 @@ namespace InteligentnyTraktor.Test
 
         private void InitializeTractor()
         {
-            tractor = new Rectangle()
+            tractor = new Image()
             {
-                Fill = Brushes.Red,
-                Width = 50,
-                Height = 25,
+                Width = 75,
+                Height = 50,
             };
+            BitmapImage bi = new BitmapImage();
+            bi.BeginInit();
+            bi.UriSource = new Uri(
+                "pack://application:,,,/InteligentnyTraktor;component/traktor.png", UriKind.Absolute
+            );
+            bi.EndInit();
+
+            tractor.Source = bi;
 
             fieldCanvas.Children.Add(tractor);
         }
@@ -154,6 +198,7 @@ namespace InteligentnyTraktor.Test
             } 
 
             AddContentForEachField(gridField, size);
+            AddImagesForEachField();
         }        
 
         private void DefineRowsAndColumns(Grid grid, int size)
@@ -193,6 +238,27 @@ namespace InteligentnyTraktor.Test
                 this.fieldItems[r][c] = ch[i];
             }                        
         }
+
+        private void AddImagesForEachField()
+        {
+            BitmapImage bi = new BitmapImage();
+            bi.BeginInit();
+            bi.UriSource = new Uri(
+                "pack://application:,,,/InteligentnyTraktor;component/Bare.png", UriKind.Absolute
+            );
+            bi.EndInit();
+            ImageBrush brush = new ImageBrush()
+            {
+                ImageSource = bi,
+            };
+
+            var ch = gridField.Children;
+            foreach(Label l in ch) 
+            {
+                l.Background = brush;
+            }
+        }
+
         private int _r;
         private int _c;
         private bool is_good()
@@ -220,6 +286,7 @@ namespace InteligentnyTraktor.Test
             this._c = c;
             return true;
         }
+        
         private void buttonMoveTractor_Click(object sender, RoutedEventArgs e)
         {
           
@@ -234,22 +301,25 @@ namespace InteligentnyTraktor.Test
             stateManager.StopTractor();
         }
 
+        private void buttonPlow_Click(object sender, RoutedEventArgs e)
+        {
+            if (is_good())
+                stateManager.PlowAt(_r, _c);
+            return;
+        }
+
         private void buttonSow_Click(object sender, RoutedEventArgs e)
         {
             if (is_good())
                 stateManager.SowAt(_r, _c);
-            return;
-                
-            
+            return; 
         }
 
         private void buttonFertilize_Click(object sender, RoutedEventArgs e)
         {
            if (is_good())
                stateManager.FertilizeAt(_r, _c);
-            return;
-               
-            
+            return; 
         }
 
         private void buttonHarvest_Click(object sender, RoutedEventArgs e)
@@ -257,18 +327,12 @@ namespace InteligentnyTraktor.Test
             if (is_good())
                 stateManager.HarvestAt(_r, _c);
             return;
-          
         }
 
         private void ButtonDo_Click(object sender, RoutedEventArgs e)
         {
-            string commend =textBoxEnterCommend.Text;
-            bool cando = LPDict.Dict.ContainsKey(commend);
-           
-            if(cando)
-                 textBoxEnterCommend.Text="ok";
-
-          
+            string commend =textBoxEnterCommend.Text;      
+            LPDict.CheckActionTypeAndRunIt(commend);
         }
     }
 }

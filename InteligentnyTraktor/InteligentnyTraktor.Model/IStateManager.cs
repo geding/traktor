@@ -40,6 +40,13 @@ namespace InteligentnyTraktor.Model
         void IrrigateAt(int row, int column);
 
         /// <summary>
+        /// Sends tractor to piece of field specified by row and column and plows it
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        void PlowAt(int row, int column);
+
+        /// <summary>
         /// Sends tractor to piece of field specified by row and column and sows it
         /// </summary>
         /// <param name="row"></param>
