@@ -26,6 +26,7 @@ namespace InteligentnyTraktor.LanguageProcessing
             Dict.Add("idź", TractorTaskType.Move);
             Dict.Add("ruszaj", TractorTaskType.Move);
             Dict.Add("nawieź", TractorTaskType.Fertilize);
+            Dict.Add("zasiej", TractorTaskType.Sow);
 
         }
         private bool isGoodCordinates(int r, int c)
