@@ -60,6 +60,7 @@ namespace InteligentnyTraktor.LanguageProcessing
 
         public Phrase TryParse(List<string> phrase)
         {
+            this.groupedTasks = this.GetGroupedTasksIn(phrase);
             List<List<string>> simplePhrases = this.SplitToSimplePhrases(phrase);
 
             int startingIndex = 0;
@@ -73,130 +74,206 @@ namespace InteligentnyTraktor.LanguageProcessing
                 SortedDictionary<int, string> conjuctions = new SortedDictionary<int, string>();
                 SortedDictionary<int, string> attributes = new SortedDictionary<int, string>();
 
-                //+ 1 bo spójnik pomiędzy złożonymi zdaniami
-                for (int i = startingIndex; i < startingIndex + phr.Count + 1; i++)
+                foreach (var dictPairs in new Dictionary<Dictionary<int, string>, SortedDictionary<int, string>>//tak wygląda piekło:DDD
+                    {
+                        { indexedTaskWords, tasks }, 
+                        { indexedAdverbialWords, adverbials },
+                        { indexedComplementWords, complements }, 
+                        { indexedConjuctionWords, conjuctions }, 
+                        { indexedAttributeWords, attributes }
+                    })
                 {
-                    if (indexedTaskWords.ContainsKey(i))
+                    //+ 1 bo spójnik pomiędzy złożonymi zdaniami
+                    for (int i = startingIndex; i < startingIndex + phr.Count + 1; i++)
                     {
-                        tasks.Add(i, indexedTaskWords[i]);
-                        continue;
-                    }
-
-                    if (indexedComplementWords.ContainsKey(i))
-                    {
-                        complements.Add(i, indexedComplementWords[i]);
-                        continue;
-                    }
-
-                    if (indexedAdverbialWords.ContainsKey(i))
-                    {
-                        adverbials.Add(i, indexedAdverbialWords[i]);
-                        continue;
-                    }
-
-                    if (indexedConjuctionWords.ContainsKey(i))
-                    {
-                        conjuctions.Add(i, indexedConjuctionWords[i]);
-                        continue;
-                    }
-
-                    if (indexedAttributeWords.ContainsKey(i))
-                    {
-                        attributes.Add(i, indexedAttributeWords[i]);
-                        continue;
+                        if (dictPairs.Key.ContainsKey(i))
+                        {
+                            dictPairs.Value.Add(i, dictPairs.Key[i]);
+                            continue;
+                        }
                     }
                 }
 
-                var taskAdverbialConnections = new Dictionary<string, int>();
+                var taskAdverbialConnections = this.CreateAdverbialConnections(tasks, adverbials);
 
                 foreach (var task in tasks)
                 {
-                    for (int i = 0; i < adverbials.Count; i++)
-                    {
-                        //tutaj powinno pobierać ze słownika zbiór okoliczników, które występują bezpośrednio przed czasownikiem
-                        //i odnoszą się jedynie do niego
-                        if (task.Key == adverbials.ElementAt(i).Key + 1 && adverbials.ElementAt(i).Value == "następnie")
-                        {
-                            taskAdverbialConnections.Add(adverbials.ElementAt(i).Value, task.Key);
-                            adverbials.Remove(adverbials.ElementAt(i).Key);
-                        }
-                    }
+                    TaskCommand newCommand = this.CreateTaskCommand(
+                        task, adverbials, complements, conjuctions, attributes,
+                        taskAdverbialConnections
+                    );                   
+                    result.Tasks.Add(newCommand);
                 }
-
-                foreach (var task in tasks)
-                {
-                    var builder = new TaskCommandBuilder();
-
-                    foreach (var adverbial in adverbials)
-                    {
-                        builder.AppendAdverbial(adverbial.Value);
-                    }
-                    foreach (var x in taskAdverbialConnections)
-                    {
-                        if (x.Value == task.Key)
-                        {
-                            builder.AppendAdverbial(x.Key);
-                        }
-                    }
-
-
-                    if (complements.Count == 0)
-                    {
-                        builder.AppendComplement(dictionary.DefaultComplementWord, attributes.Values);
-                    }
-                    if (complements.Count == 1)
-                    {
-                        builder.AppendComplement(complements.ElementAt(0).Value, attributes.Values);
-                    }
-                    else if (complements.Count == 2)
-                    {
-                        int lastConjuctionIndex = (int)indexedConjuctionWords
-                                                    .Where(x => x.Key > complements.ElementAt(0).Key && x.Key < complements.ElementAt(1).Key)
-                                                    .Max(y => y.Key);
-
-                        List<string> temp = new List<string>();
-                        foreach (var attribute in attributes.TakeWhile(x => x.Key < lastConjuctionIndex))
-                        {
-                            temp.Add(attribute.Value);
-                        }
-                        builder.AppendComplement(complements.ElementAt(0).Value, temp);
-
-                        temp = new List<string>();
-                        foreach (var attribute in attributes.SkipWhile(x => x.Key <= lastConjuctionIndex))
-                        {
-                            temp.Add(attribute.Value);
-                        }
-                        builder.AppendComplement(complements.ElementAt(1).Value, temp);
-                    }
-                    else if (complements.Count > 2)
-                    {
-                        //nie potrafi takich skomplikowanych
-                        return null;
-                    }
-
-                    builder.SetTaskWord(task.Value);
-                    result.Tasks.Add(builder.Build());
-                }
-
                 //przesuwamy indeks startowy o długość zdania + spójnik na koncu
                 startingIndex += phr.Count + 1;
             }
-
             return result;
         }
 
-        private void TryAddIndexedWord(int index, string word, Dictionary<int, string> to, ICollection<string> from)
+        private Dictionary<string, int> CreateAdverbialConnections(
+            SortedDictionary<int, string> tasks, SortedDictionary<int, string> adverbials)
         {
-            foreach (var w in from)
+            var taskAdverbialConnections = new Dictionary<string, int>();
+            foreach (var task in tasks)
             {
-                if (word == w)
+                for (int i = 0; i < adverbials.Count; i++)
                 {
-                    to.Add(index, word);
-                    break;
+                    //tutaj powinno pobierać ze słownika zbiór okoliczników, które występują bezpośrednio przed czasownikiem
+                    //i odnoszą się jedynie do niego
+                    if (task.Key == adverbials.ElementAt(i).Key + 1 && adverbials.ElementAt(i).Value == "następnie")
+                    {
+                        taskAdverbialConnections.Add(adverbials.ElementAt(i).Value, task.Key);
+                        adverbials.Remove(adverbials.ElementAt(i).Key);
+                    }
                 }
             }
+            return taskAdverbialConnections;
         }
-      
+
+        private TaskCommand CreateTaskCommand(
+            KeyValuePair<int, string> task, 
+            SortedDictionary<int, string> adverbials, 
+            SortedDictionary<int, string> complements, 
+            SortedDictionary<int, string> conjuctions, 
+            SortedDictionary<int, string> attributes, 
+            Dictionary<string, int> taskAdverbialConnections
+            )
+        {
+            var builder = new TaskCommandBuilder();
+
+            foreach (var adverbial in adverbials)
+            {
+                builder.AppendAdverbial(adverbial.Value);
+            }
+            foreach (var x in taskAdverbialConnections)
+            {
+                if (x.Value == task.Key)
+                {
+                    builder.AppendAdverbial(x.Key);
+                }
+            }
+
+            if (complements.Count == 0)
+            {
+                builder.AppendComplement(dictionary.DefaultComplementWord, attributes.Values);
+            }
+            if (complements.Count == 1)
+            {
+                builder.AppendComplement(complements.ElementAt(0).Value, attributes.Values);
+            }
+            else if (complements.Count == 2)
+            {
+                int lastConjuctionIndex = (int)indexedConjuctionWords
+                                            .Where(x => x.Key > complements.ElementAt(0).Key && x.Key < complements.ElementAt(1).Key)
+                                            .Max(y => y.Key);
+
+                List<string> temp = new List<string>();
+                foreach (var attribute in attributes.TakeWhile(x => x.Key < lastConjuctionIndex))
+                {
+                    temp.Add(attribute.Value);
+                }
+                builder.AppendComplement(complements.ElementAt(0).Value, temp);
+
+                temp = new List<string>();
+                foreach (var attribute in attributes.SkipWhile(x => x.Key <= lastConjuctionIndex))
+                {
+                    temp.Add(attribute.Value);
+                }
+                builder.AppendComplement(complements.ElementAt(1).Value, temp);
+            }
+            else if (complements.Count > 2)
+            {
+                //nie potrafi takich skomplikowanych
+                return null;
+            }
+
+            builder.SetTaskWord(task.Value);
+            return builder.Build();
+        }
+
+        private List<List<string>> SplitToSimplePhrases(List<string> phrase)
+        {
+            var result = new List<List<string>>();
+            List<string> firstPartialPhrase = null;
+            int oldConjuctionIndex = -1;
+            int newConjuctionIndex = phrase.Count;
+            int taskIndex = -1;
+            int currentGroup = -1;
+
+            //zakładamy, że zdanie nie rozpoczyna ani nie kończy się spójnikiem
+            for (int i = 1; i < phrase.Count; i++)
+            {
+                //jeżeli na i-tym miejscu jest spójnik
+                if (indexedConjuctionWords.ContainsKey(i))
+                {
+                    //jeżeli spójnik łączy zgrupowane zadania to nie rozdziela zdań złożonych
+                    bool isInGroup = this.IsConjuctingGroupedTasks(i, phrase);                   
+                    if (isInGroup)
+                    {
+                        continue;
+                    }
+
+                    oldConjuctionIndex = newConjuctionIndex;
+                    newConjuctionIndex = i;
+                    continue;
+                }
+
+                if (indexedTaskWords.ContainsKey(i))
+                {                    
+                    int newGroup = -1;
+                    foreach (var group in groupedTasks)
+                    {
+                        if (group.Value.ContainsKey(i))
+                        {
+                            newGroup = group.Key;
+                        }
+                    }
+                    if (newGroup != currentGroup || currentGroup == -1)
+                    {
+                        //zdanie wielokrotnie złożone
+                        if (taskIndex > oldConjuctionIndex && taskIndex < newConjuctionIndex)
+                        {
+                            if (firstPartialPhrase == null)
+                            {
+                                firstPartialPhrase = this.CreatePartialPhrase(0, oldConjuctionIndex, phrase);
+                                result.Add(firstPartialPhrase);
+                            }
+
+                            var partialPhrase = this.CreatePartialPhrase(oldConjuctionIndex + 1, newConjuctionIndex, phrase);
+                            result.Add(partialPhrase);
+                        }
+                    }
+
+                    currentGroup = newGroup;
+                    taskIndex = i;
+                }
+            }
+            //ostatnie podzdanie
+            if (taskIndex > newConjuctionIndex)
+            {
+                if (firstPartialPhrase == null)
+                {
+                    firstPartialPhrase = this.CreatePartialPhrase(0, newConjuctionIndex, phrase);
+                    result.Add(firstPartialPhrase);
+                }
+
+                var partialPhrase = this.CreatePartialPhrase(newConjuctionIndex + 1, phrase.Count, phrase);
+                result.Add(partialPhrase);
+            }
+
+            return result.Count == 0 ? new List<List<string>>{ phrase } : result;
+        }
+
+        private List<string> CreatePartialPhrase(int startingIndex, int endingIndex, List<string> phrase)
+        {
+            var partialPhrase = new List<string>();
+            for (int i = startingIndex; i < endingIndex; i++)
+            {
+                partialPhrase.Add(phrase[i]);
+            }
+            return partialPhrase;
+        }
+
         private string ReplaceWithSynonymes(string word)
         {
             foreach (var repository in new List<Dictionary<string, string>>()
@@ -219,118 +296,64 @@ namespace InteligentnyTraktor.LanguageProcessing
             return word;
         }
 
-        private List<List<string>> SplitToSimplePhrases(List<string> phrase)
+        private Dictionary<int, Dictionary<int, string>> GetGroupedTasksIn(List<string> phrase)
         {
-            var result = new List<List<string>>();
-            List<string> firstPartialPhrase = null;
-            int oldConjuctionIndex = -1;
-            int newConjuctionIndex = phrase.Count;
-            int taskIndex = -1;
-            int currentGroup = -1;
+            var groupedTasks = new Dictionary<int, Dictionary<int, string>>();
+            int group = 0;
 
-            //zakładamy, że zdanie nie rozpoczyna ani nie kończy się spójnikiem
-            for (int i = 1; i < phrase.Count; i++)
+            for (int i = 0; i < indexedTaskWords.Count - 1; i++)
             {
-                //jeżeli na i-tym miejscu jest spójnik
-                if (indexedConjuctionWords.ContainsKey(i))
+                var current = indexedTaskWords.ElementAt(i);
+                var next = indexedTaskWords.ElementAt(i + 1);
+                if (AreConjuctedOrNextToEachOther(current.Key, next.Key, phrase))
                 {
-                    //jeżeli spójnik łączy zgrupowane zadania to nie rozdziela zdań złożonych
-                    bool isInGroup = false;
-                    if (i + 1 <= phrase.Count)
+                    if (!groupedTasks.ContainsKey(group))
                     {
-                        if (
-                            indexedTaskWords.ContainsKey(i - 1)
-                            && indexedTaskWords.ContainsKey(i + 1)
-                            && AreConjuctedOrNextToEachOther(i - 1, i + 1, phrase)
-                           )
-                        {
-                            isInGroup = true;
-                        }
+                        groupedTasks.Add(group, new Dictionary<int, string>());
                     }
-                    if (i + 2 <= phrase.Count)
+                    if (!groupedTasks[group].Contains(current))
                     {
-                        if (
-                            indexedTaskWords.ContainsKey(i - 1)
-                            && indexedTaskWords.ContainsKey(i + 2)
-                            && AreConjuctedOrNextToEachOther(i - 1, i + 2, phrase)
-                           )
-                        {
-                            isInGroup = true;
-                        }
+                        groupedTasks[group].Add(current.Key, current.Value);
                     }
-
-                    if (isInGroup)
+                    if (!groupedTasks[group].Contains(next))
                     {
-                        continue;
+                        groupedTasks[group].Add(next.Key, next.Value);
                     }
-
-                    oldConjuctionIndex = newConjuctionIndex;
-                    newConjuctionIndex = i;
-
-                    continue;
                 }
+                else group++;
+            }
 
-                if (indexedTaskWords.ContainsKey(i))
-                {                    
-                    int newGroup = -1;
-                    foreach (var group in groupedTasks)
-                    {
-                        if (group.Value.ContainsKey(i))
-                        {
-                            newGroup = group.Key;
-                        }
-                    }
-                    if (newGroup != currentGroup || currentGroup == -1)
-                    {
-                        //zdanie wielokrotnie złożone
-                        if (taskIndex > oldConjuctionIndex && taskIndex < newConjuctionIndex)
-                        {
-                            if (firstPartialPhrase == null)
-                            {
-                                firstPartialPhrase = new List<string>();
-                                for (int j = 0; j < oldConjuctionIndex; j++)
-                                {
-                                    firstPartialPhrase.Add(phrase[j]);
-                                }
-                                result.Add(firstPartialPhrase);
-                            }
+            return groupedTasks;
+        }
 
-                            var partialPhrase = new List<string>();
-                            for (int j = oldConjuctionIndex + 1; j < newConjuctionIndex; j++)
-                            {
-                                partialPhrase.Add(phrase[j]);
-                            }
-                            result.Add(partialPhrase);
-                        }
-                    }
-                    currentGroup = newGroup;
+        private bool IsConjuctingGroupedTasks(int conjuctionIndex, List<string> phrase)
+        {
+            bool isInGroup = false;
 
-                    taskIndex = i;
+            if (conjuctionIndex + 1 <= phrase.Count)
+            {
+                if (
+                    indexedTaskWords.ContainsKey(conjuctionIndex - 1)
+                    && indexedTaskWords.ContainsKey(conjuctionIndex + 1)
+                    && AreConjuctedOrNextToEachOther(conjuctionIndex - 1, conjuctionIndex + 1, phrase)
+                   )
+                {
+                    isInGroup = true;
+                }
+            }
+            if (conjuctionIndex + 2 <= phrase.Count)
+            {
+                if (
+                    indexedTaskWords.ContainsKey(conjuctionIndex - 1)
+                    && indexedTaskWords.ContainsKey(conjuctionIndex + 2)
+                    && AreConjuctedOrNextToEachOther(conjuctionIndex - 1, conjuctionIndex + 2, phrase)
+                   )
+                {
+                    isInGroup = true;
                 }
             }
 
-            //ostatnie podzdanie
-            if (taskIndex > newConjuctionIndex)
-            {
-                if (firstPartialPhrase == null)
-                {
-                    firstPartialPhrase = new List<string>();
-                    for (int j = 0; j < newConjuctionIndex; j++)
-                    {
-                        firstPartialPhrase.Add(phrase[j]);
-                    }
-                    result.Add(firstPartialPhrase);
-                }
-
-                var partialPhrase = new List<string>();
-                for (int j = newConjuctionIndex + 1; j < phrase.Count; j++)
-                {
-                    partialPhrase.Add(phrase[j]);
-                }
-                result.Add(partialPhrase);
-            }
-
-            return result.Count == 0 ? new List<List<string>>{ phrase } : result;
+            return isInGroup;
         }
 
         private bool IsTwoWordsExpression(string first, string second)
@@ -420,6 +443,18 @@ namespace InteligentnyTraktor.LanguageProcessing
 
             //więcej niż jeden wyraz pomiędzy nimi lub nie spójnik
             return false;
+        }
+
+        private void TryAddIndexedWord(int index, string word, Dictionary<int, string> to, ICollection<string> from)
+        {
+            foreach (var w in from)
+            {
+                if (word == w)
+                {
+                    to.Add(index, word);
+                    break;
+                }
+            }
         }
     }
 }
