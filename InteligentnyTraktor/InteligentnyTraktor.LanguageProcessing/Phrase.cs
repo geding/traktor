@@ -61,12 +61,7 @@ namespace InteligentnyTraktor.LanguageProcessing
             Tasks = new List<TaskCommand>();
         }
 
-        ////dodać analizę semantyczną np można "move" do "pole" lub "sklep", ale nie można "fertilize" "magazyn" itd
-        ////public List<string> Tasks { get; set; }
-
-        //public Dictionary<int, List<string>> Complements { get; set; } //indexed by task
-        //public Dictionary<int, List<string>> ComplementsAttributes { get; set; } //indexed by complement
-        ////TODO: adverbial group for each task
+        //dodać analizę semantyczną np można "move" do "pole" lub "sklep", ale nie można "fertilize" "magazyn" itd
 
         public override string ToString()
         {

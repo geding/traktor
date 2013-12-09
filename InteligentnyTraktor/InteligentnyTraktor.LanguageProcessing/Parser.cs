@@ -55,75 +55,12 @@ namespace InteligentnyTraktor.LanguageProcessing
                 this.TryAddIndexedWord(i, words[i], indexedConjuctionWords, dictionary.ConjuctionWords);
             }
 
-            //foreach (var item in words)
-            //{
-            //    Console.WriteLine(item);
-            //}
-
-            //Console.WriteLine();
-            //foreach (var item in indexedTaskWords)
-            //{
-            //    Console.WriteLine(item.Key + " " + item.Value);
-            //}
-            //Console.WriteLine();
-            //foreach (var item in indexedComplementWords)
-            //{
-            //    Console.WriteLine(item.Key + " " + item.Value);
-            //}
-            //Console.WriteLine();
-            //foreach (var item in indexedAttributeWords)
-            //{
-            //    Console.WriteLine(item.Key + " " + item.Value);
-            //}
-            //Console.WriteLine();
-            //foreach (var item in indexedAdverbialWords)
-            //{
-            //    Console.WriteLine(item.Key + " " + item.Value);
-            //}
-
             return words;
-
-            //if (indexedTaskWords.Count == 0)
-            //{
-            //    return;
-            //    //"Nie jestem tutaj żeby ucinać pogaduszki, tylko żeby pracować."
-            //}
-
-            //if (this.IsPhraseCompound(words))
-            //{
-            //    List<List<string>> phrases = this.SplitToSimplePhrases(words, indexedTaskWords);
-            //}
         }
 
         public Phrase TryParse(List<string> phrase)
         {
-            
-
-            this.groupedTasks = this.GetGroupedTasksIn(phrase);
-
-            //foreach (var item in groupedTasks)
-            //{
-            //    Console.WriteLine(item.Key + ":");
-            //    foreach (var x in item.Value)
-            //    {
-            //        Console.WriteLine(x.Key + " " + x.Value);
-            //    }
-            //}
-
             List<List<string>> simplePhrases = this.SplitToSimplePhrases(phrase);
-
-            //0. get tasks (from indexed list)
-            //1. find complements (get from indexed list)
-            //2. split attributes to complements:
-            //  a) find complement (get from indexed list)
-            //  b) find conjuctions beetween them
-            //  c) last conjuction separates attribute groups
-            //  d) bind each attribute in attribute group with complement
-            //3. append complements to tasks
-            //4. find adverbials (get form indexed list)
-            //5. append adveribals to tasks
-            //6. append info to phrase
-            //7. repeat for all subphrases
 
             int startingIndex = 0;
             var result = new Phrase();
@@ -135,9 +72,6 @@ namespace InteligentnyTraktor.LanguageProcessing
                 SortedDictionary<int, string> complements = new SortedDictionary<int, string>();
                 SortedDictionary<int, string> conjuctions = new SortedDictionary<int, string>();
                 SortedDictionary<int, string> attributes = new SortedDictionary<int, string>();
-
-                //var tasks = this.GetTaskWordsBeetween(startingIndex, startingIndex + phr.Count, phr);
-
 
                 //+ 1 bo spójnik pomiędzy złożonymi zdaniami
                 for (int i = startingIndex; i < startingIndex + phr.Count + 1; i++)
@@ -193,35 +127,6 @@ namespace InteligentnyTraktor.LanguageProcessing
                 {
                     var builder = new TaskCommandBuilder();
 
-                    //for (int i = 0; i < adverbials.Count; i++)
-                    //{
-                    //    if (task.Key == adverbials.ElementAt(i).Key + 1 && adverbials.ElementAt(i).Value == "następnie")
-                    //    {
-                    //        builder.AppendAdverbial(adverbials.ElementAt(i).Value);
-                    //        adverbials.Remove(adverbials.ElementAt(i).Key);
-                    //    }
-                    //}
-
-                    //for (int i = 0; i < adverbials.Count; i++)
-                    //{
-                    //    if (tasks.ContainsKey(adverbials.ElementAt(i).Key + 1) && adverbials.ElementAt(i).Value == "następnie")
-                    //    {
-                    //        builder.AppendAdverbial(adverbials.ElementAt(i).Value);
-                    //        adverbials.Remove(adverbials.ElementAt(i).Key);
-                    //    }
-                    //}
-
-                    //foreach (var adverbial in adverbials)
-                    //{
-                    //    //tutaj powinno pobierać ze słownika zbiór okoliczników, które występują bezpośrednio przed czasownikiem
-                    //    //i odnoszą się jedynie do niego
-                    //    if (tasks.ContainsKey(adverbial.Key + 1) && adverbial.Value == "następnie")
-                    //    {
-                    //        builder.AppendAdverbial(adverbial.Value);
-                    //        adverbialsApplyingToOnlyOneVerbIndexes.Add(adverbial.Key, adverbial.Value);
-                    //        //adverbials.Remove(adverbial.Key);
-                    //    }
-                    //}
                     foreach (var adverbial in adverbials)
                     {
                         builder.AppendAdverbial(adverbial.Value);
@@ -277,58 +182,7 @@ namespace InteligentnyTraktor.LanguageProcessing
                 startingIndex += phr.Count + 1;
             }
 
-
-            //Console.WriteLine();
-            //Console.WriteLine("zdania proste:");
-
-            //foreach (var phr in simplePhrases)
-            //{
-            //    string res = "";
-            //    foreach (var word in phr)
-            //    {
-            //        res += " " + word;
-            //    }
-            //    Console.WriteLine(res);
-            //    Console.WriteLine();
-            //}
-
-
             return result;
-        }
-
-        private object GetTaskWordsBeetween(int firstIndex, int lastIndex, List<string> phrase)
-        {
-            throw new NotImplementedException();
-        }
-
-        private Dictionary<int, Dictionary<int, string>> GetGroupedTasksIn(List<string> phrase)
-        {
-            var groupedTasks = new Dictionary<int, Dictionary<int, string>>();
-            int group = 0;
-
-            for (int i = 0; i < indexedTaskWords.Count - 1; i++)
-            {
-                var current = indexedTaskWords.ElementAt(i);
-                var next = indexedTaskWords.ElementAt(i + 1);
-                if (AreConjuctedOrNextToEachOther(current.Key, next.Key, phrase))
-                {
-                    if (!groupedTasks.ContainsKey(group))
-                    {
-                        groupedTasks.Add(group, new Dictionary<int, string>());
-                    }
-                    if (!groupedTasks[group].Contains(current))
-                    {
-                        groupedTasks[group].Add(current.Key, current.Value);
-                    }
-                    if (!groupedTasks[group].Contains(next))
-                    {
-                        groupedTasks[group].Add(next.Key, next.Value);
-                    }
-                }
-                else group++;
-            }
-
-            return groupedTasks;
         }
 
         private void TryAddIndexedWord(int index, string word, Dictionary<int, string> to, ICollection<string> from)
@@ -365,27 +219,6 @@ namespace InteligentnyTraktor.LanguageProcessing
             return word;
         }
 
-        private Dictionary<int, string> GetIndexedTaskWordsFrom(List<string> words)
-        {
-            var indexedTaskWords = new Dictionary<int, string>();
-
-            for (int i = 0; i < words.Count; i++)
-            {
-                foreach (var task in dictionary.TaskWordsRepository)
-                {
-                    if (task.Value.Contains(words[i]))
-                    {
-                        indexedTaskWords.Add(i, task.Key);
-                        break;
-                    }
-                }
-            }
-
-            return indexedTaskWords;
-        }
-
-
-        //jeżeli w drugim zdaniu prostym nie ma dopełnienia, to trzeba je skopiować z pierwszego zdania prostego w zdaniu złożonym (to chyba zrobi kontekst solwer)
         private List<List<string>> SplitToSimplePhrases(List<string> phrase)
         {
             var result = new List<List<string>>();
@@ -430,38 +263,6 @@ namespace InteligentnyTraktor.LanguageProcessing
                     {
                         continue;
                     }
-
-
-                    //if (groupedTasks.Any(group => 
-                    //    {
-                    //        bool isInGroup = false;
-                    //        if (i + 1 <= phrase.Count)
-                    //        {
-                    //            if (
-                    //                indexedTaskWords.ContainsKey(i - 1) 
-                    //                && indexedTaskWords.ContainsKey(i + 1) 
-                    //                && AreConjuctedOrNextToEachOther(i - 1, i + 1, phrase)
-                    //               )
-                    //            {
-                    //                isInGroup = true;
-                    //            }
-                    //        }
-                    //        if (i + 2 <= phrase.Count)
-                    //        {
-                    //            if (
-                    //                indexedTaskWords.ContainsKey(i - 1)
-                    //                && indexedTaskWords.ContainsKey(i + 2)
-                    //                && AreConjuctedOrNextToEachOther(i - 1, i + 2, phrase)
-                    //               )
-                    //            {
-                    //                isInGroup = true;
-                    //            }
-                    //        }
-                    //        return isInGroup;
-                    //        //return (group.Value.ContainsKey(i - 1) && group.Value.ContainsKey(i + 1))
-                    //        //|| (group.Value.ContainsKey(i - 1) && group.Value.ContainsKey(i + 2));
-                    //    }))
-                    //    continue;
 
                     oldConjuctionIndex = newConjuctionIndex;
                     newConjuctionIndex = i;
