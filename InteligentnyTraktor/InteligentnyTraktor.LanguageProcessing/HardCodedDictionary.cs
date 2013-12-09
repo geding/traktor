@@ -34,9 +34,11 @@ namespace InteligentnyTraktor.LanguageProcessing
 
             string[] stop = { "zatrzymaj", "zatrzymaj się", "zatrzymać się", "się zatrzymać", "stop", "stój", "stoj", "stać", "stac", "przestań", "przestan", "przerwij", "zastopuj", "zahamuj" };
 
-            string[] harvest = { "zaorać", "zaorac", "zaoraj", "spulchnij", "przeorać", "przeorac", "przeoraj" };
+            string[] plow = { "zaorać", "zaorac", "zaoraj", "spulchnij", "przeorać", "przeorac", "przeoraj" };
 
-            string[] sow = { "zasiej", "obsiej" };
+            string[] sow = { "zasiać", "zasiej", "obsiej", };
+
+            string[] harvest = { "zbierz", "zebrać", "zbieraj", "skoś" };
 
             foreach (var word in move)
             {
@@ -46,13 +48,17 @@ namespace InteligentnyTraktor.LanguageProcessing
             {
                 this.TaskWordsRepository.Add(word, "stop");
             }
-            foreach (var word in harvest)
+            foreach (var word in plow)
             {
                 this.TaskWordsRepository.Add(word, "zaoraj");
             }
             foreach (var word in sow)
             {
                 this.TaskWordsRepository.Add(word, "zasiej");
+            }
+            foreach (var word in harvest)
+            {
+                this.TaskWordsRepository.Add(word, "zbierz");
             }
 
             //initialize complement words repo
@@ -72,6 +78,7 @@ namespace InteligentnyTraktor.LanguageProcessing
             //initialize adverbial words repository
             string[] then = { "a potem", "potem", "a następnie", "a nastepnie", "następnie", "nastepnie", "a później", "później", "a pozniej", "a poxniej", "pozniej", "poxniej", "po czym", };
             string[] now = { "natychmiast", "teraz", "niezwłocznie" };
+            string[] conditional = { "gdy", "kiedy", "jeżeli" };//może się to doda, ale opcja generalnie
 
             foreach (var word in then)
             {
@@ -80,6 +87,10 @@ namespace InteligentnyTraktor.LanguageProcessing
             foreach (var word in now)
             {
                 this.AdverbialWordsRepository.Add(word, "natychmiast");
+            }
+            foreach (var word in conditional)
+            {
+                this.AdverbialWordsRepository.Add(word, "jeżeli");
             }
 
 
@@ -90,12 +101,12 @@ namespace InteligentnyTraktor.LanguageProcessing
 
             this.ConjuctionWords = new List<string>()
             {
-                ",", "i", 
+                ",", "i", "a", ", a"
             };
 
             this.CommonWordsForTwoWordExpressions = new List<string>()
             {
-                "się", "a", "po",
+                "się", "po", "na", ","
             };
 
             this.CommonWordIndexedTwoWordExpressions = new Dictionary<string, List<TwoWordExpression>>()
@@ -110,13 +121,6 @@ namespace InteligentnyTraktor.LanguageProcessing
                         new TwoWordExpression("się", "udać", Order.DoesntMatter)
                     }
                 },
-                { "a", new List<TwoWordExpression>()
-                    {
-                        new TwoWordExpression("a", "potem", Order.CommonWordFirst),
-                        new TwoWordExpression("a", "następnie", Order.CommonWordFirst),
-                        new TwoWordExpression("a", "później", Order.CommonWordFirst),
-                    }
-                },
                 { "po", new List<TwoWordExpression>()
                     {
                         new TwoWordExpression("po", "czym", Order.CommonWordFirst),
@@ -128,6 +132,12 @@ namespace InteligentnyTraktor.LanguageProcessing
                     {
                         new TwoWordExpression("na", "górze", Order.CommonWordFirst),
                         new TwoWordExpression("na", "dole", Order.CommonWordFirst),
+                    }
+                },
+                { ",", new List<TwoWordExpression>()
+                    {
+                        new TwoWordExpression(",", "a", Order.CommonWordFirst),
+
                     }
                 },
             };

@@ -10,10 +10,16 @@ namespace InteligentnyTraktor.LanguageProcessing
     {
         static void Main(string[] args)
         {
-            string input = Console.ReadLine();
-            var parser = new Parser(new HardCodedDictionary());
+            Console.WriteLine("q + enter - wyjscie");
+            var input = "";
+            while (input != "q")
+            {
+                input = Console.ReadLine();
+                var parser = new Parser(new HardCodedDictionary());
+
+                parser.Parse(parser.Scan(input));
+            }
             
-            parser.Parse(parser.Scan(input));
         }
     }
 }
