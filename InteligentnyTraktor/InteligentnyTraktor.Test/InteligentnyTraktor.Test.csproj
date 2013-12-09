@@ -138,6 +138,24 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="traktor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Bare.png" />
+    <Resource Include="EarlyGrowing.png" />
+    <Resource Include="LateGrowing.png" />
+    <Resource Include="Mature.png" />
+    <Resource Include="MidGrowing.png" />
+    <Resource Include="Plowed.png" />
+    <Resource Include="Sowed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Harvested.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Rotten.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

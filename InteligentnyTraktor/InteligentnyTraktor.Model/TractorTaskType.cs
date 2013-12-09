@@ -9,6 +9,8 @@ namespace InteligentnyTraktor.Model
     public enum TractorTaskType
     {
         Move,
+        Stop,
+        Plow,
         Harvest,
         Fertilize,
         Irrigate,
