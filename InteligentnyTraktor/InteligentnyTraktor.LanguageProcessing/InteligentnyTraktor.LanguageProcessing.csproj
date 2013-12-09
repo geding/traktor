@@ -48,7 +48,7 @@
     <Compile Include="LPDictionary.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Phrase.cs" />
-    <Compile Include="PhraseBuilder.cs" />
+    <Compile Include="TaskCommandBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="TheDictionary.cs" />

@@ -17,7 +17,10 @@ namespace InteligentnyTraktor.LanguageProcessing
                 input = Console.ReadLine();
                 var parser = new Parser(new HardCodedDictionary());
 
-                parser.Parse(parser.Scan(input));
+                Console.WriteLine();
+                var phrase = parser.TryParse(parser.Scan(input)).ToString();
+                Console.WriteLine(phrase);
+                Console.WriteLine();
             }
             
         }

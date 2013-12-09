@@ -18,6 +18,7 @@ namespace InteligentnyTraktor.LanguageProcessing
         public ICollection<string> ConjuctionWords { get; private set; }
         public Dictionary<string, List<TwoWordExpression>> CommonWordIndexedTwoWordExpressions { get; private set; }
         public ICollection<string> CommonWordsForTwoWordExpressions { get; private set; }
+        public string DefaultComplementWord { get; private set; }
 
         public  HardCodedDictionary()
         {
@@ -27,6 +28,7 @@ namespace InteligentnyTraktor.LanguageProcessing
             this.AdverbialWordsRepository = new Dictionary<string, string>();
 
             Delimiters = new char[] { ' ', '.', ':', ';', '\t', '\n' };
+            DefaultComplementWord = "domyślne";
 
             //initialize task words repository
             string[] move = { "się udać", "udać się", "pojechać", "pojechac", "pójść", "przesunąć się", "się przesunąć", "przesuń się", "idź", "idz", "rusz", "ruszaj", "jedź", 
@@ -63,16 +65,34 @@ namespace InteligentnyTraktor.LanguageProcessing
 
             //initialize complement words repo
             this.ComplementWordsRepository.Add("pole", "pole");
+            this.ComplementWordsRepository.Add("pól", "pola");
             this.ComplementWordsRepository.Add("pola", "pola");
             this.ComplementWordsRepository.Add("magazyn", "magazyn");
             this.ComplementWordsRepository.Add("magazynu", "magazyn");
             this.ComplementWordsRepository.Add("traktor", "traktor");
+            this.ComplementWordsRepository.Add("je", "domyślne");
+            this.ComplementWordsRepository.Add("siać", "siać");
+            this.ComplementWordsRepository.Add("zasiewać", "siać");
+            this.ComplementWordsRepository.Add("zasiewanie", "siać");
 
             //initialize attribute words repo
             this.AttributeWordsRepository.Add("wszystkie", "wszystkie");
-            this.AttributeWordsRepository.Add("każde", "wszystkie");
+            this.AttributeWordsRepository.Add("każde", "każde");
             this.AttributeWordsRepository.Add("zaorane", "zaorane");
             this.AttributeWordsRepository.Add("niezaorane", "niezaorane");
+            this.AttributeWordsRepository.Add("niezaoranego", "niezaorane");
+            this.AttributeWordsRepository.Add("zasiane", "zasiane");
+            this.AttributeWordsRepository.Add("zgniłe", "zgniłe");
+            this.AttributeWordsRepository.Add("uschnięte", "zgniłe");
+            this.AttributeWordsRepository.Add("w pobliżu", "niedaleko");
+            this.AttributeWordsRepository.Add("obok", "niedaleko");
+            this.AttributeWordsRepository.Add("pobliskie", "niedaleko");
+            this.AttributeWordsRepository.Add("niedaleko", "niedaleko");
+            this.AttributeWordsRepository.Add("kukurydzy", "kukurydzy");
+            this.AttributeWordsRepository.Add("kukurydziane", "kukurydzy");
+            this.AttributeWordsRepository.Add("pszenicy", "pszenicy");
+            this.AttributeWordsRepository.Add("pszeniczne", "pszenicy");
+            this.AttributeWordsRepository.Add("pszenicę", "pszenicy");
 
 
             //initialize adverbial words repository
@@ -101,12 +121,12 @@ namespace InteligentnyTraktor.LanguageProcessing
 
             this.ConjuctionWords = new List<string>()
             {
-                ",", "i", "a", ", a"
+                ",", "i", "a", ", a", ", i",
             };
 
             this.CommonWordsForTwoWordExpressions = new List<string>()
             {
-                "się", "po", "na", ","
+                "się", "po", "na", ",", "w",
             };
 
             this.CommonWordIndexedTwoWordExpressions = new Dictionary<string, List<TwoWordExpression>>()
@@ -137,7 +157,12 @@ namespace InteligentnyTraktor.LanguageProcessing
                 { ",", new List<TwoWordExpression>()
                     {
                         new TwoWordExpression(",", "a", Order.CommonWordFirst),
-
+                        new TwoWordExpression(",", "i", Order.CommonWordFirst),
+                    }
+                },
+                { "w", new List<TwoWordExpression>()
+                    {
+                        new TwoWordExpression("w", "pobliżu", Order.CommonWordFirst),
                     }
                 },
             };

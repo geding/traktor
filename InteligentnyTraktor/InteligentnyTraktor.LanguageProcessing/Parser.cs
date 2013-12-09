@@ -95,38 +95,210 @@ namespace InteligentnyTraktor.LanguageProcessing
             //}
         }
 
-        public Phrase Parse(List<string> phrase)
-        {            
+        public Phrase TryParse(List<string> phrase)
+        {
+            
+
             this.groupedTasks = this.GetGroupedTasksIn(phrase);
 
-            foreach (var item in groupedTasks)
-            {
-                Console.WriteLine(item.Key + ":");
-                foreach (var x in item.Value)
-                {
-                    Console.WriteLine(x.Key + " " + x.Value);
-                }
-            }
+            //foreach (var item in groupedTasks)
+            //{
+            //    Console.WriteLine(item.Key + ":");
+            //    foreach (var x in item.Value)
+            //    {
+            //        Console.WriteLine(x.Key + " " + x.Value);
+            //    }
+            //}
 
             List<List<string>> simplePhrases = this.SplitToSimplePhrases(phrase);
-            //FindSharedComplement
 
-            Console.WriteLine();
-            Console.WriteLine("zdania zlozone:");
+            //0. get tasks (from indexed list)
+            //1. find complements (get from indexed list)
+            //2. split attributes to complements:
+            //  a) find complement (get from indexed list)
+            //  b) find conjuctions beetween them
+            //  c) last conjuction separates attribute groups
+            //  d) bind each attribute in attribute group with complement
+            //3. append complements to tasks
+            //4. find adverbials (get form indexed list)
+            //5. append adveribals to tasks
+            //6. append info to phrase
+            //7. repeat for all subphrases
 
+            int startingIndex = 0;
+            var result = new Phrase();
+            
             foreach (var phr in simplePhrases)
             {
-                string result = "";
-                foreach (var word in phr)
+                SortedDictionary<int, string> tasks = new SortedDictionary<int, string>();
+                SortedDictionary<int, string> adverbials = new SortedDictionary<int, string>();
+                SortedDictionary<int, string> complements = new SortedDictionary<int, string>();
+                SortedDictionary<int, string> conjuctions = new SortedDictionary<int, string>();
+                SortedDictionary<int, string> attributes = new SortedDictionary<int, string>();
+
+                //var tasks = this.GetTaskWordsBeetween(startingIndex, startingIndex + phr.Count, phr);
+
+
+                //+ 1 bo spójnik pomiędzy złożonymi zdaniami
+                for (int i = startingIndex; i < startingIndex + phr.Count + 1; i++)
                 {
-                    result += " " + word;
+                    if (indexedTaskWords.ContainsKey(i))
+                    {
+                        tasks.Add(i, indexedTaskWords[i]);
+                        continue;
+                    }
+
+                    if (indexedComplementWords.ContainsKey(i))
+                    {
+                        complements.Add(i, indexedComplementWords[i]);
+                        continue;
+                    }
+
+                    if (indexedAdverbialWords.ContainsKey(i))
+                    {
+                        adverbials.Add(i, indexedAdverbialWords[i]);
+                        continue;
+                    }
+
+                    if (indexedConjuctionWords.ContainsKey(i))
+                    {
+                        conjuctions.Add(i, indexedConjuctionWords[i]);
+                        continue;
+                    }
+
+                    if (indexedAttributeWords.ContainsKey(i))
+                    {
+                        attributes.Add(i, indexedAttributeWords[i]);
+                        continue;
+                    }
                 }
-                Console.WriteLine(result);
-                Console.WriteLine();
+
+                var taskAdverbialConnections = new Dictionary<string, int>();
+
+                foreach (var task in tasks)
+                {
+                    for (int i = 0; i < adverbials.Count; i++)
+                    {
+                        //tutaj powinno pobierać ze słownika zbiór okoliczników, które występują bezpośrednio przed czasownikiem
+                        //i odnoszą się jedynie do niego
+                        if (task.Key == adverbials.ElementAt(i).Key + 1 && adverbials.ElementAt(i).Value == "następnie")
+                        {
+                            taskAdverbialConnections.Add(adverbials.ElementAt(i).Value, task.Key);
+                            adverbials.Remove(adverbials.ElementAt(i).Key);
+                        }
+                    }
+                }
+
+                foreach (var task in tasks)
+                {
+                    var builder = new TaskCommandBuilder();
+
+                    //for (int i = 0; i < adverbials.Count; i++)
+                    //{
+                    //    if (task.Key == adverbials.ElementAt(i).Key + 1 && adverbials.ElementAt(i).Value == "następnie")
+                    //    {
+                    //        builder.AppendAdverbial(adverbials.ElementAt(i).Value);
+                    //        adverbials.Remove(adverbials.ElementAt(i).Key);
+                    //    }
+                    //}
+
+                    //for (int i = 0; i < adverbials.Count; i++)
+                    //{
+                    //    if (tasks.ContainsKey(adverbials.ElementAt(i).Key + 1) && adverbials.ElementAt(i).Value == "następnie")
+                    //    {
+                    //        builder.AppendAdverbial(adverbials.ElementAt(i).Value);
+                    //        adverbials.Remove(adverbials.ElementAt(i).Key);
+                    //    }
+                    //}
+
+                    //foreach (var adverbial in adverbials)
+                    //{
+                    //    //tutaj powinno pobierać ze słownika zbiór okoliczników, które występują bezpośrednio przed czasownikiem
+                    //    //i odnoszą się jedynie do niego
+                    //    if (tasks.ContainsKey(adverbial.Key + 1) && adverbial.Value == "następnie")
+                    //    {
+                    //        builder.AppendAdverbial(adverbial.Value);
+                    //        adverbialsApplyingToOnlyOneVerbIndexes.Add(adverbial.Key, adverbial.Value);
+                    //        //adverbials.Remove(adverbial.Key);
+                    //    }
+                    //}
+                    foreach (var adverbial in adverbials)
+                    {
+                        builder.AppendAdverbial(adverbial.Value);
+                    }
+                    foreach (var x in taskAdverbialConnections)
+                    {
+                        if (x.Value == task.Key)
+                        {
+                            builder.AppendAdverbial(x.Key);
+                        }
+                    }
+
+
+                    if (complements.Count == 0)
+                    {
+                        builder.AppendComplement(dictionary.DefaultComplementWord, attributes.Values);
+                    }
+                    if (complements.Count == 1)
+                    {
+                        builder.AppendComplement(complements.ElementAt(0).Value, attributes.Values);
+                    }
+                    else if (complements.Count == 2)
+                    {
+                        int lastConjuctionIndex = (int)indexedConjuctionWords
+                                                    .Where(x => x.Key > complements.ElementAt(0).Key && x.Key < complements.ElementAt(1).Key)
+                                                    .Max(y => y.Key);
+
+                        List<string> temp = new List<string>();
+                        foreach (var attribute in attributes.TakeWhile(x => x.Key < lastConjuctionIndex))
+                        {
+                            temp.Add(attribute.Value);
+                        }
+                        builder.AppendComplement(complements.ElementAt(0).Value, temp);
+
+                        temp = new List<string>();
+                        foreach (var attribute in attributes.SkipWhile(x => x.Key <= lastConjuctionIndex))
+                        {
+                            temp.Add(attribute.Value);
+                        }
+                        builder.AppendComplement(complements.ElementAt(1).Value, temp);
+                    }
+                    else if (complements.Count > 2)
+                    {
+                        //nie potrafi takich skomplikowanych
+                        return null;
+                    }
+
+                    builder.SetTaskWord(task.Value);
+                    result.Tasks.Add(builder.Build());
+                }
+
+                //przesuwamy indeks startowy o długość zdania + spójnik na koncu
+                startingIndex += phr.Count + 1;
             }
 
 
-            return null;
+            //Console.WriteLine();
+            //Console.WriteLine("zdania proste:");
+
+            //foreach (var phr in simplePhrases)
+            //{
+            //    string res = "";
+            //    foreach (var word in phr)
+            //    {
+            //        res += " " + word;
+            //    }
+            //    Console.WriteLine(res);
+            //    Console.WriteLine();
+            //}
+
+
+            return result;
+        }
+
+        private object GetTaskWordsBeetween(int firstIndex, int lastIndex, List<string> phrase)
+        {
+            throw new NotImplementedException();
         }
 
         private Dictionary<int, Dictionary<int, string>> GetGroupedTasksIn(List<string> phrase)

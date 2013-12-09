@@ -19,5 +19,6 @@ namespace InteligentnyTraktor.LanguageProcessing
         ICollection<string> ConjuctionWords { get; }
         Dictionary<string, List<TwoWordExpression>> CommonWordIndexedTwoWordExpressions { get; }
         ICollection<string> CommonWordsForTwoWordExpressions { get; }
+        string DefaultComplementWord { get; }
     }
 }
