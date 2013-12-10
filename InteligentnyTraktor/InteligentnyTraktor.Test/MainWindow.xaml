@@ -11,11 +11,12 @@
         <TextBox x:Name="textBoxEnterColumn" HorizontalAlignment="Left" Height="23" Margin="838,155,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="41"/>
         <Label Content="wiersz" HorizontalAlignment="Left" Margin="764,112,0,0" VerticalAlignment="Top"/>
         <Label Content="kolumna" HorizontalAlignment="Left" Margin="764,152,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="buttonStop" Content="Stop" HorizontalAlignment="Left" Margin="764,366,0,0" VerticalAlignment="Top" Width="75" Click="buttonStop_Click"/>
+        <Button x:Name="buttonStop" Content="Stop" HorizontalAlignment="Left" Margin="764,395,0,0" VerticalAlignment="Top" Width="75" Click="buttonStop_Click"/>
         <Label x:Name="labelCommunication" Content="" HorizontalAlignment="Left" Margin="764,43,0,0" VerticalAlignment="Top" Width="139"/>
         <Button x:Name="buttonSow" Content="Zasiej" HorizontalAlignment="Left" Margin="764,241,0,0" VerticalAlignment="Top" Width="75" Click="buttonSow_Click"/>
-        <Button x:Name="buttonFertilize" Content="Nawieź" HorizontalAlignment="Left" Margin="764,284,0,0" VerticalAlignment="Top" Width="75" Click="buttonFertilize_Click"/>
-        <Button x:Name="buttonHarvest" Content="Zbierz plon" HorizontalAlignment="Left" Margin="764,325,0,0" VerticalAlignment="Top" Width="75" Click="buttonHarvest_Click"/>
+        <Button x:Name="buttonFertilize" Content="Nawieź" HorizontalAlignment="Left" Margin="764,358,0,0" VerticalAlignment="Top" Width="75" Click="buttonFertilize_Click"/>
+        <Button x:Name="buttonPlow" Content="Zaoraj" HorizontalAlignment="Left" Margin="764,280,0,0" VerticalAlignment="Top" Width="75" Click="buttonPlow_Click"/>
+        <Button x:Name="buttonHarvest" Content="Zbierz plon" HorizontalAlignment="Left" Margin="764,317,0,0" VerticalAlignment="Top" Width="75" Click="buttonHarvest_Click"/>
         <Label x:Name="labelVelocity" Content="Label" HorizontalAlignment="Left" Margin="42,666,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelDirection" Content="Label" HorizontalAlignment="Left" Margin="230,666,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelPosition" Content="Label" HorizontalAlignment="Left" Margin="404,666,0,0" VerticalAlignment="Top"/>
