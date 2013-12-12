@@ -8,5 +8,6 @@ namespace InteligentnyTraktor.LanguageProcessing
 {
     class Compiler
     {
+        //napisać use case'y w txt co i jak ma mniej więcej robić
     }
 }

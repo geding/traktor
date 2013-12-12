@@ -42,6 +42,10 @@ namespace InteligentnyTraktor.LanguageProcessing
 
             string[] harvest = { "zbierz", "zebrać", "zbieraj", "skoś" };
 
+            string[] irrigate = { "podlej" };
+
+            string[] start = { "zacznij", "rozpocznij", "start" };
+
             foreach (var word in move)
             {
                 this.TaskWordsRepository.Add(word, "jedź");
@@ -61,6 +65,14 @@ namespace InteligentnyTraktor.LanguageProcessing
             foreach (var word in harvest)
             {
                 this.TaskWordsRepository.Add(word, "zbierz");
+            }
+            foreach (var word in irrigate)
+            {
+                this.TaskWordsRepository.Add(word, "podlej");
+            }
+            foreach (var word in start)
+            {
+                this.TaskWordsRepository.Add(word, "start");
             }
 
             //initialize complement words repo
@@ -93,6 +105,14 @@ namespace InteligentnyTraktor.LanguageProcessing
             this.AttributeWordsRepository.Add("pszenicy", "pszenicy");
             this.AttributeWordsRepository.Add("pszeniczne", "pszenicy");
             this.AttributeWordsRepository.Add("pszenicę", "pszenicy");
+            this.AttributeWordsRepository.Add("0", "0");
+            this.AttributeWordsRepository.Add("zero", "0");
+            this.AttributeWordsRepository.Add("1", "1");
+            this.AttributeWordsRepository.Add("2", "2");
+            this.AttributeWordsRepository.Add("3", "3");
+            this.AttributeWordsRepository.Add("4", "4");
+
+
 
 
             //initialize adverbial words repository
@@ -167,59 +187,5 @@ namespace InteligentnyTraktor.LanguageProcessing
                 },
             };
         }
-
-        /*
-        public static ITheDictionary GetDictionary()
-        {
-            var Delimiters = new char[]{ ' ', '.', ':', ';', '\t', '\n' };
-
-            var TaskWordsRepository = new Dictionary<string, ICollection<string>>()
-            {
-                { 
-                    "jedź", new string[]
-                        { "udać", "pojechać", "pojechac", "pójść", "przesunąć się", "się przesunąć", "przesuń się", "idź", "idz", "rusz", "ruszaj", "jedź", 
-                        "pojedź", "pojedz", "zawieź", "zawiex", "podążaj", "udaj", "pofatyguj się", "kopsnij się", "wyrusz", "wróć" }
-                },
-                {
-                    "stop", new string[] 
-                        { "zatrzymaj się", "zatrzymać się", "się zatrzymać", "stop", "stój", "stoj", "stać", "stac", "przestań", "przestan", "przerwij", "zastopuj", "zahamuj" }
-                },
-                {
-                    "zaoraj", new string[]
-                        { "zaorać", "zaorac", "zaoraj", "spulchnij", "przeorać", "przeorac", "przeoraj" }
-                },
-                {
-                    "harvest", new string[] 
-                        {}
-                },
-                {
-                    "fertilize", new string[]
-                        {}
-                },
-                {
-                    "irrigate", new string[]
-                        {}
-                },
-                {
-                    "sow", new string[]
-                        {}
-                },
-            };
-            var ComplementWordsRepository = new Dictionary<string, string>();
-            var IgnoredWords = new string[1];
-            var ConjuctionWords = new string[1];
-            
-            //var MultiwordConnections = new 
-
-            return new ITheDictionary(
-                Delimiters,
-                TaskWordsRepository,
-                ComplementWordsRepository,
-                IgnoredWords,
-                ConjuctionWords
-            );
-         
-        }
-        */
     }
 }
