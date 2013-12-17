@@ -29,6 +29,8 @@ namespace InteligentnyTraktor.Test
         Timer timer = new Timer(20);
 
         LPDictionary LPDict ;
+        Compiler Comp;
+
 
         UIElement[][] fieldItems;
         Image tractor;
@@ -45,6 +47,8 @@ namespace InteligentnyTraktor.Test
 
             stateManager = new StateManager(fieldCanvas.Width, fieldCanvas.Height, size, size);
             LPDict = new LPDictionary(stateManager, _size);
+            Comp = new Compiler(stateManager, _size);
+
             stateManager.TractorIsBusy += (s, e) => labelCommunication.Content = "traktor jest zajęty";
 
             InitializeFieldGrid(size);
@@ -331,7 +335,8 @@ namespace InteligentnyTraktor.Test
 
         private void ButtonDo_Click(object sender, RoutedEventArgs e)
         {
-            string commend =textBoxEnterCommend.Text;      
+            string commend =textBoxEnterCommend.Text;
+            Comp.RunCompiler(commend);
             LPDict.CheckActionTypeAndRunIt(commend);
         }
     }
