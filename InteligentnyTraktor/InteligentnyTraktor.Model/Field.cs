@@ -22,11 +22,16 @@ namespace InteligentnyTraktor.Model
         public FieldItemState State { get; private set; }
         public FieldItemType Type { get; private set; }
 
+        public int Row { get; set; }
+        public int Column { get; set; }
+
         public delegate void FieldItemChanged(object s, FieldItemEventArgs ea);
         public event FieldItemChanged Changed;
 
-        private Field(FieldItemType type, int growTime)
+        private Field(FieldItemType type, int growTime, int row, int column)
         {
+            this.Row = row;
+            this.Column = column;
             this.State = FieldItemState.Bare;
             this.Type = type;
             this.growTime = growTime;
@@ -45,16 +50,17 @@ namespace InteligentnyTraktor.Model
             };
         }
 
-        static public Field Create(FieldItemType type)
+        static public Field Create(FieldItemType type, int row, int column)
         {
+            
             switch (type)
             {
                 case FieldItemType.Wheat:
-                    return new Field(type, 4);
+                    return new Field(type, 4,row,column);
                 case FieldItemType.Rye:
-                    return new Field(type, 6);
+                    return new Field(type, 6, row, column);
                 case FieldItemType.Corn:
-                    return new Field(type, 8);
+                    return new Field(type, 8, row, column);
                 default:
                     return null;
             }
