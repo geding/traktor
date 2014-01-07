@@ -83,13 +83,15 @@ namespace InteligentnyTraktor.LanguageProcessing
             this.ComplementWordsRepository.Add("magazynu", "magazyn");
             this.ComplementWordsRepository.Add("traktor", "traktor");
             this.ComplementWordsRepository.Add("je", "domyślne");
+
+            // czego to dotyczy? :
             this.ComplementWordsRepository.Add("siać", "siać");
             this.ComplementWordsRepository.Add("zasiewać", "siać");
             this.ComplementWordsRepository.Add("zasiewanie", "siać");
 
             //initialize attribute words repo
             this.AttributeWordsRepository.Add("wszystkie", "wszystkie");
-            this.AttributeWordsRepository.Add("każde", "każde");
+            this.AttributeWordsRepository.Add("każde", "każde"); //wszystkie?
             this.AttributeWordsRepository.Add("zaorane", "zaorane");
             this.AttributeWordsRepository.Add("niezaorane", "niezaorane");
             this.AttributeWordsRepository.Add("niezaoranego", "niezaorane");
@@ -100,11 +102,13 @@ namespace InteligentnyTraktor.LanguageProcessing
             this.AttributeWordsRepository.Add("obok", "niedaleko");
             this.AttributeWordsRepository.Add("pobliskie", "niedaleko");
             this.AttributeWordsRepository.Add("niedaleko", "niedaleko");
+            this.AttributeWordsRepository.Add("kukurydze", "kukurydzy");
             this.AttributeWordsRepository.Add("kukurydzy", "kukurydzy");
             this.AttributeWordsRepository.Add("kukurydziane", "kukurydzy");
             this.AttributeWordsRepository.Add("pszenicy", "pszenicy");
             this.AttributeWordsRepository.Add("pszeniczne", "pszenicy");
             this.AttributeWordsRepository.Add("pszenicę", "pszenicy");
+            this.AttributeWordsRepository.Add("pszenice", "pszenicy");
             this.AttributeWordsRepository.Add("0", "0");
             this.AttributeWordsRepository.Add("zero", "0");
             this.AttributeWordsRepository.Add("1", "1");

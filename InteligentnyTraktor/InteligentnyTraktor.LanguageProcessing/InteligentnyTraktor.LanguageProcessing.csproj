@@ -44,6 +44,8 @@
   <ItemGroup>
     <Compile Include="Compiler.cs" />
     <Compile Include="ContextSolver.cs" />
+    <Compile Include="ExpressionBuilder.cs" />
+    <Compile Include="Filter.cs" />
     <Compile Include="HardCodedDictionary.cs" />
     <Compile Include="LPDictionary.cs" />
     <Compile Include="Parser.cs" />
