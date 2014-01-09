@@ -246,32 +246,32 @@ namespace InteligentnyTraktor.LanguageProcessing
             foreach (var task in tasks)
             {
                 
-                System.IO.StreamWriter file = new System.IO.StreamWriter("f:\\test.txt", true);
-                file.WriteLine("task v:"+task.Value); //to jest co ma zrobic
+                //System.IO.StreamWriter file = new System.IO.StreamWriter("f:\\test.txt", true);
+                //file.WriteLine("task v:"+task.Value); //to jest co ma zrobic
                 var activeTask = task.Value;
                 foreach (var complement in task.Complements)
                 {
                     fieldsPointed = choseFiledsPointedByUser(complement.Value, complement.Attributes);
                     runAction(task.Value, fieldsPointed);
-                    file.WriteLine(complement.Value); //to jest na czym ma zrobic (szczegoly  w filtrach)
+                    //file.WriteLine(complement.Value); //to jest na czym ma zrobic (szczegoly  w filtrach)
 
-                    foreach (var atr in complement.Attributes)
-                    {
-                        file.WriteLine("compl atr:" + atr); // to sa filtry
-                    }
+                    //foreach (var atr in complement.Attributes)
+                    //{
+                    //    file.WriteLine("compl atr:" + atr); // to sa filtry
+                    //}
                 }
               
                 // potrzebna cala tablica z fildami na ktorych maja byc wykonywane polecenia
-                file.WriteLine("field 1 1 state:" + ((StateManager)_stateManager).fieldItems[1][1].State);
-                file.WriteLine("field 1 1 type:" + ((StateManager)_stateManager).fieldItems[1][1].Type);
+                //file.WriteLine("field 1 1 state:" + ((StateManager)_stateManager).fieldItems[1][1].State);
+                //file.WriteLine("field 1 1 type:" + ((StateManager)_stateManager).fieldItems[1][1].Type);
 
               
-                foreach (var Adverb in task.Adverbials)
-                {
-                    file.WriteLine("adv: "+Adverb);    // to jest kolejnosc (nastepne)
-                }
+                //foreach (var Adverb in task.Adverbials)
+                //{
+                //    file.WriteLine("adv: "+Adverb);    // to jest kolejnosc (nastepne)
+                //}
                
-                 file.Close();
+                // file.Close();
             }
         }
     }
