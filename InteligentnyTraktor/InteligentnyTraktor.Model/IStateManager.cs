@@ -68,6 +68,11 @@ namespace InteligentnyTraktor.Model
         Point TractorPosition { get; }
 
         /// <summary>
+        /// Current field with tractor
+        /// </summary>
+        Point FieldWithTractor { get; }
+
+        /// <summary>
         /// Current tractor velocity. You can use that to set angle of tractor's move 
         /// or different sprites depending on it's speed etc
         /// </summary>

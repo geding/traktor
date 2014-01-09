@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+
 
 namespace InteligentnyTraktor.LanguageProcessing
 {
@@ -11,6 +13,7 @@ namespace InteligentnyTraktor.LanguageProcessing
     {
         IStateManager _stateManager;
         int _size;
+        Point _nextPosition;
       
         public Compiler(IStateManager stateManager, int size)
         {
@@ -84,6 +87,33 @@ namespace InteligentnyTraktor.LanguageProcessing
                         break;
                     case "niedaleko":
                        //+1 / -1 w zaleznosci od krawedzi ... trudne ;p
+                        Point position = _stateManager.FieldWithTractor;
+                            filter.Add(new Filter
+                            {
+                                PropertyName = "Row",
+                                Operation = Op.GreaterThan,
+                                Value = (int)position.X -2
+                            });
+                            filter.Add(new Filter
+                            {
+                                PropertyName = "Row",
+                                Operation = Op.LessThanOrEqual,
+                                Value = (int)position.X + 1
+                            });
+
+                            filter.Add(new Filter
+                            {
+                                PropertyName = "Column",
+                                Operation = Op.GreaterThan,
+                                Value = (int)position.Y -2
+                            });
+                            filter.Add(new Filter
+                            {
+                                PropertyName = "Column",
+                                Operation = Op.LessThanOrEqual,
+                                Value = (int)position.Y  + 1
+                            });
+                            
                         break;
                     case "kukurydzy":
                         filter.Add(new Filter
@@ -109,9 +139,24 @@ namespace InteligentnyTraktor.LanguageProcessing
             {
                 case "pole":
 
-                    Func<Field, bool> predicate = Field => Field.Type == FieldItemType.Corn;
-                    IEnumerable<Field> fields = ((StateManager)_stateManager).fieldItems[2].Where(predicate).Select(field => field).ToList();
-
+                    if (filter.Any())
+                    {
+                        var deleg = ExpressionBuilder.GetExpression<Field>(filter).Compile();
+                        foreach (var t in ((StateManager)_stateManager).fieldItems)
+                        {
+                            filteredCollection.AddRange(t.Where(deleg).ToList());
+                        }
+                    }
+                    else
+                    {
+                        foreach (var t in ((StateManager)_stateManager).fieldItems)
+                        {
+                            filteredCollection.AddRange(t.ToList());
+                        }
+                    }
+                    Field chosen = filteredCollection.First<Field>();
+                    filteredCollection.Clear();
+                    filteredCollection.Add(chosen);
 
                     break;
                 case "pola":
@@ -151,18 +196,19 @@ namespace InteligentnyTraktor.LanguageProcessing
         }
         private void runAction(string task, List<Field> fieldsPointed)
         {
-            System.IO.StreamWriter file = new System.IO.StreamWriter("f:\\test2.txt", true);
-            file.WriteLine("runac:" + task); //to jest co ma zrobic
+          
             switch (task)
             {
                 case "jedź" :
-
+                     foreach (Field field in fieldsPointed)
+                        _stateManager.MoveTractorTo(field.Row, field.Column);
+                    
                     break;
                 case "stop":
-
+                    _stateManager.StopTractor();
                     break;
                 case "zaoraj":
-                    file.WriteLine("oranie");
+                  
                     foreach (Field field in fieldsPointed)
                         _stateManager.PlowAt(field.Row, field.Column);
                     break;
@@ -179,7 +225,7 @@ namespace InteligentnyTraktor.LanguageProcessing
                         _stateManager.IrrigateAt(field.Row, field.Column);
                     break;
                 case "start":
-
+                    //do czego to? ;p
                     break;
             }
         }
