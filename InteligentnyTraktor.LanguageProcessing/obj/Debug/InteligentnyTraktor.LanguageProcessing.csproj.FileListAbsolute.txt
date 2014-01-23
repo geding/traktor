@@ -12,3 +12,5 @@ J:\KCK\InteligentnyTraktor\InteligentnyTraktor.LanguageProcessing\bin\Debug\Inte
 J:\KCK\InteligentnyTraktor\InteligentnyTraktor.LanguageProcessing\obj\Debug\InteligentnyTraktor.LanguageProcessing.csprojResolveAssemblyReference.cache
 J:\KCK\InteligentnyTraktor\InteligentnyTraktor.LanguageProcessing\obj\Debug\InteligentnyTraktor.LanguageProcessing.exe
 J:\KCK\InteligentnyTraktor\InteligentnyTraktor.LanguageProcessing\obj\Debug\InteligentnyTraktor.LanguageProcessing.pdb
+J:\My Documents\Visual Studio 2012\Projects\traktor\InteligentnyTraktor.LanguageProcessing\obj\Debug\InteligentnyTraktor.LanguageProcessing.csprojResolveAssemblyReference.cache
+J:\My Documents\Visual Studio 2012\Projects\traktor\InteligentnyTraktor.LanguageProcessing\obj\Debug\InteligentnyTraktor.LanguageProcessing.exe

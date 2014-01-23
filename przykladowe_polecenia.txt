@@ -1,0 +1,69 @@
+Proszê zaoraæ.
+Proszê zaoraæ pole.
+Zaoraæ pole obok.
+Proszê zaoraæ pole obok.
+Proszê zaoraæ s¹siednie pole.
+Proszê zaoraæ pole obok i proszê zaoraæ pole na koñcu.
+Proszê zaoraæ pole obok i pole na koñcu.
+Proszê zaoraæ pole obok i pole na koñcu planszy.
+Proszê zaoraæ pole obok i pole na koñcu planszy, po lewej stronie.
+Proszê zaoraæ pole obok i pole na koñcu planszy, po Twojej lewej stronie.
+Proszê zaoraæ pole obok i na koñcu planszy.
+Proszê zaoraæ pole obok, pole na koñcu planszy i uschniête pole.
+Proszê zaoraæ pole obok, na koñcu planszy i uschniête pole.
+Proszê zaoraæ pole obok, na koñcu planszy i to uschniête.
+Proszê zaoraæ pola obok.
+Proszê zaoraæ pola na koñcu planszy.
+Proszê zaoraæ pola: po lewej, prawej i dwa pola nad Tob¹.
+Zaoraj wszystkie pola.
+Zaoraj niezaorane pola.
+Zaoraj wszystkie niezaorane pola.
+Zaoraj wszystkie niezaorane pola, a potem zasiej wszystkie pola.
+Zaoraj wszystkie niezaorane pola, a potem zasiej wszystkie zaorane pola.
+Zaoraj wszystkie niezaorane pola, a potem zasiej wszystkie.
+Zaoraj wszystkie niezaorane pola, a potem zasiej wszystkie zaorane.
+Zaoraj wszystkie niezaorane pola, a potem wszystkie zasiej.
+Zaoraj wszystkie niezaorane pola, a potem je zasiej.
+Zaoraj wszystkie niezaorane pola, a potem zasiej je.
+Zaoraj, a potem zasiej wszystkie niezaorane pola.
+Zaoraj wszystkie niezaorane pola, a wszystkie zaorane pola zasiej.  //inwersja sk³adni, czasownik na koñcu, ale dalej po prawej stronie spójnika
+Zaoraj wszystkie niezaorane pola, a wszystkie zaorane zasiej.
+Zaoraj wszystkie niezaorane pola i zasiej wszystkie zaorane.
+Zaoraj i zasiej wszystkie niezaorane pola.
+Zaoraj, zasiej i nawodnij wszystkie niezaorane pola.
+Zaoraj i zasiej wszystkie niezaorane pola, nawodnij zasiane.
+Zaoraj i zasiej wszystkie niezaorane pola i nawodnij zasiane.
+Zaoraj i zasiej wszystkie niezaorane pola i nawodnij wszystkie zasiane.
+Zaoraj i zasiej wszystkie niezaorane pola i nawodnij wszystkie zasiane pola.
+Zaoraj wszystkie niezaorane i zgni³e pola.
+
+Zaoraj wszystkie zgni³e i niezaorane pola w pobli¿u, i to uschniête pole na skraju, po lewej.
+Zaoraj wszystkie pola w pobli¿u, które s¹ zgni³e i/lub niezaorane, i to uschniête pole na skraju, po lewej.
+
+Zaoraj wszystkie niezaorane i zgni³e pola i lasy.
+Zaoraj wszystkie pola, który zgni³y lub s¹ niezaorane.
+Zatrzymaj siê i zasiej najbli¿sze pole.
+
+//do zrobienia
+Zatrzymaj siê i zacznij zasiewaæ najbli¿sze pole.
+Zatrzymaj siê i zajmij siê zasiewaniem najbli¿szego pola.
+
+
+Przestañ zasiewaæ.
+Przestañ zasiewaæ i zbierz plony z pola obok. //trudne, trzeba przeanalizowaæ czy bezposednio po "przestañ" nie ma ¿adnej czynnoœci
+Przestañ zasiewaæ, zbieraj plony z pola obok.//lub odkryæ, ¿e "zasiewaæ" jest tutaj dope³nieniem
+Przerwij zasiewanie.
+Przerwij zasiewanie i rozpocznij zbieranie plonów. // po przestañ, przerwij mo¿e byæ wskazana czynnoœæ jak¹ aktualnie wykonuje (context solver?)
+Natychmiast zaoraj pole obok.
+Zaoraj natychmiast pole obok.
+Zaoraj pole obok, natychmiast.
+Proszê natychmiast zaoraæ pole obok.
+Zbierz plon.
+Zbierz pszenicê.
+Zbierz pszenicê, zawieŸ plon do magazynu.
+Zbierz pszenicê i zawieŸ plon do magazynu.
+Zbierz pszenicê, nastêpnie zawieŸ plon do magazynu.
+Zbierz pszenicê, ¿yto i zawieŸ plon do magazynu.
+Zbierz pszenicê i ¿yto, a nastêpnie zawieŸ plon do magazynu.
+Nie zbieraj pszenicy.
+Zaoraj wszystkie niezaorane pola, prócz tego najbli¿ej po Twojej lewej.

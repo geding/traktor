@@ -49,3 +49,14 @@ J:\KCK\InteligentnyTraktor\InteligentnyTraktor.Test\obj\Debug\InteligentnyTrakto
 J:\KCK\InteligentnyTraktor\InteligentnyTraktor.Test\obj\Debug\InteligentnyTraktor.g.resources
 J:\KCK\InteligentnyTraktor\InteligentnyTraktor.Test\obj\Debug\InteligentnyTraktor.Properties.Resources.resources
 J:\KCK\InteligentnyTraktor\InteligentnyTraktor.Test\obj\Debug\InteligentnyTraktor.Test.csproj.GenerateResource.Cache
+J:\My Documents\Visual Studio 2012\Projects\traktor\InteligentnyTraktor.Test\bin\Debug\InteligentnyTraktor.exe.config
+J:\My Documents\Visual Studio 2012\Projects\traktor\InteligentnyTraktor.Test\obj\Debug\InteligentnyTraktor.exe
+J:\My Documents\Visual Studio 2012\Projects\traktor\InteligentnyTraktor.Test\obj\Debug\InteligentnyTraktor.pdb
+J:\My Documents\Visual Studio 2012\Projects\traktor\InteligentnyTraktor.Test\obj\Debug\InteligentnyTraktor.Test.csprojResolveAssemblyReference.cache
+J:\My Documents\Visual Studio 2012\Projects\traktor\InteligentnyTraktor.Test\obj\Debug\MainWindow.baml
+J:\My Documents\Visual Studio 2012\Projects\traktor\InteligentnyTraktor.Test\obj\Debug\MainWindow.g.cs
+J:\My Documents\Visual Studio 2012\Projects\traktor\InteligentnyTraktor.Test\obj\Debug\App.g.cs
+J:\My Documents\Visual Studio 2012\Projects\traktor\InteligentnyTraktor.Test\obj\Debug\InteligentnyTraktor_MarkupCompile.cache
+J:\My Documents\Visual Studio 2012\Projects\traktor\InteligentnyTraktor.Test\obj\Debug\InteligentnyTraktor.g.resources
+J:\My Documents\Visual Studio 2012\Projects\traktor\InteligentnyTraktor.Test\obj\Debug\InteligentnyTraktor.Properties.Resources.resources
+J:\My Documents\Visual Studio 2012\Projects\traktor\InteligentnyTraktor.Test\obj\Debug\InteligentnyTraktor.Test.csproj.GenerateResource.Cache

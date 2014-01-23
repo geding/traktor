@@ -8,3 +8,6 @@ J:\KCK\InteligentnyTraktor\InteligentnyTraktor.Model\bin\Debug\InteligentnyTrakt
 J:\KCK\InteligentnyTraktor\InteligentnyTraktor.Model\obj\Debug\InteligentnyTraktor.Model.csprojResolveAssemblyReference.cache
 J:\KCK\InteligentnyTraktor\InteligentnyTraktor.Model\obj\Debug\InteligentnyTraktor.Model.dll
 J:\KCK\InteligentnyTraktor\InteligentnyTraktor.Model\obj\Debug\InteligentnyTraktor.Model.pdb
+J:\My Documents\Visual Studio 2012\Projects\traktor\InteligentnyTraktor.Model\obj\Debug\InteligentnyTraktor.Model.csprojResolveAssemblyReference.cache
+J:\My Documents\Visual Studio 2012\Projects\traktor\InteligentnyTraktor.Model\obj\Debug\InteligentnyTraktor.Model.dll
+J:\My Documents\Visual Studio 2012\Projects\traktor\InteligentnyTraktor.Model\obj\Debug\InteligentnyTraktor.Model.pdb

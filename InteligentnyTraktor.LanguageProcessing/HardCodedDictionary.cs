@@ -38,7 +38,11 @@ namespace InteligentnyTraktor.LanguageProcessing
 
             string[] plow = { "zaorać", "zaorac", "zaoraj", "spulchnij", "przeorać", "przeorac", "przeoraj" };
 
+<<<<<<< HEAD:InteligentnyTraktor.LanguageProcessing/HardCodedDictionary.cs
             string[] sow = { "zasiać", "zasiej", "obsiej", "posiej" };
+=======
+            string[] sow = { "zasiać", "zasiej", "obsiej", };
+>>>>>>> remotes/origin/compiler:InteligentnyTraktor/InteligentnyTraktor.LanguageProcessing/HardCodedDictionary.cs
 
             string[] harvest = { "zbierz", "zebrać", "zbieraj", "skoś" };
 

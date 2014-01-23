@@ -66,6 +66,7 @@ namespace InteligentnyTraktor.Model
 
         public void MoveTractorTo(int row, int column)
         {
+<<<<<<< HEAD:InteligentnyTraktor.Model/TractorManager.cs
             var asd = tasks.Count;
 
             double destX = fieldItemHeight * (column + 0.5);
@@ -105,35 +106,62 @@ namespace InteligentnyTraktor.Model
                 }
                 
             }
+=======
+            //var asd = tasks.Count;
+            double destX = fieldItemHeight * (column + 0.5);
+            double destY = fieldItemWidth * (row + 0.5);
+
+            MoveTractor(destX, destY);
+>>>>>>> remotes/origin/compiler:InteligentnyTraktor/InteligentnyTraktor.Model/TractorManager.cs
         }
 
         public void Harvest(Field fieldItem, int row, int column)
         {
             MoveTractorTo(row, column);
+<<<<<<< HEAD:InteligentnyTraktor.Model/TractorManager.cs
+=======
+            MoveTractorRoundField(row, column);
+>>>>>>> remotes/origin/compiler:InteligentnyTraktor/InteligentnyTraktor.Model/TractorManager.cs
             AddNewTask((Action)(fieldItem.Harvest));
         }
 
         public void Fertilize(Field fieldItem, int row, int column)
         {
             MoveTractorTo(row, column);
+<<<<<<< HEAD:InteligentnyTraktor.Model/TractorManager.cs
+=======
+            MoveTractorRoundField(row, column);
+>>>>>>> remotes/origin/compiler:InteligentnyTraktor/InteligentnyTraktor.Model/TractorManager.cs
             AddNewTask((Action)(fieldItem.Fertilize));
         }
 
         public void Irrigate(Field fieldItem, int row, int column)
         {
             MoveTractorTo(row, column);
+<<<<<<< HEAD:InteligentnyTraktor.Model/TractorManager.cs
+=======
+            MoveTractorRoundField(row, column);
+>>>>>>> remotes/origin/compiler:InteligentnyTraktor/InteligentnyTraktor.Model/TractorManager.cs
             AddNewTask((Action)(fieldItem.Irrigate));
         }
 
         public void Plow(Field fieldItem, int row, int column)
         {
             MoveTractorTo(row, column);
+<<<<<<< HEAD:InteligentnyTraktor.Model/TractorManager.cs
+=======
+            MoveTractorRoundField(row, column);
+>>>>>>> remotes/origin/compiler:InteligentnyTraktor/InteligentnyTraktor.Model/TractorManager.cs
             AddNewTask((Action)(fieldItem.Plow));
         }
 
         public void Sow(Field fieldItem, int row, int column)
         {
             MoveTractorTo(row, column);
+<<<<<<< HEAD:InteligentnyTraktor.Model/TractorManager.cs
+=======
+            MoveTractorRoundField(row, column);
+>>>>>>> remotes/origin/compiler:InteligentnyTraktor/InteligentnyTraktor.Model/TractorManager.cs
             AddNewTask((Action)(fieldItem.Sow));
         }
 
@@ -173,6 +201,81 @@ namespace InteligentnyTraktor.Model
             }
         }
 
+<<<<<<< HEAD:InteligentnyTraktor.Model/TractorManager.cs
+=======
+        private void MoveTractorRoundField(int row, int column)
+        {
+            MoveTractorTo(row, column);
+
+            //najpierw lekko do gory
+            double destX = fieldItemHeight * (column + 0.5);
+            double destY = fieldItemWidth * (row + 0.2);
+            MoveTractor(destX, destY);
+
+            //potem w lewo
+            destX = fieldItemHeight * (column + 0.2);
+            MoveTractor(destX, destY);
+
+            //potem w dół
+            destY = fieldItemWidth * (row + 0.8);
+            MoveTractor(destX, destY);
+
+            //potem w prawo
+            destX = fieldItemHeight * (column + 0.8);
+            MoveTractor(destX, destY);
+
+            //potem do góry
+            destY = fieldItemWidth * (row + 0.2);
+            MoveTractor(destX, destY);
+
+            //potem do polowy w lewo
+            destX = fieldItemHeight * (column + 0.5);
+            MoveTractor(destX, destY);
+
+            //i w dół na środek pola
+            destY = fieldItemWidth * (row + 0.5);
+            MoveTractor(destX, destY);
+        }
+
+        private void MoveTractor(double destX, double destY)
+        {
+            if (isPerforming == false)
+            {
+                if (destX == world.Tractor.Position.X || destY == world.Tractor.Position.Y)
+                {
+                    AddNewMove(destX, destY);
+                }
+                else
+                {
+                    AddNewMove(destX, world.Tractor.Position.Y);
+                    AddNewMove(destX, destY);
+                }
+                PerformTopTask();
+            }
+            else
+            {
+                if (tasks.Count == 0)
+                {
+                    if (destX != lastMoveDestX)
+                    {
+                        AddNewMove(destX, lastMoveDestY);
+                    }
+                    AddNewMove(destX, destY);
+                }
+                else
+                {
+                    if (destX != this.lastMoveDestX)
+                    {
+                        AddNewMove(destX, this.lastMoveDestY);
+                    }
+                    //AddNewMove(destX, lastMove.DestY);
+                    AddNewMove(destX, destY);
+                }
+
+            }
+        }
+
+>>>>>>> remotes/origin/compiler:InteligentnyTraktor/InteligentnyTraktor.Model/TractorManager.cs
         #endregion
     }
 }

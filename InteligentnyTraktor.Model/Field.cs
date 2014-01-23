@@ -10,7 +10,7 @@ namespace InteligentnyTraktor.Model
     public partial class Field
     {
         private double counter = 0;
-        private double growTime = 2;
+        private double growTime = 10;
         private double fertilityRate = 1;
         private bool isIrrigated = false;
         private bool isSowed = false;
@@ -56,11 +56,19 @@ namespace InteligentnyTraktor.Model
             switch (type)
             {
                 case FieldItemType.Wheat:
+<<<<<<< HEAD:InteligentnyTraktor.Model/Field.cs
                     return new Field(type, 4,row,column);
                 case FieldItemType.Rye:
                     return new Field(type, 6, row, column);
                 case FieldItemType.Corn:
                     return new Field(type, 8, row, column);
+=======
+                    return new Field(type, 10,row,column);
+                case FieldItemType.Rye:
+                    return new Field(type, 15, row, column);
+                case FieldItemType.Corn:
+                    return new Field(type, 20, row, column);
+>>>>>>> remotes/origin/compiler:InteligentnyTraktor/InteligentnyTraktor.Model/Field.cs
                 default:
                     return null;
             }

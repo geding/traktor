@@ -357,12 +357,17 @@ namespace InteligentnyTraktor.Test
 
         private void ButtonDo_Click(object sender, RoutedEventArgs e)
         {
+<<<<<<< HEAD:InteligentnyTraktor.Test/MainWindow.xaml.cs
             string commend = textBoxEnterCommend.Text;
             Comp.RunCompiler(commend);
             if (commend != "")
             {
                 commendLabel.Content += commend + "\n"; //nie za dużo razy wywoływane? może stworzyć w klasie stringbuildera
             }
+=======
+            string commend =textBoxEnterCommend.Text;
+            Comp.RunCompiler(commend);
+>>>>>>> remotes/origin/compiler:InteligentnyTraktor/InteligentnyTraktor.Test/MainWindow.xaml.cs
             LPDict.CheckActionTypeAndRunIt(commend);
         }
     }
