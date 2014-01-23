@@ -1,0 +1,10 @@
+D:\Pisane\C#\Projekt KCK\InteligentnyTraktor\InteligentnyTraktor.Model\bin\Debug\InteligentnyTraktor.Model.dll
+D:\Pisane\C#\Projekt KCK\InteligentnyTraktor\InteligentnyTraktor.Model\bin\Debug\InteligentnyTraktor.Model.pdb
+D:\Pisane\C#\Projekt KCK\InteligentnyTraktor\InteligentnyTraktor.Model\obj\Debug\InteligentnyTraktor.Model.csprojResolveAssemblyReference.cache
+D:\Pisane\C#\Projekt KCK\InteligentnyTraktor\InteligentnyTraktor.Model\obj\Debug\InteligentnyTraktor.Model.dll
+D:\Pisane\C#\Projekt KCK\InteligentnyTraktor\InteligentnyTraktor.Model\obj\Debug\InteligentnyTraktor.Model.pdb
+J:\KCK\InteligentnyTraktor\InteligentnyTraktor.Model\bin\Debug\InteligentnyTraktor.Model.dll
+J:\KCK\InteligentnyTraktor\InteligentnyTraktor.Model\bin\Debug\InteligentnyTraktor.Model.pdb
+J:\KCK\InteligentnyTraktor\InteligentnyTraktor.Model\obj\Debug\InteligentnyTraktor.Model.csprojResolveAssemblyReference.cache
+J:\KCK\InteligentnyTraktor\InteligentnyTraktor.Model\obj\Debug\InteligentnyTraktor.Model.dll
+J:\KCK\InteligentnyTraktor\InteligentnyTraktor.Model\obj\Debug\InteligentnyTraktor.Model.pdb
