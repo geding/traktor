@@ -66,74 +66,45 @@ namespace InteligentnyTraktor.Model
 
         public void MoveTractorTo(int row, int column)
         {
-            var asd = tasks.Count;
-
+            //var asd = tasks.Count;
             double destX = fieldItemHeight * (column + 0.5);
-            double destY = fieldItemWidth * (row + 0.5);            
+            double destY = fieldItemWidth * (row + 0.5);
 
-            if (isPerforming == false)
-            {
-                if (destX == world.Tractor.Position.X || destY == world.Tractor.Position.Y)
-                {
-                    AddNewMove(destX, destY);
-                }
-                else
-                {
-                    AddNewMove(destX, world.Tractor.Position.Y);
-                    AddNewMove(destX, destY);
-                }                
-                PerformTopTask();
-            }
-            else
-            {
-                if (tasks.Count == 0)
-                {
-                    if (destX != lastMoveDestX)
-                    {
-                        AddNewMove(destX, lastMoveDestY);
-                    }                   
-                    AddNewMove(destX, destY);
-                }
-                else
-                {
-                    if (destX != this.lastMoveDestX)
-                    {
-                        AddNewMove(destX, this.lastMoveDestY);
-                    }
-                    //AddNewMove(destX, lastMove.DestY);
-                    AddNewMove(destX, destY);
-                }
-                
-            }
+            MoveTractor(destX, destY);
         }
 
         public void Harvest(Field fieldItem, int row, int column)
         {
             MoveTractorTo(row, column);
+            MoveTractorRoundField(row, column);
             AddNewTask((Action)(fieldItem.Harvest));
         }
 
         public void Fertilize(Field fieldItem, int row, int column)
         {
             MoveTractorTo(row, column);
+            MoveTractorRoundField(row, column);
             AddNewTask((Action)(fieldItem.Fertilize));
         }
 
         public void Irrigate(Field fieldItem, int row, int column)
         {
             MoveTractorTo(row, column);
+            MoveTractorRoundField(row, column);
             AddNewTask((Action)(fieldItem.Irrigate));
         }
 
         public void Plow(Field fieldItem, int row, int column)
         {
             MoveTractorTo(row, column);
+            MoveTractorRoundField(row, column);
             AddNewTask((Action)(fieldItem.Plow));
         }
 
         public void Sow(Field fieldItem, int row, int column)
         {
             MoveTractorTo(row, column);
+            MoveTractorRoundField(row, column);
             AddNewTask((Action)(fieldItem.Sow));
         }
 
@@ -170,6 +141,78 @@ namespace InteligentnyTraktor.Model
             else
             {
                 isPerforming = false;
+            }
+        }
+
+        private void MoveTractorRoundField(int row, int column)
+        {
+            MoveTractorTo(row, column);
+
+            //najpierw lekko do gory
+            double destX = fieldItemHeight * (column + 0.5);
+            double destY = fieldItemWidth * (row + 0.2);
+            MoveTractor(destX, destY);
+
+            //potem w lewo
+            destX = fieldItemHeight * (column + 0.2);
+            MoveTractor(destX, destY);
+
+            //potem w dół
+            destY = fieldItemWidth * (row + 0.8);
+            MoveTractor(destX, destY);
+
+            //potem w prawo
+            destX = fieldItemHeight * (column + 0.8);
+            MoveTractor(destX, destY);
+
+            //potem do góry
+            destY = fieldItemWidth * (row + 0.2);
+            MoveTractor(destX, destY);
+
+            //potem do polowy w lewo
+            destX = fieldItemHeight * (column + 0.5);
+            MoveTractor(destX, destY);
+
+            //i w dół na środek pola
+            destY = fieldItemWidth * (row + 0.5);
+            MoveTractor(destX, destY);
+        }
+
+        private void MoveTractor(double destX, double destY)
+        {
+            if (isPerforming == false)
+            {
+                if (destX == world.Tractor.Position.X || destY == world.Tractor.Position.Y)
+                {
+                    AddNewMove(destX, destY);
+                }
+                else
+                {
+                    AddNewMove(destX, world.Tractor.Position.Y);
+                    AddNewMove(destX, destY);
+                }
+                PerformTopTask();
+            }
+            else
+            {
+                if (tasks.Count == 0)
+                {
+                    if (destX != lastMoveDestX)
+                    {
+                        AddNewMove(destX, lastMoveDestY);
+                    }
+                    AddNewMove(destX, destY);
+                }
+                else
+                {
+                    if (destX != this.lastMoveDestX)
+                    {
+                        AddNewMove(destX, this.lastMoveDestY);
+                    }
+                    //AddNewMove(destX, lastMove.DestY);
+                    AddNewMove(destX, destY);
+                }
+
             }
         }
 
