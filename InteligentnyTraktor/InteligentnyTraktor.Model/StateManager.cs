@@ -142,6 +142,11 @@ namespace InteligentnyTraktor.Model
         {
             get { return tractorManager.Position; }
         }
+        public System.Windows.Point FieldWithTractor
+        {
+            get { return tractorManager.FieldWithTractor(); }
+        }
+        
 
         public System.Windows.Vector TractorDirection
         {
