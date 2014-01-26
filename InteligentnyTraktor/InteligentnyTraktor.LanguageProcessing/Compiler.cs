@@ -149,10 +149,9 @@ namespace InteligentnyTraktor.LanguageProcessing
                     }
                     else
                     {
-                        foreach (var t in ((StateManager)_stateManager).fieldItems)
-                        {
-                            filteredCollection.AddRange(t.ToList());
-                        }
+                        Point position = _stateManager.FieldWithTractor;
+                        Field current = ((StateManager)_stateManager).fieldItems[(int)position.Y][(int)position.X];
+                        filteredCollection.Add(current);
                     }
                     Field chosen = filteredCollection.First<Field>();
                     filteredCollection.Clear();
