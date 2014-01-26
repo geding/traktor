@@ -45,8 +45,19 @@ namespace InteligentnyTraktor.LanguageProcessing
             //http://www.codeproject.com/Tips/582450/Build-Where-Clause-Dynamically-in-Linq
             List<Filter> filter = new List<Filter>();
 
+            int n1=-1,n2=-1;
             foreach (string filtr in filtrs)
             {
+                int number;
+                bool isNumeric = int.TryParse(filtr, out number);
+                if (isNumeric)
+                {
+                    if (n1 == -1)
+                        n1 = number;
+                    else
+                        n2 = number;
+                }
+
                 switch (filtr)
                 {
                     case "wszystkie":
@@ -137,6 +148,7 @@ namespace InteligentnyTraktor.LanguageProcessing
             List<Field> filteredCollection = new List<Field>();
             switch (fieldType)
             {
+                case "domyślne":
                 case "pole":
 
                     if (filter.Any())
@@ -146,6 +158,21 @@ namespace InteligentnyTraktor.LanguageProcessing
                         {
                             filteredCollection.AddRange(t.Where(deleg).ToList());
                         }
+                    }
+                    else if (n1 != -1 && n2 == -1) // jest tylko jedna liczba
+                    {
+                        int wiersz = (int)Math.Ceiling((double)n1 / (double)_size);
+                        int kolumna = n1 % _size;
+                        wiersz--; kolumna--; //numerowane od 0
+                        if (wiersz <= _size && kolumna <= _size)
+                        {
+                            Field current = ((StateManager)_stateManager).fieldItems[wiersz][kolumna];
+                            filteredCollection.Add(current);
+                        }
+                    }
+                    else if (n1 != -1 && n2 != -1) // sa kordynaty x,y
+                    {
+
                     }
                     else
                     {
@@ -184,12 +211,12 @@ namespace InteligentnyTraktor.LanguageProcessing
                 case "traktor":
 
                     break;
-                case "domyślne":
-                     foreach(var t in ((StateManager)_stateManager).fieldItems)
-                        {
-                            filteredCollection.AddRange(t.ToList());
-                        }
-                    break;
+                
+                    // foreach(var t in ((StateManager)_stateManager).fieldItems)
+                    //    {
+                    //        filteredCollection.AddRange(t.ToList());
+                    //    }
+                    //break;
             }
             return filteredCollection;
         }
