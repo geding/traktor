@@ -172,7 +172,8 @@ namespace InteligentnyTraktor.LanguageProcessing
                     }
                     else if (n1 != -1 && n2 != -1) // sa kordynaty x,y
                     {
-
+                        Field current = ((StateManager)_stateManager).fieldItems[n1][n2];
+                        filteredCollection.Add(current);
                     }
                     else
                     {
