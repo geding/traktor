@@ -139,22 +139,17 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="traktor.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <Resource Include="background.png" />
     <Resource Include="Bare.png" />
     <Resource Include="EarlyGrowing.png" />
+    <Resource Include="Harvested.png" />
     <Resource Include="LateGrowing.png" />
     <Resource Include="Mature.png" />
     <Resource Include="MidGrowing.png" />
     <Resource Include="Plowed.png" />
-    <Resource Include="Sowed.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Harvested.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Rotten.png" />
+    <Resource Include="Sowed.png" />
+    <Resource Include="traktor.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

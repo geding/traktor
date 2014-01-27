@@ -29,6 +29,8 @@ namespace InteligentnyTraktor.Test
         Timer timer = new Timer(20);
 
         LPDictionary LPDict ;
+        Compiler Comp;
+
 
         UIElement[][] fieldItems;
         Image tractor;
@@ -43,15 +45,26 @@ namespace InteligentnyTraktor.Test
 
             InitializeComponent();
 
+            InitializeBackgroundImage();
+
             stateManager = new StateManager(fieldCanvas.Width, fieldCanvas.Height, size, size);
             LPDict = new LPDictionary(stateManager, _size);
+            Comp = new Compiler(stateManager, _size);
+
             stateManager.TractorIsBusy += (s, e) => labelCommunication.Content = "traktor jest zajęty";
 
             InitializeFieldGrid(size);
             InitializeTractor();
             InitializeFieldEvents();           
 
-            labelCommunication.Content = fieldItems.Length + " " + fieldItems[0].Length;
+            //labelCommunication.Content = fieldItems.Length + " " + fieldItems[0].Length;
+
+            //inicjalizacja przezroczystego canvasu; dorobić do niego jakiś slider
+            textCanvas.Background = new SolidColorBrush()
+            {
+                Color = Color.FromRgb(255, 255, 255),
+                Opacity = 0.35
+            };
 
             timer.Start();
             timer.Elapsed += timer_Elapsed;
@@ -162,6 +175,20 @@ namespace InteligentnyTraktor.Test
             fieldCanvas.Children.Add(tractor);
         }
 
+        private void InitializeBackgroundImage()
+        {
+            BitmapImage bi = new BitmapImage();
+            bi.BeginInit();
+            bi.UriSource = new Uri(
+                "pack://application:,,,/InteligentnyTraktor;component/background.png", UriKind.Absolute
+            );
+            bi.EndInit();
+            mainWindow.Background = new ImageBrush()
+            {
+                ImageSource = bi,
+            };
+        }
+
         private void InitializeFieldEvents()
         {
             foreach (var el in gridField.Children)
@@ -261,7 +288,7 @@ namespace InteligentnyTraktor.Test
 
         private int _r;
         private int _c;
-        private bool is_good()
+        /*private bool is_good()
         {
             int r;
             int c;
@@ -285,9 +312,9 @@ namespace InteligentnyTraktor.Test
             this._r = r;
             this._c = c;
             return true;
-        }
+        }*/
         
-        private void buttonMoveTractor_Click(object sender, RoutedEventArgs e)
+        /*private void buttonMoveTractor_Click(object sender, RoutedEventArgs e)
         {
           
             if(is_good())
@@ -327,11 +354,16 @@ namespace InteligentnyTraktor.Test
             if (is_good())
                 stateManager.HarvestAt(_r, _c);
             return;
-        }
+        }*/
 
         private void ButtonDo_Click(object sender, RoutedEventArgs e)
         {
-            string commend =textBoxEnterCommend.Text;      
+            string commend = textBoxEnterCommend.Text;
+            Comp.RunCompiler(commend);
+            if (commend != "")
+            {
+                commendLabel.Content += commend + "\n"; //nie za dużo razy wywoływane? może stworzyć w klasie stringbuildera
+            }
             LPDict.CheckActionTypeAndRunIt(commend);
         }
     }
