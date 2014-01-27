@@ -163,7 +163,9 @@ namespace InteligentnyTraktor.LanguageProcessing
                     {
                         int wiersz = (int)Math.Ceiling((double)n1 / (double)_size);
                         int kolumna = n1 % _size;
-                        wiersz--; kolumna--; //numerowane od 0
+                        wiersz--;  //numerowane od 0
+                        if (kolumna == 0) kolumna = _size; //eh indexy od 0
+                        kolumna--;
                         if (wiersz <= _size && kolumna <= _size)
                         {
                             Field current = ((StateManager)_stateManager).fieldItems[wiersz][kolumna];
