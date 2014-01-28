@@ -10,15 +10,11 @@
             </Grid>
         </Canvas>
         <Label x:Name="labelCommunication" Content="" HorizontalAlignment="Left" Margin="764,43,0,0" VerticalAlignment="Top" Width="139"/>
-        <Label x:Name="labelVelocity" Content="Label" HorizontalAlignment="Left" Margin="42,666,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelDirection" Content="Label" HorizontalAlignment="Left" Margin="230,666,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="labelPosition" Content="Label" HorizontalAlignment="Left" Margin="404,666,0,0" VerticalAlignment="Top"/>
         <Canvas x:Name="textCanvas" HorizontalAlignment="Left" Height="592" Margin="691,43,0,0" VerticalAlignment="Top" Width="580">
             <Label x:Name="commendLabel" Width="100" Height="100" Canvas.Left="16" Canvas.Top="10"/>
             <TextBox x:Name="textBoxEnterCommend" HorizontalAlignment="Left" Height="41" TextWrapping="Wrap" VerticalAlignment="Top" Width="439"/>
             <Button x:Name="ButtonDo" Content="wykonaj" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="30" Click="ButtonDo_Click"/>
         </Canvas>
         <Button x:Name="closeButton" Content="X" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="30" Click="closeButton_Click"/>
-
     </Grid>
 </Window>

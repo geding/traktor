@@ -149,6 +149,11 @@
     <Resource Include="Plowed.png" />
     <Resource Include="Rotten.png" />
     <Resource Include="Sowed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="traktor_1.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="traktor.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

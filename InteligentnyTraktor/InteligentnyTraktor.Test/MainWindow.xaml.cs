@@ -79,10 +79,10 @@ namespace InteligentnyTraktor.Test
                 {
                     this.Dispatcher.Invoke((Action)(() =>
                     {
-                        (fieldItems[e.row][e.column] as Label).Content =
+                        /*(fieldItems[e.row][e.column] as Label).Content =
                             e.row.ToString() + " " + e.column.ToString() + "\n"
                             + ((StateManager)stateManager).fieldItems[e.row][e.column].Type
-                            + "\n" + ((StateManager)stateManager).fieldItems[e.row][e.column].State;
+                            + "\n" + ((StateManager)stateManager).fieldItems[e.row][e.column].State;*/
                         ChangeFieldImage(fieldItems[e.row][e.column] as Label, ((StateManager)stateManager).fieldItems[e.row][e.column].State);
                     }));
                 };              
@@ -126,39 +126,49 @@ namespace InteligentnyTraktor.Test
 
         private void UpdateTractorProperties(object sender, ElapsedEventArgs e)
         {
-            this.Dispatcher.Invoke((Action)(() =>
+            try
             {
-                var t = (this.stateManager as StateManager).Tractor;
-                labelDirection.Content = "direct. " + t.Direction.X.ToString("0.##") + " " + t.Direction.Y.ToString("0.##");
-                labelPosition.Content = "pos. " + t.Position.X.ToString("0.##") + " " + t.Position.Y.ToString("0.##");
-
-                if (t.Velocity.X != 0 || t.Velocity.Y != 0)
+                this.Dispatcher.Invoke((Action)(() =>
                 {
-                    vx = t.Velocity.X;
-                    vy = t.Velocity.Y;
-                }
+                    var t = (this.stateManager as StateManager).Tractor;
+                    
+                    if (t.Velocity.X != 0 || t.Velocity.Y != 0)
+                    {
+                        vx = t.Velocity.X;
+                        vy = t.Velocity.Y;
 
-                labelVelocity.Content = "vel. " + vx.ToString("0.##") + " " + vy.ToString("0.##");
-                //labelVelocity.Content =  "vel. " + t.Velocity.X.ToString("0.##") + " " + t.Velocity.Y.ToString("0.##");
-            }));
+                        ChangeTractorImage();
+                    }
+                }));
+            }
+            catch (TaskCanceledException tce)
+            {
+
+            }
         }
 
         void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            this.Dispatcher.Invoke((Action)(() =>
+            try
             {
-                tractor.SetValue(Canvas.LeftProperty, stateManager.TractorPosition.X - tractor.Width / 2);
-                tractor.SetValue(Canvas.TopProperty, stateManager.TractorPosition.Y - tractor.Height / 2);
+                this.Dispatcher.Invoke((Action)(() =>
+                {
+                    tractor.SetValue(Canvas.LeftProperty, stateManager.TractorPosition.X - tractor.Width / 2);
+                    tractor.SetValue(Canvas.TopProperty, stateManager.TractorPosition.Y - tractor.Height / 2);
 
-                var angle = Math.Atan2(stateManager.TractorDirection.Y, stateManager.TractorDirection.X) * (180.0 / Math.PI);
-                RotateTransform rotate = new RotateTransform(
-                           angle,
-                           tractor.Width / 2,
-                           tractor.Height / 2
-                           );
-                tractor.RenderTransform = rotate;
-            }));
-            
+                    var angle = Math.Atan2(stateManager.TractorDirection.Y, stateManager.TractorDirection.X) * (180.0 / Math.PI);
+                    RotateTransform rotate = new RotateTransform(
+                               angle,
+                               tractor.Width / 2,
+                               tractor.Height / 2
+                               );
+                    tractor.RenderTransform = rotate;
+                }));
+            }
+            catch (TaskCanceledException tce)
+            {
+
+            }
         }
 
         private void InitializeTractor()
@@ -178,6 +188,28 @@ namespace InteligentnyTraktor.Test
             tractor.Source = bi;
 
             fieldCanvas.Children.Add(tractor);
+        }
+
+        private void ChangeTractorImage()
+        {
+            string uri = "pack://application:,,,/InteligentnyTraktor;component/traktor.png";
+            if (tractor.Source.ToString() == uri)
+            {
+                uri = "pack://application:,,,/InteligentnyTraktor;component/traktor_1.png";
+            }
+            else
+            {
+                uri = "pack://application:,,,/InteligentnyTraktor;component/traktor.png";
+            }
+
+            BitmapImage bi = new BitmapImage();
+            bi.BeginInit();
+            bi.UriSource = new Uri(
+                uri, UriKind.Absolute
+            );
+            bi.EndInit();
+
+            tractor.Source = bi;
         }
 
         private void InitializeBackgroundImage()
@@ -253,7 +285,7 @@ namespace InteligentnyTraktor.Test
 
         private void AddContentForEachField(Grid grid, int size)
         {
-            for (int i = 0; i < size * size; i++)
+            /*for (int i = 0; i < size * size; i++)
             {
                 int r = i % size;
                 int c = i / size;
@@ -261,14 +293,35 @@ namespace InteligentnyTraktor.Test
                 var ch = grid.Children;
                 ch.Add(new Label()
                     {
-                        Content = r.ToString() + " " + c.ToString() + "\n"
-                        + ((StateManager)stateManager).fieldItems[r][c].Type
-                        + "\n" + ((StateManager)stateManager).fieldItems[r][c].State,
+                        Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
+                        FontSize = 16,
+                        Content = i + "\n"
+                        //+ ((StateManager)stateManager).fieldItems[r][c].Type
+                        //+ "\n" + ((StateManager)stateManager).fieldItems[r][c].State,
                     });
                 Grid.SetRow(ch[i], r);
                 Grid.SetColumn(ch[i], c);
                 this.fieldItems[r][c] = ch[i];
-            }                        
+            }*/
+            for (int i = 0, k = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++, k++)
+                {
+                    var ch = grid.Children;
+                    ch.Add(new Label()
+                    {
+                        //Foreground = new SolidColorBrush(Color.FromRgb(26, 0, 0)),
+                        Foreground = Brushes.White,
+                        FontSize = 16,
+                        Content = i * 4 + j + 1 + "\n"
+                        //+ ((StateManager)stateManager).fieldItems[r][c].Type
+                        //+ "\n" + ((StateManager)stateManager).fieldItems[r][c].State,
+                    });
+                    Grid.SetRow(ch[k], i);
+                    Grid.SetColumn(ch[k], j);
+                    this.fieldItems[i][j] = ch[k];
+                }
+            }
         }
 
         private void AddImagesForEachField()
@@ -417,10 +470,11 @@ namespace InteligentnyTraktor.Test
             if (e.Key == Key.Enter)
             {
                 string commend = textBoxEnterCommend.Text;
-                Comp.RunCompiler(commend);
+                String respond = Comp.RunCompiler(commend);
                 if (commend != "")
                 {
                     commendLabel.Content += commend + "\n";
+                    commendLabel.Content += respond;
                     textBoxEnterCommend.Clear();
                 }
                 LPDict.CheckActionTypeAndRunIt(commend);
