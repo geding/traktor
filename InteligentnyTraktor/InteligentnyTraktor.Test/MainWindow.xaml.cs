@@ -52,59 +52,12 @@ namespace InteligentnyTraktor.Test
             Comp = new Compiler(stateManager, _size);
 
             stateManager.TractorIsBusy += (s, e) => labelCommunication.Content = "traktor jest zajęty";
-
-            /*Canvas.SetLeft(fieldCanvas, 0.1 * mainWindow.Width);
-            Canvas.SetTop(fieldCanvas, (mainWindow.Height - fieldCanvas.Height) / 2);
-            Canvas.SetLeft(gridField, 0.1 * mainWindow.Width);
-            Canvas.SetTop(gridField, (mainWindow.Height - fieldCanvas.Height) / 2);*/
             
             //adjust window width and height to screen resolution
             mainWindow.Width = SystemParameters.PrimaryScreenWidth;
             mainWindow.Height = SystemParameters.PrimaryScreenHeight;
 
             AdjustPositionAndSizeOfElements();
-            double marginLeft = mainWindow.Width - closeButton.Width;
-            double marginTop = 0;
-            closeButton.Margin = new Thickness(marginLeft - 5, marginTop + 5, 0, 0);
-
-            marginLeft = 0.05 * mainWindow.Width;
-            marginTop = (mainWindow.Height - fieldCanvas.Height) / 2;
-            Thickness t = new Thickness(marginLeft, marginTop, mainWindow.Width - marginLeft, marginTop);
-            fieldCanvas.Margin = t;
-            //gridField.Margin.Right = (mainWindow.Height - fieldCanvas.Height) / 2;
-            textCanvas.Width = 0.42 * mainWindow.Width;
-            textCanvas.Height = 0.82 * mainWindow.Height;
-            marginLeft = marginLeft + gridField.Width + 50;
-            marginTop = (mainWindow.Height - textCanvas.Height) / 2;
-            t = new Thickness(marginLeft, marginTop, mainWindow.Width - marginLeft, marginTop);
-            textCanvas.Margin = t;
-
-            commendLabel.Width = 0.95 * textCanvas.Width;
-            commendLabel.Height = 0.92 * textCanvas.Height;
-            /*marginLeft = 0.05 * textCanvas.Width;
-            marginTop = 0.15 * textCanvas.Height;
-            commendLabel.Margin = new Thickness(marginLeft, marginTop, marginLeft, textCanvas.Height - marginTop);*/
-            
-            textBoxEnterCommend.Width = 0.7 * textCanvas.Width;
-            marginLeft = 0.025 * textCanvas.Width;
-            marginTop = 0.91 * textCanvas.Height;
-            double marginRight = textCanvas.Width - marginLeft;
-            textBoxEnterCommend.Margin = new Thickness(marginLeft, marginTop, 0, 0);
-
-            //marginLeft = (textCanvas.Width - marginRight);
-            //marginTop = marginTop + textBoxEnterCommend.Height + ((textCanvas.Height + marginTop) - buttonDo.Height) / 2;
-            /*buttonDo.Margin = new Thickness(marginLeft, 0, 0,
-                                            0);*/
-            double textBoxMarginRight = marginLeft + textBoxEnterCommend.Width;
-            marginLeft = (textCanvas.Width - textBoxMarginRight - ButtonDo.Width) / 2;
-            //marginLeft = textBoxMarginRight + marginLeft;
-
-            marginTop = marginTop + (textBoxEnterCommend.Height - ButtonDo.Height) / 2;
-            t = new Thickness(textBoxMarginRight + marginLeft, marginTop, 0, 0);
-            ButtonDo.Margin = t;
-            textBoxEnterCommend.Focus();
-            ////////////////////
-
             InitializeFieldGrid(size);
             InitializeTractor();
             InitializeFieldEvents();           
