@@ -390,13 +390,12 @@ namespace InteligentnyTraktor.Test
             textBoxEnterCommend.Width = 0.7 * textCanvas.Width;
             marginLeft = 0.025 * textCanvas.Width;
             marginTop = 0.91 * textCanvas.Height;
-            double marginRight = textCanvas.Width - marginLeft;
             textBoxEnterCommend.Margin = new Thickness(marginLeft, marginTop, 0, 0);
 
             //ustawienie buttona 'wykonaj'
             marginLeft = (textCanvas.Width - (marginLeft + textBoxEnterCommend.Width) - ButtonDo.Width) / 2;
             marginTop = marginTop + (textBoxEnterCommend.Height - ButtonDo.Height) / 2;
-            ButtonDo.Margin = new Thickness(marginLeft, marginTop, 0, 0);
+            ButtonDo.Margin = new Thickness(marginLeft + textBoxEnterCommend.Width, marginTop, 0, 0);
 
             textBoxEnterCommend.Focus();
         }
