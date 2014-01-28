@@ -359,10 +359,11 @@ namespace InteligentnyTraktor.Test
         private void ButtonDo_Click(object sender, RoutedEventArgs e)
         {
             string commend = textBoxEnterCommend.Text;
-            Comp.RunCompiler(commend);
+            String respond = Comp.RunCompiler(commend);
             if (commend != "")
             {
                 commendLabel.Content += commend + "\n"; //nie za dużo razy wywoływane? może stworzyć w klasie stringbuildera
+                commendLabel.Content += respond;
             }
             LPDict.CheckActionTypeAndRunIt(commend);
         }

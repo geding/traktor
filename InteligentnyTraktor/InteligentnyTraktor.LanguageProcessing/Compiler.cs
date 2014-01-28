@@ -14,15 +14,27 @@ namespace InteligentnyTraktor.LanguageProcessing
         IStateManager _stateManager;
         int _size;
         Point _nextPosition;
-      
+        String Respond;
+        String Action;
+        String FieldType;
+        String FieldFiltrs;
+
         public Compiler(IStateManager stateManager, int size)
         {
             _stateManager = stateManager;
             _size = size;
+            Respond = "";
+            FieldFiltrs = "";
+            FieldType = "";
         }
-        public void RunCompiler(string commend)
+        public string RunCompiler(string commend)
         {
            Execute(ParseCommend(commend));
+           String respond = Respond;
+           FieldFiltrs = "";
+           FieldType = "";
+           Respond = "";
+           return respond;
         }
         private Phrase ParseCommend(string commend)
         {
@@ -45,9 +57,16 @@ namespace InteligentnyTraktor.LanguageProcessing
             //http://www.codeproject.com/Tips/582450/Build-Where-Clause-Dynamically-in-Linq
             List<Filter> filter = new List<Filter>();
 
+            FieldFiltrs = string.Join(", ", filtrs);
+            if (fieldType != "domyślne")
+                FieldType = fieldType;
+            
+
             int n1=-1,n2=-1;
             foreach (string filtr in filtrs)
             {
+               
+
                 int number;
                 bool isNumeric = int.TryParse(filtr, out number);
                 if (isNumeric)
@@ -57,6 +76,7 @@ namespace InteligentnyTraktor.LanguageProcessing
                     else
                         n2 = number;
                 }
+                
 
                 switch (filtr)
                 {
@@ -64,14 +84,17 @@ namespace InteligentnyTraktor.LanguageProcessing
 
                         break;
                     case "zaorane":
+                        
                         filter.Add(new Filter
                         {
                             PropertyName = "State",
                             Operation = Op.Equals,
                             Value = FieldItemState.Plowed
                         });
+                        
                         break;
                     case "niezaorane":
+                        
                         filter.Add(new Filter
                         {
                             PropertyName = "State",
@@ -149,6 +172,7 @@ namespace InteligentnyTraktor.LanguageProcessing
             switch (fieldType)
             {
                 case "domyślne":
+
                 case "pole":
 
                     if (filter.Any())
@@ -225,31 +249,36 @@ namespace InteligentnyTraktor.LanguageProcessing
         }
         private void runAction(string task, List<Field> fieldsPointed)
         {
-          
+             
             switch (task)
             {
                 case "jedź" :
+                    Action = "jadę na";
                      foreach (Field field in fieldsPointed)
                         _stateManager.MoveTractorTo(field.Row, field.Column);
                     
                     break;
                 case "stop":
+                    Action = "zatrzymuję się";
                     _stateManager.StopTractor();
                     break;
                 case "zaoraj":
-                  
+                    Action = "oram";
                     foreach (Field field in fieldsPointed)
                         _stateManager.PlowAt(field.Row, field.Column);
                     break;
                 case "zasiej":
+                    Action = "zasiewam";
                     foreach (Field field in fieldsPointed)
                         _stateManager.SowAt(field.Row, field.Column);
                     break;
                 case "zbierz":
+                    Action = "zbieram";
                     foreach (Field field in fieldsPointed)
                         _stateManager.HarvestAt(field.Row, field.Column);
                     break;
                 case "podlej":
+                    Action = "podlewam";
                     foreach (Field field in fieldsPointed)
                         _stateManager.IrrigateAt(field.Row, field.Column);
                     break;
@@ -284,6 +313,8 @@ namespace InteligentnyTraktor.LanguageProcessing
                     runAction(task.Value, fieldsPointed);
                     file.WriteLine(complement.Value); //to jest na czym ma zrobic (szczegoly  w filtrach)
 
+                    Respond += Action + " " + FieldType + " " + FieldFiltrs + "\n";
+                    Action = ""; FieldType = ""; FieldFiltrs = "";
                     foreach (var atr in complement.Attributes)
                     {
                         file.WriteLine("compl atr:" + atr); // to sa filtry
