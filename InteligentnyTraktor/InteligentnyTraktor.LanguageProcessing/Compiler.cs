@@ -15,24 +15,21 @@ namespace InteligentnyTraktor.LanguageProcessing
         int _size;
         Point _nextPosition;
         String Respond;
-        String Action;
-        String FieldType;
-        String FieldFiltrs;
+        Responds resp;
 
         public Compiler(IStateManager stateManager, int size)
         {
             _stateManager = stateManager;
             _size = size;
             Respond = "";
-            FieldFiltrs = "";
-            FieldType = "";
+            resp = new Responds();
+            //irritatedResponds
         }
         public string RunCompiler(string commend)
         {
+            Respond = resp.GetNegativeRespond();
             Execute(ParseCommend(commend));
             String respond = Respond;
-            FieldFiltrs = "";
-            FieldType = "";
             Respond = "";
             return respond;
         }
@@ -57,16 +54,9 @@ namespace InteligentnyTraktor.LanguageProcessing
             //http://www.codeproject.com/Tips/582450/Build-Where-Clause-Dynamically-in-Linq
             List<Filter> filter = new List<Filter>();
 
-            FieldFiltrs = string.Join(", ", filtrs);
-            if (fieldType != "domyślne")
-                FieldType = fieldType;
-
-
             int n1 = -1, n2 = -1;
             foreach (string filtr in filtrs)
             {
-
-
                 int number;
                 bool isNumeric = int.TryParse(filtr, out number);
                 if (isNumeric)
@@ -76,7 +66,6 @@ namespace InteligentnyTraktor.LanguageProcessing
                     else
                         n2 = number;
                 }
-
 
                 switch (filtr)
                 {
@@ -247,49 +236,52 @@ namespace InteligentnyTraktor.LanguageProcessing
             }
             return filteredCollection;
         }
+
         private void runAction(string task, List<Field> fieldsPointed)
         {
-
             switch (task)
             {
                 case "jedź":
-                    Action = "jadę na";
-                    foreach (Field field in fieldsPointed)
-                        _stateManager.MoveTractorTo(field.Row, field.Column);
-
-                    break;
+                    {
+                        foreach (Field field in fieldsPointed)
+                            _stateManager.MoveTractorTo(field.Row, field.Column);
+                        Respond = resp.GetPositiveRespond();
+                    } break;
                 case "stop":
-                    Action = "zatrzymuję się";
-                    _stateManager.StopTractor();
-                    break;
+                    {
+                        _stateManager.StopTractor();
+                        Respond = resp.GetPositiveRespond();
+                    } break;
                 case "zaoraj":
-                    Action = "oram";
-                    foreach (Field field in fieldsPointed)
-                        _stateManager.PlowAt(field.Row, field.Column);
-                    break;
+                    {
+                        foreach (Field field in fieldsPointed)
+                            _stateManager.PlowAt(field.Row, field.Column);
+                        Respond = resp.GetPositiveRespond();
+                    } break;
                 case "zasiej":
-                    Action = "zasiewam";
-                    foreach (Field field in fieldsPointed)
-                        _stateManager.SowAt(field.Row, field.Column);
-                    break;
+                    {
+                        foreach (Field field in fieldsPointed)
+                            _stateManager.SowAt(field.Row, field.Column);
+                        Respond = resp.GetPositiveRespond();
+                    } break;
                 case "zbierz":
-                    Action = "zbieram";
-                    foreach (Field field in fieldsPointed)
-                        _stateManager.HarvestAt(field.Row, field.Column);
-                    break;
+                    {
+                        foreach (Field field in fieldsPointed)
+                            _stateManager.HarvestAt(field.Row, field.Column);
+                        Respond = resp.GetPositiveRespond();
+                    } break;
                 case "podlej":
-                    Action = "podlewam";
-                    foreach (Field field in fieldsPointed)
-                        _stateManager.IrrigateAt(field.Row, field.Column);
-                    break;
-                case "start":
-                    //do czego to? ;p
-                    break;
+                    {
+                        foreach (Field field in fieldsPointed)
+                            _stateManager.IrrigateAt(field.Row, field.Column);
+                        Respond = resp.GetPositiveRespond();
+                    } break;
+                default: 
+                    {
+
+                    } break;
             }
         }
-
-
-
 
         private void Execute(Phrase phrase)
         {
@@ -310,11 +302,17 @@ namespace InteligentnyTraktor.LanguageProcessing
                 foreach (var complement in task.Complements)
                 {
                     fieldsPointed = choseFiledsPointedByUser(complement.Value, complement.Attributes);
+                    /*if (runAction(task.Value, fieldsPointed))
+                    {
+                        Respond = resp.GetPositiveRespond();
+                    }
+                    else
+                    {
+                        Respond = resp.GetNegativeRespond();
+                    }*/
                     runAction(task.Value, fieldsPointed);
                     file.WriteLine(complement.Value); //to jest na czym ma zrobic (szczegoly  w filtrach)
 
-                    Respond += Action + " " + FieldType + " " + FieldFiltrs + "\n";
-                    Action = ""; FieldType = ""; FieldFiltrs = "";
                     foreach (var atr in complement.Attributes)
                     {
                         file.WriteLine("compl atr:" + atr); // to sa filtry

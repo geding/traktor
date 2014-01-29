@@ -38,7 +38,8 @@ namespace InteligentnyTraktor.Test
         double vx = 0;
         double vy = 0;
 
-        int _size = 4; 
+        int _size = 4;
+
         public MainWindow()
         {
             int size = _size;
@@ -60,7 +61,7 @@ namespace InteligentnyTraktor.Test
             AdjustPositionAndSizeOfElements();
             InitializeFieldGrid(size);
             InitializeTractor();
-            InitializeFieldEvents();           
+            InitializeFieldEvents();
 
             //labelCommunication.Content = fieldItems.Length + " " + fieldItems[0].Length;
 
@@ -263,7 +264,7 @@ namespace InteligentnyTraktor.Test
 
             AddContentForEachField(gridField, size);
             AddImagesForEachField();
-        }        
+        }
 
         private void DefineRowsAndColumns(Grid grid, int size)
         {
@@ -285,24 +286,6 @@ namespace InteligentnyTraktor.Test
 
         private void AddContentForEachField(Grid grid, int size)
         {
-            /*for (int i = 0; i < size * size; i++)
-            {
-                int r = i % size;
-                int c = i / size;
-
-                var ch = grid.Children;
-                ch.Add(new Label()
-                    {
-                        Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
-                        FontSize = 16,
-                        Content = i + "\n"
-                        //+ ((StateManager)stateManager).fieldItems[r][c].Type
-                        //+ "\n" + ((StateManager)stateManager).fieldItems[r][c].State,
-                    });
-                Grid.SetRow(ch[i], r);
-                Grid.SetColumn(ch[i], c);
-                this.fieldItems[r][c] = ch[i];
-            }*/
             for (int i = 0, k = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++, k++)
@@ -344,34 +327,6 @@ namespace InteligentnyTraktor.Test
             }
         }
 
-        private int _r;
-        private int _c;
-        /*private bool is_good()
-        {
-            int r;
-            int c;
-
-            bool firstParse = int.TryParse(textBoxEnterRow.Text, out r);
-            bool secondParse = int.TryParse(textBoxEnterColumn.Text, out c);
-            bool result = firstParse && secondParse;
-
-            textBoxEnterRow.Text = "";
-            textBoxEnterColumn.Text = "";
-
-            if (!result)
-            {
-                return false;
-            }
-
-            else if ((r > fieldItems.Length - 1) || (c > fieldItems[0].Length - 1))
-            {
-                return false;
-            }
-            this._r = r;
-            this._c = c;
-            return true;
-        }*/
-        
         /*private void buttonMoveTractor_Click(object sender, RoutedEventArgs e)
         {
           
@@ -434,7 +389,10 @@ namespace InteligentnyTraktor.Test
 
             //ustawienie labela, ktory wyswietla tekst dialogu
             commendLabel.Width = 0.95 * textCanvas.Width;
-            commendLabel.Height = 0.92 * textCanvas.Height;
+            commendLabel.Height = 0.88 * textCanvas.Height;
+            //commendTextBox.Opacity = 0.3;
+            /*commendTextBox.Background = null;
+            commendTextBox.BorderBrush = null;*/
             /*marginLeft = 0.05 * textCanvas.Width;
             marginTop = 0.15 * textCanvas.Height;
             commendLabel.Margin = new Thickness(marginLeft, marginTop, 0, 0);*/
@@ -459,8 +417,8 @@ namespace InteligentnyTraktor.Test
             Comp.RunCompiler(commend);
             if (commend != "")
             {
-                commendLabel.Content += commend + "\n";
-                textBoxEnterCommend.Clear();
+                /*commendLabel.Content += commend + "\n";
+                textBoxEnterCommend.Clear();*/
             }
             LPDict.CheckActionTypeAndRunIt(commend);
         }
@@ -473,10 +431,25 @@ namespace InteligentnyTraktor.Test
                 String respond = Comp.RunCompiler(commend);
                 if (commend != "")
                 {
+                    commendLabel.Content += "Ty: ";
                     commendLabel.Content += commend + "\n";
-                    commendLabel.Content += respond;
+                    commendLabel.Content += "Traktor: ";
+                    commendLabel.Content += respond + "\n";
                     textBoxEnterCommend.Clear();
                 }
+                /*if (commend != "")
+                {
+                    TextRange tr = new TextRange(commendTextBox.Document.ContentEnd, commendTextBox.Document.ContentEnd);
+                    tr.Text = "Ty: ";
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
+                    /*commendTextBox.AppendText(
+                            "Ty: " + commend + "\n"
+                            + "Traktor: " + respond + "\n"
+                        );*//*
+
+                    commendTextBox.AppendText(commend + "\n");
+                    textBoxEnterCommend.Clear();
+                }*/
                 LPDict.CheckActionTypeAndRunIt(commend);
             }
         }
