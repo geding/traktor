@@ -44,7 +44,7 @@ namespace InteligentnyTraktor.Model
                 { FieldItemState.EarlyGrowing, (Action)Grow },
                 { FieldItemState.MidGrowing, (Action)Grow },
                 { FieldItemState.LateGrowing, (Action)Grow },
-                { FieldItemState.Mature, (Action)Grow },
+                { FieldItemState.Mature, (Action)Rot },
                 { FieldItemState.Rotten, (Action)None },
                 { FieldItemState.Harvested, (Action)Rot }
             };
@@ -56,11 +56,11 @@ namespace InteligentnyTraktor.Model
             switch (type)
             {
                 case FieldItemType.Wheat:
-                    return new Field(type, 10,row,column);
+                    return new Field(type, 20,row,column);
                 case FieldItemType.Rye:
-                    return new Field(type, 15, row, column);
+                    return new Field(type, 30, row, column);
                 case FieldItemType.Corn:
-                    return new Field(type, 20, row, column);
+                    return new Field(type, 40, row, column);
                 default:
                     return null;
             }

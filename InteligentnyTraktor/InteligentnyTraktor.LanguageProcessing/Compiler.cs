@@ -304,7 +304,7 @@ namespace InteligentnyTraktor.LanguageProcessing
             foreach (var task in tasks)
             {
                 
-                System.IO.StreamWriter file = new System.IO.StreamWriter("f:\\test.txt", true);
+                System.IO.StreamWriter file = new System.IO.StreamWriter("g:\\test.txt", true);
                 file.WriteLine("task v:"+task.Value); //to jest co ma zrobic
                 var activeTask = task.Value;
                 foreach (var complement in task.Complements)
