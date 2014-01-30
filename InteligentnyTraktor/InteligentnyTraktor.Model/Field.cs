@@ -44,7 +44,7 @@ namespace InteligentnyTraktor.Model
                 { FieldItemState.EarlyGrowing, (Action)Grow },
                 { FieldItemState.MidGrowing, (Action)Grow },
                 { FieldItemState.LateGrowing, (Action)Grow },
-                { FieldItemState.Mature, (Action)Grow },
+                { FieldItemState.Mature, (Action)Rot },
                 { FieldItemState.Rotten, (Action)None },
                 { FieldItemState.Harvested, (Action)Rot }
             };
