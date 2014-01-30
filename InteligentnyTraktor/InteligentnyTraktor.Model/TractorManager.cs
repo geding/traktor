@@ -38,8 +38,8 @@ namespace InteligentnyTraktor.Model
         }
         public Point FieldWithTractor()
         {
-            var row =  world.Tractor.Position.X / this.fieldItemWidth - 0.5;
-            var column =  world.Tractor.Position.Y / this.fieldItemHeight - 0.5;
+            var row =  world.Tractor.Position.X /( this.fieldItemWidth - 0.5);
+            var column =  world.Tractor.Position.Y / (this.fieldItemHeight - 0.5);
             return new Point(row, column);
         }
         public TractorManager(double fieldWidth, double fieldHeight, int rows, int columns)
